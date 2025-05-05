@@ -7,7 +7,7 @@ permalink: /
 
 # Willkommen!
 
-Unter dieser Page findest du die Dokumentation von ______, über ____. 
+Unter dieser Page findest du die Dokumentation von Miguel Schneider, über MSVC im 3. Semester des HF-Lehrgangs. 
 
 Diese Webseite wird von Github Pages gehostet.
 Sie wird durch meine Einträge im Gitrepo stetig aktualisiert und erneuert.
