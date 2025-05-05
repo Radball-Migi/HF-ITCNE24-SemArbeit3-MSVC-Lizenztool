@@ -13,3 +13,4 @@ has_children: "false"
 ## Bilder
 
 ### Startseite
+Bild mit KI generiert (<a href="https://chatgpt.com/" target="_blank">ChatGPT - DALL-E</a>) 
