@@ -8,7 +8,7 @@ nav_order: 5
 
 Um meine Semesterarbeit strukturiert voranzutreiben, habe ich zwei unterschiedliche Zeitpläne erstellt. Diese Zeitpläne variieren in ihrer Detailtiefe und bieten mir somit verschiedene Ansätze zur Organisation meiner Arbeit.
 
-Dies ist der grobe Zeitplan, welchen ich aus dem Einreichungsformular entnommen habe. 
+Dies ist der grobe Zeitplan, welchen ich aus dem [Einreichungsformular](../../ressources/docs/ITCNE24_Semesterarbeit_3_Einreichungsformular_Miguel_Schneider.pdf) entnommen habe. 
 
 | Datum     | Aktivität                                                                 | Wer                        | Empfänger           |
 |-----------|---------------------------------------------------------------------------|----------------------------|---------------------|
@@ -28,4 +28,12 @@ Den genaueren Zeitplan habe ich im Projektmanagement in Github erstellt.
 Dies ist ein Kanban-Board, auf dem ich die Einzelnen Tasks und verschiedene Buckets habe. 
 Mit diesem Board, kann ich auch eine Zeitplan-Achse abbilden, wo ich die Dauer eines Tasks definieren kann. 
 
-Den Zeitplan in Github Project, kannst du unter diesem Link finden: <a href="https://github.com/users/Radball-Migi/projects/6" target="_blank">Github Project</a>
+Den Zeitplan in GitHub Project, kannst du unter diesem Link finden: <a href="https://github.com/users/Radball-Migi/projects/6" target="_blank">Github Project</a>
+
+Mit GitHub Project, gibt es die Möglichkeit, die einzelnen Schritte in einer Roadmap anzuzeigen. 
+Dies sieht dann in etwa so aus:
+
+![Roadmap GitHub Project](../../ressources/images/roadmap_github-project.png)
+[*Roadmap in GitHub Projects*]([Roadmap · HF ITCNE24 - 3. Semarbeit MSVC - Projectplan](https://github.com/users/Radball-Migi/projects/6/views/4))
+
+Der Vorteil dabei ist, dass ich eine graphisch übersichtliche Zeitplanung habe, in der ich Visuell meine Tasks sehe (Balken mit dem Status des Issues), inklusive meinen Meilensteinen (Grüne Linie auf dem Zeitstrahl). 
