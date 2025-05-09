@@ -34,6 +34,6 @@ Mit GitHub Project, gibt es die Möglichkeit, die einzelnen Schritte in einer Ro
 Dies sieht dann in etwa so aus:
 
 ![Roadmap GitHub Project](../../ressources/images/roadmap_github-project.png)
-[*Roadmap in GitHub Projects*]([Roadmap · HF ITCNE24 - 3. Semarbeit MSVC - Projectplan](https://github.com/users/Radball-Migi/projects/6/views/4))
+[*Roadmap in GitHub Projects*](https://github.com/users/Radball-Migi/projects/6/views/4)
 
 Der Vorteil dabei ist, dass ich eine graphisch übersichtliche Zeitplanung habe, in der ich Visuell meine Tasks sehe (Balken mit dem Status des Issues), inklusive meinen Meilensteinen (Grüne Linie auf dem Zeitstrahl). 
