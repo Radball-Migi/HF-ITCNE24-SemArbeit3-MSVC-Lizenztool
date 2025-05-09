@@ -22,8 +22,8 @@ Diese Ziele sind auch bereits im [Einreichungsformular](../../ressources/docs/IT
 	   Implementierung einer automatischen Alarmierung bei kritischen Zuständen mittels Power Automate. 
 	   
 5. **Mehrwert für den Betrieb schaffen**<br>
-	   Schaffung eines Tools, das real im ISE-Alltag eingesetzt werden kann und Effizienz sowie Qualität im Lizenzmanagement erhöht.
-	   
+	   Schaffung eines Tools, das real im ISE-Alltag eingesetzt werden kann und Effizienz sowie Qualität im Lizenzmanagement erhöht.	   
+
 
 ![Ziele](../../ressources/images/goal.png)
 
