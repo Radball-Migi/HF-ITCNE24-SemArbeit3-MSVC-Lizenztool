@@ -9,5 +9,5 @@ nav_order: 7
 
 Mit der SEUSAG möchte ich die Systemgrenzen aufzeigen, welche bei meinem Projekt auftreten.
 
-![SEUSAG](../../ressources/docs/SEUSAG/SEUSAG.png)
-[*SEUSAG des Projektes*](../../ressources/docs/SEUSAG/SEUSAG.png)
+![SEUSAG](../../ressources/images/SEUSAG.png)
+[*SEUSAG des Projektes*](../../ressources/images/SEUSAG.png)
