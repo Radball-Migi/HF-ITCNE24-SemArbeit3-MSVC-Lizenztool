@@ -24,6 +24,7 @@ Diese Ziele sind auch bereits im [Einreichungsformular](../../ressources/docs/IT
 5. **Mehrwert für den Betrieb schaffen**<br>
    Schaffung eines Tools, das real im ISE-Alltag eingesetzt werden kann und Effizienz sowie Qualität im Lizenzmanagement erhöht.	   
 
+<br>
 
 ![Ziele](../../ressources/images/goal.png)
 
