@@ -1,0 +1,55 @@
+from flask import Flask
+from apiflask import APIFlask, Schema
+from apiflask.fields import Integer, String
+from apiflask.validators import Length
+from flask_sqlalchemy import SQLAlchemy
+import os
+
+# App-Setup
+app = APIFlask(__name__)
+
+#DB
+basedir = os.path.abspath(os.path.dirname(__file__))
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'app.db')
+
+db = SQLAlchemy(app)
+
+# Datenbankmodell
+class LicenseModel(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(32))
+    count = db.Column(db.Integer)
+
+# Eingabe-Schema
+class LicenseIn(Schema):
+    name = String(required=True, validate=Length(min=1, max=32))
+    count = Integer(required=True)
+
+# Ausgabe-Schema
+class LicenseOut(Schema):
+    id = Integer()
+    name = String()
+    count = Integer()
+
+# Routen
+@app.route('/')
+def hello_world():
+    return 'Hello ITCNE!'
+
+@app.get('/licenses')
+def get_license():
+    licenses = LicenseModel.query.all()
+    return [LicenseOut().dump(lic) for lic in licenses]
+
+@app.post('/licenses')
+@app.input(LicenseIn, location='json')
+@app.output(LicenseOut, status_code=201)
+def create_license(json_data):
+    license = LicenseModel(**json_data)
+    db.session.add(license)
+    db.session.commit()
+    return license
+
+# Datenbanktabellen erstellen
+with app.app_context():
+    db.create_all()
