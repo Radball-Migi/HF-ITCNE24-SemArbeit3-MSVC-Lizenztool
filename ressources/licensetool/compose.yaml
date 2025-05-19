@@ -1,6 +1,6 @@
 services:
   minimal-flask:
-    container_name: minimal_flask_service
+    container_name: prod-hf-itcne24-semarbeit3-msvc-lizenztool
     build:
       context: .
     ports:

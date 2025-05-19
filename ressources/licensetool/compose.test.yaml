@@ -2,8 +2,8 @@ version: '3.9'
 
 services:
 
-  msvc-bp-prod-api:
+  hf-itcne24-semarbeit3-msvc-lizenztool-bp-prod-api:
     build:
       context: .
-      dockerfile: 'Dockerfile.test'
-    container_name: msvc-bp-test-api
+      dockerfile: 'dockerfile.test'
+    container_name: test-hf-itcne24-semarbeit3-msvc-lizenztool
