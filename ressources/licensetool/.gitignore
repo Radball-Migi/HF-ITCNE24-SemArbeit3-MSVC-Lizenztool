@@ -1,0 +1,18 @@
+.env
+certs/*/*.pfx
+certs/*/*.key
+certs/*/*.pem
+certs/*/*.cer
+certs/*/*.crt
+certs/infos/*-info.json
+config-profiles/*
+
+# Ignore all __pycache__ directories    
+/__pycache__
+app/__pycache__
+app/licenses/__pycache__
+app/main/__pycache__
+app/models/__pycache__
+
+# Ignore db file
+*.db
