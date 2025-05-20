@@ -31,6 +31,10 @@ Bild mit KI generiert (<a href="https://chatgpt.com/" target="_blank">ChatGPT - 
 #### **Six Sigma**
 <a href="https://www.flaticon.com/free-icon/methodology_13063040?term=six+sigma&page=1&position=36&origin=search&related_id=13063040" target="_blank">Flaticon</a> 
 
+___ 
+### Hauptteil
+Bild mit KI generiert (<a href="https://chatgpt.com/" target="_blank">ChatGPT - DALL-E</a>) 
+
 ---
 ### Sprints
 
@@ -58,7 +62,3 @@ ___
 <a href="https://www.youtube.com/watch?v=QXeEoD0pB3E&list=PLsyeobzWxl7poL9JTVyndKe62ieoN-MZ3" target="_blank">Python for Beginners | Telusko</a>
 
 <a href="[Python Cheat Sheet & Quick Reference](https://quickref.me/python)" target="_blank">Cheet Sheet Coding</a>
-
-
-
-
