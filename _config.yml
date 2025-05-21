@@ -18,6 +18,9 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
+# Colorschema dark
+color_scheme: dark
+
 # site overview stuff
 title: HF-ITCNE24-SemArbeit3-MSVC-Lizenztool
 email: miguel.schneider@edu.tbz.ch
