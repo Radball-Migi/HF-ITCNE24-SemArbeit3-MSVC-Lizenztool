@@ -6,13 +6,30 @@ _site/
 .obsidian
 .bundle/
 vendor/
-ressources/licensetool/*.db
 
-# Umgebungsdateien
+# Environment files
 *.env
 
-# Dokumentation
+# Documentation
 documentation/Quellverzeichnis/index1.md
 
-# Lizenzdatenbankdateien in Unterordnern
+# Ignore db files
 ressources/licensetool/*.db
+
+# Ignore all __pycache__ folders
+ressources/licensetool/__pycache__
+ressources/licensetool/app/__pycache__
+ressources/licensetool/app/licenses/__pycache__
+ressources/licensetool/app/main/__pycache__
+ressources/licensetool/app/models/__pycache__
+
+#Ignore all certificate files
+ressources/licensetool/certs/**/*.crt
+ressources/licensetool/certs/**/*.cer
+ressources/licensetool/certs/**/*.pem
+ressources/licensetool/certs/**/*.pfx
+ressources/licensetool/certs/**/*.key
+
+#Ignore all info and config files
+ressources/licensetool/certs/infos/cert-**-info.json
+ressources/licensetool/config-profiles/config-**-profile.json
