@@ -21,3 +21,8 @@ class LicenseOut(Schema):
     id = APIInteger()
     name = APIString()
     count = APIInteger()
+    
+class LicenseStatusOut(Schema):
+    sku = APIString(required=True)
+    consumed_units = APIInteger(required=True)
+    available_units = APIInteger(required=True)
