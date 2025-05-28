@@ -31,6 +31,7 @@ ressources/licensetool/certs/**/*.pem
 ressources/licensetool/certs/**/*.pfx
 ressources/licensetool/certs/**/*.key
 
-#Ignore all info and config files
+#Ignore all info, output and config files
 ressources/licensetool/certs/infos/cert-**-info.json
 ressources/licensetool/config-profiles/config-**-profile.json
+ressources/licensetool/app/test-output/*.jsonc
