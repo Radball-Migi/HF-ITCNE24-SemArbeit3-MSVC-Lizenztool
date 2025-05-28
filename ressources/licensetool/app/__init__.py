@@ -5,7 +5,7 @@ from config import Config
 from app.extensions import db
 
 def create_app(config_class=Config):
-    app = APIFlask(__name__, docs_path='/api/v1/docs')
+    app = APIFlask(__name__, docs_path='/api/v1/docs', template_folder='templates')
     app.config.from_object(config_class)
     
     db.init_app(app)

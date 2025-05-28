@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lizenzabfrage</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='frontend.css') }}">
+</head>
+<body>
+    <h2>Lizenzstatus für Tenant abfragen</h2>
+
+    <form id="tenantForm">
+        <label for="tenant_name">Tenant Name:</label>
+        <input type="text" name="tenant_name" id="tenant_name" required>
+        <button type="submit">Abfragen</button>
+    </form>
+
+    <hr>
+
+    <div id="result"></div>
+
+    <script>
+        document.getElementById("tenantForm").addEventListener("submit", async function(e) {
+            e.preventDefault();
+
+            const tenant = document.getElementById("tenant_name").value;
+            const response = await fetch(`/api/v1/licenses/status/${tenant}`);
+
+            const resultDiv = document.getElementById("result");
+
+            if (!response.ok) {
+                resultDiv.innerHTML = `<p style="color:red;">Fehler beim Abrufen: ${response.statusText} <br> Eingabe: ${tenant}</p>`;
+                return;
+            }
+
+            const data = await response.json();
+
+            if (!data.length) {
+                resultDiv.innerHTML = "<p>Keine Lizenzen gefunden.</p>";
+                return;
+            }
+
+            let html = `
+                <table border="1" cellpadding="5">
+                    <thead>
+                        <tr>
+                            <th>SKU ID</th>
+                            <th>SKU Part Number</th>
+                            <th>Verbrauchte Lizenzen</th>
+                            <th>Verfügbare Lizenzen</th>
+                            <th>Freie Lizenzen</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            data.forEach(lic => {
+                html += `
+                    <tr>
+                        <td>${lic.skuid || 'UNKNOWN'}</td>
+                        <td>${lic.skupartnumber || 'UNKNOWN'}</td>
+                        <td>${lic.consumed_units}</td>
+                        <td>${lic.available_units}</td>
+                        <td>${lic.free_units}</td>
+                    </tr>
+                `;
+            });
+
+            html += `</tbody></table>`;
+            resultDiv.innerHTML = html;
+        });
+    </script>
+</body>
+</html>
