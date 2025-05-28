@@ -13,3 +13,13 @@ Die Define-Phase ist der erste Schritt in einem Six Sigma Projekt. In dieser Pha
 [Quelle](../Quellverzeichnis/index.md#define-phase)
 
 ## Zielvorstellung
+
+An Ende der Semesterarbeit sollte ein neues Tool für die ISE AG entstehen...
+
+## Ressourceneinsatz 
+Was brauchen wir für die umsetzng von dem Ganzen?
+
+
+
+## Warum wird die Zielvorstellung aktuell nicht erreicht?
+
