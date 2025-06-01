@@ -27,10 +27,10 @@ quadrantChart
     x-axis Niedrig --> Hoch
     y-axis Gering --> Stark
 
-	quadrant-1 Beobachten
+	quadrant-1 Hoch riskant
     quadrant-2 Kritisch
     quadrant-3 Akzeptabel
-    quadrant-4 Hoch riskant
+    quadrant-4 Beobachten
 
 "Debugging": [0.8, 0.5]
 "Fehlerhafte API-Abfragen": [0.5, 0.9]
