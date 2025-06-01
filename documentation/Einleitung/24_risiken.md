@@ -10,11 +10,30 @@ Bei Projektarbeiten sind Risiken immer vorhanden. Diese Risiken können jedoch i
 
 **Während der Arbeit rechne ich mit folgenden Risiken :** 
 
-| Risiko                                                                 | Eintritt | Auswirkung | Massnahme zur Vermeidung / Minderung                                                   |
-|------------------------------------------------------------------------|----------|------------|----------------------------------------------------------------------------------------|
-| Zeitverzögerung durch technisches Debugging oder fehlendes Know-how   | Hoch     | Mittel     | Zeitpuffer einplanen, Fokus auf MVP, Probleme frühzeitig angehen                     |
-| Fehlerhafte oder unvollständige API-Abfragen (Graph API)              | Mittel   | Hoch       | Ausgiebig mit Testdaten prüfen, Logging & Fehlerbehandlung implementieren            |
-| SharePoint-Zugriffsprobleme (z. B. Berechtigungen, API-Limits)        | Mittel   | Mittel     | Rechte und Zugriff frühzeitig testen, Alternativlösung vorbereiten                   |
-| Power Automate Benachrichtigungen funktionieren nicht zuverlässig     | Niedrig  | Hoch       | Flows früh einrichten, mit Testfällen absichern, manuelle Kontrolle ergänzen         |
-| GitHub-Dokumentation wird nicht laufend gepflegt                      | Niedrig  | Niedrig    | Doku fix in Workflow einplanen, regelmässige Erinnerung im Taskboard                 |
+| Risiko                                                              | Eintritt | Auswirkung | Massnahme zur Vermeidung / Minderung                                         |
+| ------------------------------------------------------------------- | -------- | ---------- | ---------------------------------------------------------------------------- |
+| Zeitverzögerung durch technisches Debugging oder fehlendes Know-how | Hoch     | Mittel     | Zeitpuffer einplanen, Fokus auf MVP, Probleme frühzeitig angehen             |
+| Fehlerhafte oder unvollständige API-Abfragen (Graph API)            | Mittel   | Hoch       | Ausgiebig mit Testdaten prüfen, Logging & Fehlerbehandlung implementieren    |
+| SharePoint-Zugriffsprobleme (z. B. Berechtigungen, API-Limits)      | Mittel   | Mittel     | Rechte und Zugriff frühzeitig testen, Alternativlösung vorbereiten           |
+| Power Automate Benachrichtigungen funktionieren nicht zuverlässig   | Niedrig  | Hoch       | Flows früh einrichten, mit Testfällen absichern, manuelle Kontrolle ergänzen |
+| GitHub-Dokumentation wird nicht laufend gepflegt                    | Niedrig  | Niedrig    | Doku fix in Workflow einplanen, regelmässige Erinnerung im Taskboard         |
+```mermaid
+quadrantChart
 
+    title Risikoanalyse: Eintrittswahrscheinlichkeit vs. Auswirkung
+    
+    x-axis Niedrig --> Hoch
+    y-axis Gering --> Stark
+
+    quadrant-1 Beobachten
+    quadrant-2 Kritisch
+    quadrant-3 Akzeptabel
+    quadrant-4 Hoch riskant
+    
+    "PowerAutomate"       : [0.2, 0.9]
+    "API-Abfragen"        : [0.5, 0.8]
+    "SP-Zugriffsrechte"   : [0.5, 0.5]
+    "Debug-Zeitverlust"   : [0.98, 0.5]
+    "Doku ungepflegt"     : [0.2, 0.2]
+
+```
