@@ -4,7 +4,8 @@ from app.extensions import db
 from app.licenses import bp
 from apiflask.fields import Integer as APIInteger, String as APIString
 from apiflask.validators import Length
-from app.models.license import LicenseModel, LicenseIn, LicenseOut
+from app.models.license import LicenseModel, LicenseIn, LicenseOut, LicenseStatusOut
+from app.modules.mggraph import GraphLicenseClient
 
 
 @bp.get('/')
@@ -29,9 +30,6 @@ def create_license(json_data):
     db.session.add(license)
     db.session.commit()
     return license
-<<<<<<< Updated upstream
-=======
-
 
 @bp.get('/frontend')
 def show_frontend():
@@ -66,4 +64,3 @@ def get_license_status(tenant_name):
         })
 
     return licenses
->>>>>>> Stashed changes

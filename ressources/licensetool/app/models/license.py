@@ -20,10 +20,8 @@ class LicenseIn(Schema):
 class LicenseOut(Schema):
     id = APIInteger()
     name = APIString()
-<<<<<<< Updated upstream
     count = APIInteger()
-=======
-    count = APIInteger()
+
     
 class LicenseStatusOut(Schema):
     skuid = APIString(required=True)
@@ -31,5 +29,4 @@ class LicenseStatusOut(Schema):
     consumed_units = APIInteger(required=True)
     available_units = APIInteger(required=True)
     free_units = APIInteger(required=True)
-    
->>>>>>> Stashed changes
+
