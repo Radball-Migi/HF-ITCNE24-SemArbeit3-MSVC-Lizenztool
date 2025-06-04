@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Lizenztool</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='mainpage.css') }}">
+</head>
+<body>
+
+    <div class="header">
+        <a href="https://www.iseag.ch" target="_blank">
+            <img src="https://www.iseag.ch/wp-content/uploads/logo_iseag_transparent_400.png"
+                 alt="ISEAG Logo"
+                 class="header-logo">
+        </a>
+        <h1 class="header-title">ISE AG Microsoft 365 Lizenztool</h1>
+        <div class="header-spacer"></div>
+    </div>
+
+    <div class="main-buttons">
+        <a href="http://localhost:5000/api/v1/licenses/statusall" class="main-button">Alle Lizenzen anzeigen</a>
+        <a href="http://localhost:5000/api/v1/licenses/frontend" class="main-button">Tenant abfragen</a>
+    </div>
+
+</body>
+</html>

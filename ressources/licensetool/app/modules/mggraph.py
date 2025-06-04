@@ -29,7 +29,6 @@ class GraphLicenseClient:
         result = app.acquire_token_for_client(scopes=["https://graph.microsoft.com/.default"])
         if "access_token" not in result:
             raise Exception(f"Token acquisition failed: {result.get('error_description')}")
-        #raise Exception(f"Access Token:\n{result['access_token']}")
         return result["access_token"]
 
     def get_license_status(self):

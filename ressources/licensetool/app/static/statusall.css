@@ -36,7 +36,7 @@ table {
     background-color: #000000;
 }
 
-form {
+.filter-container {
             text-align: right;
             margin-bottom: 10px;
         }

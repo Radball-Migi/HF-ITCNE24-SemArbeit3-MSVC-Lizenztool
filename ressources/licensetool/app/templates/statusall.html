@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Lizenztool</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='statusall.css') }}">
+</head>
+<body>
+
+    <div class="header">
+        <img src="https://www.iseag.ch/wp-content/uploads/logo_iseag_transparent_400.png"
+            alt="ISEAG Logo"
+            class="header-logo">
+        <h2 class="header-title">Status aller Lizenzen</h2>
+        <div class="header-spacer"></div>
+    </div>
+
+    <div class="filter-container">
+        <label for="filterInput">Filter (Tenant oder Lizenz):</label>
+        <input type="text" id="filterInput" placeholder="z. B. ISE School" onkeyup="filterTable()">
+        <button id="resetButton" type="button">Zurücksetzen</button>
+    </div>
+
+    <table id="licenseTable">
+        <thead>
+            <tr>
+                <th>Tenant</th>
+                <th>SKU Part Number</th>
+                <th>SKU ID</th>
+                <th>Verfügbar</th>
+                <th>Verbraucht</th>
+                <th>Frei</th>
+            </tr>
+        </thead>
+        <tbody id="licenseBody">
+            <!-- Inhalte werden hier eingefügt -->
+        </tbody>
+    </table>
+
+    <script>
+        let fullData = [];
+
+        function renderTable(data) {
+            const tbody = document.getElementById('licenseBody');
+            tbody.innerHTML = '';
+            data.forEach(item => {
+                const row = document.createElement('tr');
+                if (item.free_units <= 0) {
+                    row.classList.add('low-license');
+                }
+
+                row.innerHTML = `
+                    <td>${item.tenant}</td>
+                    <td>${item.skupartnumber}</td>
+                    <td>${item.skuid}</td>
+                    <td>${item.available_units}</td>
+                    <td>${item.consumed_units}</td>
+                    <td>${item.free_units}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function filterTable() {
+            const query = document.getElementById("filterInput").value.toLowerCase();
+            const filtered = fullData.filter(item =>
+                item.tenant.toLowerCase().includes(query) ||
+                item.skupartnumber.toLowerCase().includes(query)
+            );
+            renderTable(filtered);
+        }
+
+        // Daten holen und initial anzeigen
+        fetch('/api/v1/licenses/status')
+            .then(response => response.json())
+            .then(data => {
+                fullData = data;
+                renderTable(fullData);
+            });
+
+        // Event: Filter anwenden
+        document.getElementById("filterInput").addEventListener("keyup", filterTable);
+
+        // Event: Zurücksetzen
+        document.getElementById("resetButton").addEventListener("click", () => {
+            document.getElementById("filterInput").value = "";
+            renderTable(fullData);
+        });
+    </script>
+
+</body>
+</html>

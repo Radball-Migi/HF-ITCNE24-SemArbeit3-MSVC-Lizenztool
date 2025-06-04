@@ -29,4 +29,11 @@ class LicenseStatusOut(Schema):
     consumed_units = APIInteger(required=True)
     available_units = APIInteger(required=True)
     free_units = APIInteger(required=True)
-
+    
+class LicenseStatusAllOut(Schema):
+    skuid = APIString(required=True)
+    skupartnumber = APIString(required=True)
+    consumed_units = APIInteger(required=True)
+    available_units = APIInteger(required=True)
+    free_units = APIInteger(required=True)
+    tenant = APIString(required=True)
