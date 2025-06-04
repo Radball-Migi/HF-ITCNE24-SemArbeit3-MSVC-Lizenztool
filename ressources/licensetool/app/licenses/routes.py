@@ -5,7 +5,7 @@ from app.licenses import bp
 from apiflask.fields import Integer as APIInteger, String as APIString
 from apiflask.validators import Length
 from app.models.license import LicenseModel, LicenseIn, LicenseOut, LicenseStatusOut, LicenseStatusAllOut
-from app.modules.mggraph import GraphLicenseClient
+from app.modules.mggraph import GraphLicenseClient, push_license_status_to_sharepoint
 from pathlib import Path
 import re
 import json
@@ -66,19 +66,27 @@ def get_license_all():
             client = GraphLicenseClient(tenant_id)
             data = client.get_license_status()
 
+            licenses = []
+
             for item in data.get("value", []):
                 consumed = item.get('consumedUnits', 0)
                 available = item.get('prepaidUnits', {}).get('enabled', 0)
                 free = int(available) - int(consumed)
 
-                statusall.append({
+                license_info = {
                     'skuid': item.get('skuId', 'UNKNOWN'),
                     'skupartnumber': item.get('skuPartNumber', 'UNKNOWN'),
                     'consumed_units': consumed,
                     'available_units': available,
                     'free_units': free,
                     'tenant': display_name
-                })
+                }
+
+                licenses.append(license_info)
+                statusall.append(license_info)
+
+            # Push Lizenzdaten für diesen Tenant ins SharePoint
+            push_license_status_to_sharepoint(display_name, licenses)
 
         except Exception as e:
             print(f"Fehler bei Tenant {tenant_id}: {e}")
@@ -86,24 +94,40 @@ def get_license_all():
 
     return statusall
 
+
 @bp.get('/status/<tenant_name>')
 @bp.output(LicenseStatusOut(many=True))
 def get_license_status(tenant_name):
-    client = GraphLicenseClient(tenant_name)
-    data = client.get_license_status()
+    try:
+        
+        config_file = f"config-profiles/config-{tenant_name}-profile.json"
+        with open(config_file, "r") as f:
+            config_data = json.load(f)
 
-    licenses = []
-    for item in data.get("value", []):
-        consumed = item.get('consumedUnits', 0)
-        available = item.get('prepaidUnits', {}).get('enabled', 0)
-        free = int(available) - int(consumed)
+        client = GraphLicenseClient(tenant_name)
+        data = client.get_license_status()
+        display_name = config_data.get("tenant_name")
 
-        licenses.append({
-            'skuid': item.get('skuId', 'UNKNOWN'),
-            'skupartnumber': item.get('skuPartNumber', 'UNKNOWN'),
-            'consumed_units': consumed,
-            'available_units': available,
-            'free_units': free
-        })
+        licenses = []
+        for item in data.get("value", []):
+            consumed = item.get('consumedUnits', 0)
+            available = item.get('prepaidUnits', {}).get('enabled', 0)
+            free = int(available) - int(consumed)
 
-    return licenses
+            licenses.append({
+                'skuid': item.get('skuId', 'UNKNOWN'),
+                'skupartnumber': item.get('skuPartNumber', 'UNKNOWN'),
+                'consumed_units': consumed,
+                'available_units': available,
+                'free_units': free
+            })
+
+        print(display_name)
+        # Push Einzel-Tenant-Daten ins SharePoint
+        push_license_status_to_sharepoint(display_name, licenses)
+
+        return licenses
+
+    except Exception as e:
+        print(f"Fehler beim Abrufen von Lizenzdaten für {tenant_name}: {e}")
+        return []
