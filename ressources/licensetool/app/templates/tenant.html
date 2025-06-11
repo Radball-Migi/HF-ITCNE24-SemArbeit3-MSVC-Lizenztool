@@ -1,87 +1,154 @@
 <!DOCTYPE html>
 <html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <title>Lizenztool</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='tenant.css') }}">
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8">
+        <title>Lizenztool</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='tenant.css') }}">
+    </head>
+    <body>
 
-    <div class="header">
-        <a href="https://www.iseag.ch" target="_blank">
-            <img src="https://www.iseag.ch/wp-content/uploads/logo_iseag_transparent_400.png"
-                 alt="ISEAG Logo"
-                 class="header-logo">
-        </a>
-        <h2 class="header-title">Lizenzstatus für Tenant abfragen</h2>
-        <div class="header-spacer"></div>
-    </div>
+        <!-- 🔄 Spinner Overlay -->
+        <div id="spinner" class="spinner-overlay">
+            <div class="spinner"></div>
+        </div>
 
-    <form id="tenantForm">
-        <label for="tenant_name">Tenant Name:</label>
-        <input type="text" name="tenant_name" id="tenant_name" required>
-        <button type="submit">Abfragen</button>
-    </form>
+        <div class="header">
+            <a href="https://www.iseag.ch" target="_blank">
+                <img src="https://www.iseag.ch/wp-content/uploads/logo_iseag_transparent_400.png"
+                    alt="ISEAG Logo"
+                    class="header-logo">
+            </a>
+            <h2 class="header-title">Lizenzstatus für Tenant abfragen</h2>
+            <div class="header-spacer"></div>
+        </div>
 
-    <hr>
+        <!-- 🟢 Buttons zur Moduswahl -->
+        <div class="filter-container">
+            <div class="button-section">
+                <strong>Ansicht wählen:</strong><br>
+                <button id="showBtn" class="mode-button" type="button">Nur anzeigen</button>
+                <button id="updateBtn" class="mode-button" type="button">Anzeigen & aktualisieren</button>
+            </div>
+        </div>
 
-    <div id="result"></div>
+        <form id="tenantForm">
+            <label for="tenant_name">Tenant Name:</label>
+            <input type="text" name="tenant_name" id="tenant_name" required>
+            <button type="submit">Abfragen</button>
+        </form>
 
-    <script>
-        function renderTable(data) {
-            const table = document.createElement('table');
-            table.setAttribute('cellpadding', '5');
-            table.setAttribute('border', '1');
+        <hr>
 
-            table.innerHTML = `
-                <thead>
-                    <tr>
-                        <th>SKU ID</th>
-                        <th>SKU Part Number</th>
-                        <th>Verbrauchte Lizenzen</th>
-                        <th>Verfügbare Lizenzen</th>
-                        <th>Freie Lizenzen</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${data.map(lic => `
-                        <tr class="${lic.free_units <= 0 ? 'low-license' : ''}">
-                            <td>${lic.skuid || 'UNKNOWN'}</td>
-                            <td>${lic.skupartnumber || 'UNKNOWN'}</td>
-                            <td>${lic.consumed_units}</td>
-                            <td>${lic.available_units}</td>
-                            <td>${lic.free_units}</td>
-                        </tr>
-                    `).join('')}
-                </tbody>
-            `;
+        <div id="result"></div>
 
-            return table;
-        }
-
-        document.getElementById("tenantForm").addEventListener("submit", async function(e) {
-            e.preventDefault();
-
-            const tenant = document.getElementById("tenant_name").value;
-            const response = await fetch(`/api/v1/licenses/status/${tenant}`);
+        <script>
+            let fullData = [];
+            let currentEndpoint = '/api/v1/licenses/status/show'; // Default
+            const tenantInput = document.getElementById("tenant_name");
             const resultDiv = document.getElementById("result");
 
-            if (!response.ok) {
-                resultDiv.innerHTML = `<p style="color:red;">Fehler beim Abrufen: ${response.statusText}<br>Eingabe: ${tenant}</p>`;
-                return;
+            function showSpinner() {
+                document.getElementById("spinner").style.display = "flex";
             }
 
-            const data = await response.json();
-
-            if (!data.length) {
-                resultDiv.innerHTML = "<p>Keine Lizenzen gefunden.</p>";
-                return;
+            function hideSpinner() {
+                document.getElementById("spinner").style.display = "none";
             }
 
-            resultDiv.innerHTML = '';
-            resultDiv.appendChild(renderTable(data));
-        });
-    </script>
+            function toggleButtons(activeId) {
+                document.getElementById("showBtn").disabled = (activeId === "showBtn");
+                document.getElementById("updateBtn").disabled = (activeId === "updateBtn");
+            }
 
-</body>
+            function renderTable(data, tenantName) {
+                const table = document.createElement('table');
+                table.setAttribute('cellpadding', '5');
+                table.setAttribute('border', '1');
+
+                table.innerHTML = `
+                    <thead>
+                        <tr>
+                            <th>Tenant</th>
+                            <th>SKU Part Number</th>
+                            <th>SKU ID</th>
+                            <th>Verfügbar</th>
+                            <th>Verbraucht</th>
+                            <th>Frei</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${data.map(lic => `
+                            <tr class="${lic.free_units <= 0 ? 'low-license' : ''}">
+                                <td>${tenantName}</td>
+                                <td>${lic.skupartnumber || 'UNKNOWN'}</td>
+                                <td>${lic.skuid || 'UNKNOWN'}</td>
+                                <td>${lic.available_units}</td>
+                                <td>${lic.consumed_units}</td>
+                                <td>${lic.free_units}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                `;
+                return table;
+            }
+
+            async function loadData() {
+                const tenantName = tenantInput.value.trim();
+                if (!tenantName) {
+                    resultDiv.innerHTML = "<p style='color:red;'>Bitte einen Tenant eingeben.</p>";
+                    return;
+                }
+
+                resultDiv.innerHTML = '';
+                showSpinner();
+
+                try {
+                    const url = `${currentEndpoint}/${tenantName}`;
+                    const response = await fetch(url);
+
+                    if (!response.ok) {
+                        resultDiv.innerHTML = `<p style='color:red;'>Fehler beim Abrufen: ${response.statusText}</p>`;
+                        return;
+                    }
+
+                    const data = await response.json();
+                    fullData = Array.isArray(data) ? data : [];
+
+                    if (!fullData.length) {
+                        resultDiv.innerHTML = "<p>Keine Lizenzen gefunden.</p>";
+                        return;
+                    }
+
+                    resultDiv.appendChild(renderTable(fullData, tenantName));
+                } catch (err) {
+                    resultDiv.innerHTML = `<p style="color:red;">Fehler: ${err.message}</p>`;
+                } finally {
+                    hideSpinner();
+                }
+            }
+
+            // Event: Buttons
+            document.getElementById("showBtn").addEventListener("click", () => {
+                currentEndpoint = '/api/v1/licenses/status/show';
+                toggleButtons("showBtn");
+                loadData();
+            });
+
+            document.getElementById("updateBtn").addEventListener("click", () => {
+                currentEndpoint = '/api/v1/licenses/status/show-fetch';
+                toggleButtons("updateBtn");
+                loadData();
+            });
+
+            // Event: Enter-Taste / Formular
+            document.getElementById("tenantForm").addEventListener("submit", function (e) {
+                e.preventDefault();
+                loadData(); // lädt mit aktuellem Endpunkt
+            });
+
+            // Initialstatus setzen
+            currentEndpoint = '/api/v1/licenses/status/show';
+            toggleButtons("showBtn");
+        </script>
+    </body>
 </html>

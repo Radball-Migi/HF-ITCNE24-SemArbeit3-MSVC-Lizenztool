@@ -3,90 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <title>Lizenztool</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='status.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='statusall.css') }}">
 </head>
 <body>
 
-    <div class="header">
-        <img src="https://www.iseag.ch/wp-content/uploads/logo_iseag_transparent_400.png"
-            alt="ISEAG Logo"
-            class="header-logo">
-        <h2 class="header-title">Status aller Lizenzen</h2>
-        <div class="header-spacer"></div>
+<!-- 🔄 Spinner Overlay -->
+<div id="spinner" class="spinner-overlay">
+    <div class="spinner"></div>
+</div>
+
+<div class="header">
+    <img src="https://www.iseag.ch/wp-content/uploads/logo_iseag_transparent_400.png"
+         alt="ISEAG Logo"
+         class="header-logo">
+    <h2 class="header-title">Status aller Lizenzen</h2>
+    <div class="header-spacer"></div>
+</div>
+
+<div class="filter-container">
+    <div class="button-section">
+        <strong>Ansicht wählen:</strong><br>
+        <button id="showBtn" class="mode-button" type="button">Nur anzeigen</button>
+        <button id="updateBtn" class="mode-button" type="button">Anzeigen & aktualisieren</button>
     </div>
 
-    <div class="filter-container">
+    <div class="filter-section">
         <label for="filterInput">Filter (Tenant oder Lizenz):</label>
-        <input type="text" id="filterInput" placeholder="z. B. ISE School" onkeyup="filterTable()">
+        <input type="text" id="filterInput" placeholder="z. B. ISE School">
         <button id="resetButton" type="button">Zurücksetzen</button>
     </div>
+</div>
 
-    <table id="licenseTable">
-        <thead>
-            <tr>
-                <th>Tenant</th>
-                <th>SKU Part Number</th>
-                <th>SKU ID</th>
-                <th>Verfügbar</th>
-                <th>Verbraucht</th>
-                <th>Frei</th>
-            </tr>
-        </thead>
-        <tbody id="licenseBody">
-            <!-- Inhalte werden hier eingefügt -->
-        </tbody>
-    </table>
 
-    <script>
-        let fullData = [];
+<table id="licenseTable">
+    <thead>
+        <tr>
+            <th>Tenant</th>
+            <th>SKU Part Number</th>
+            <th>SKU ID</th>
+            <th>Verfügbar</th>
+            <th>Verbraucht</th>
+            <th>Frei</th>
+        </tr>
+    </thead>
+    <tbody id="licenseBody">
+        <!-- Inhalte werden hier eingefügt -->
+    </tbody>
+</table>
 
-        function renderTable(data) {
-            const tbody = document.getElementById('licenseBody');
-            tbody.innerHTML = '';
-            data.forEach(item => {
-                const row = document.createElement('tr');
-                if (item.free_units <= 0) {
-                    row.classList.add('low-license');
-                }
+<script>
+    let fullData = [];
+    let currentEndpoint = '/api/v1/licenses/status/show';
 
-                row.innerHTML = `
-                    <td>${item.tenant}</td>
-                    <td>${item.skupartnumber}</td>
-                    <td>${item.skuid}</td>
-                    <td>${item.available_units}</td>
-                    <td>${item.consumed_units}</td>
-                    <td>${item.free_units}</td>
-                `;
-                tbody.appendChild(row);
-            });
-        }
+    function showSpinner() {
+        document.getElementById("spinner").style.display = "flex";
+    }
 
-        function filterTable() {
-            const query = document.getElementById("filterInput").value.toLowerCase();
-            const filtered = fullData.filter(item =>
-                item.tenant.toLowerCase().includes(query) ||
-                item.skupartnumber.toLowerCase().includes(query)
-            );
-            renderTable(filtered);
-        }
+    function hideSpinner() {
+        document.getElementById("spinner").style.display = "none";
+    }
 
-        // Daten holen und initial anzeigen
-        fetch('/api/v1/licenses/status')
+    function renderTable(data) {
+        const tbody = document.getElementById('licenseBody');
+        tbody.innerHTML = '';
+        data.forEach(item => {
+            const row = document.createElement('tr');
+            if (item.free_units <= 0) {
+                row.classList.add('low-license');
+            }
+            row.innerHTML = `
+                <td>${item.tenant}</td>
+                <td>${item.skupartnumber}</td>
+                <td>${item.skuid}</td>
+                <td>${item.available_units}</td>
+                <td>${item.consumed_units}</td>
+                <td>${item.free_units}</td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+
+    function filterTable() {
+        const query = document.getElementById("filterInput").value.toLowerCase();
+        const filtered = fullData.filter(item =>
+            item.tenant.toLowerCase().includes(query) ||
+            item.skupartnumber.toLowerCase().includes(query)
+        );
+        renderTable(filtered);
+    }
+
+    function loadData() {
+        showSpinner();
+        fetch(currentEndpoint)
             .then(response => response.json())
             .then(data => {
-                fullData = data;
+                fullData = Array.isArray(data) ? data : data.tenants || data.beispiele || [];
                 renderTable(fullData);
+            })
+            .catch(error => {
+                console.error("Fehler beim Laden der Daten:", error);
+            })
+            .finally(() => {
+                hideSpinner();
             });
+    }
 
-        // Event: Filter anwenden
-        document.getElementById("filterInput").addEventListener("keyup", filterTable);
+    function toggleButtons(activeId) {
+        document.getElementById("showBtn").disabled = (activeId === "showBtn");
+        document.getElementById("updateBtn").disabled = (activeId === "updateBtn");
+    }
 
-        // Event: Zurücksetzen
-        document.getElementById("resetButton").addEventListener("click", () => {
-            document.getElementById("filterInput").value = "";
-            renderTable(fullData);
-        });
-    </script>
+    // Event-Listener
+    document.getElementById("filterInput").addEventListener("keyup", filterTable);
+    document.getElementById("resetButton").addEventListener("click", () => {
+        document.getElementById("filterInput").value = "";
+        renderTable(fullData);
+    });
+
+    document.getElementById("showBtn").addEventListener("click", () => {
+        currentEndpoint = '/api/v1/licenses/status/show';
+        toggleButtons("showBtn");
+        loadData();
+    });
+
+    document.getElementById("updateBtn").addEventListener("click", () => {
+        currentEndpoint = '/api/v1/licenses/status/show-fetch';
+        toggleButtons("updateBtn");
+        loadData();
+    });
+
+    // Initial
+    toggleButtons("showBtn");
+    loadData();
+</script>
 
 </body>
 </html>
