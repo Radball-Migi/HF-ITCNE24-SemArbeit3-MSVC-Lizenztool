@@ -16,6 +16,9 @@ def create_app(config_class=Config):
     from app.licenses import bp as licenses_bp
     app.register_blueprint(licenses_bp, url_prefix='/api/v1/licenses')
     
+    from app.auth import bp as auth_bp
+    app.register_blueprint(auth_bp, url_prefix='/api/v1/auth')
+    
     
     # Datenbank erstellen (nur beim ersten Start erforderlich)
     with app.app_context():

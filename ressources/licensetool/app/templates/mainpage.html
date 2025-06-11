@@ -17,9 +17,20 @@
         <div class="header-spacer"></div>
     </div>
 
+    <!-- Benutzeranzeige + Login/Logout -->
+    <div style="margin-top: -20px; margin-bottom: 30px;">
+        {% if session.user %}
+            <p>Angemeldet als: <strong>{{ session.user.name }}</strong> ({{ session.user.email }})</p>
+            <a href="{{ url_for('auth.logout') }}" class="main-button">Logout</a>
+        {% else %}
+            <a href="{{ url_for('auth.login') }}" class="main-button">Login mit Microsoft</a>
+        {% endif %}
+    </div>
+
+    <!-- Hauptnavigation -->
     <div class="main-buttons">
-        <a href="http://localhost:5000/api/v1/licenses/statusall" class="main-button">Alle Lizenzen anzeigen</a>
-        <a href="http://localhost:5000/api/v1/licenses/status/tenant" class="main-button">Tenant abfragen</a>
+        <a href="{{ url_for('licenses.get_license_all_showfetch') }}" class="main-button">Alle Lizenzen anzeigen</a>
+        <a href="{{ url_for('licenses.show_frontend') }}" class="main-button">Tenant abfragen</a>
     </div>
 
 </body>
