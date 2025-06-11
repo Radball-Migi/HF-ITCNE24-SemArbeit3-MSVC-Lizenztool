@@ -3,35 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <title>Lizenztool</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='mainpage.css') }}">
+    <style>
+        body {
+            background-image: url("{{ url_for('static', filename='images/logo_license-tool_mainpage.png') }}");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+        }
+    </style>
 </head>
 <body>
 
-    <div class="header">
+    <!-- Kopfbereich -->
+    <header class="header">
         <a href="https://www.iseag.ch" target="_blank">
             <img src="https://www.iseag.ch/wp-content/uploads/logo_iseag_transparent_400.png"
-                 alt="ISEAG Logo"
-                 class="header-logo">
+                 alt="ISEAG Logo" class="header-logo">
         </a>
-        <h1 class="header-title">ISE AG Microsoft 365 Lizenztool</h1>
-        <div class="header-spacer"></div>
-    </div>
 
-    <!-- Benutzeranzeige + Login/Logout -->
-    <div style="margin-top: -20px; margin-bottom: 30px;">
-        {% if session.user %}
-            <p>Angemeldet als: <strong>{{ session.user.name }}</strong> ({{ session.user.email }})</p>
-            <a href="{{ url_for('auth.logout') }}" class="main-button">Logout</a>
-        {% else %}
-            <a href="{{ url_for('auth.login') }}" class="main-button">Login mit Microsoft</a>
-        {% endif %}
-    </div>
+        <h1 class="header-title">ISE AG Microsoft 365 Lizenztool</h1>
+
+        <!-- Benutzeranzeige im Header -->
+        <div class="user-menu">
+            {% if session.user %}
+                <div class="user-avatar" onclick="toggleDropdown()">
+                    {{ session.user.name[:1] }}{{ session.user.name.split(' ')[1][:1] if session.user.name.split(' ')|length > 1 else '' }}
+                </div>
+                <div id="user-dropdown" class="user-dropdown hidden">
+                    <p class="dropdown-name">{{ session.user.name }}</p>
+                    <p class="dropdown-email">{{ session.user.email }}</p>
+                    <a href="{{ url_for('auth.logout') }}" class="dropdown-button">🚪 Logout</a>
+                </div>
+            {% else %}
+                <a href="{{ url_for('auth.login') }}" class="main-button login-button">🔐 Login mit Microsoft</a>
+            {% endif %}
+        </div>
+    </header>
 
     <!-- Hauptnavigation -->
-    <div class="main-buttons">
-        <a href="{{ url_for('licenses.get_license_all_showfetch') }}" class="main-button">Alle Lizenzen anzeigen</a>
-        <a href="{{ url_for('licenses.show_frontend') }}" class="main-button">Tenant abfragen</a>
-    </div>
+    <main class="main-content">
+        <div class="button-wrapper">
+            <h2 class="button-title">Was möchten Sie tun?</h2>
+            <div class="main-buttons">
+                <a href="{{ url_for('licenses.show_status_all') }}" class="main-button">📊 Alle Lizenzen anzeigen</a>
+                <a href="{{ url_for('licenses.show_tenant') }}" class="main-button">🔍 Tenant abfragen</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Dropdown Script -->
+    <script>
+        function toggleDropdown() {
+            const dropdown = document.getElementById('user-dropdown');
+            dropdown.classList.toggle('hidden');
+        }
+
+        document.addEventListener('click', function(event) {
+            const avatar = document.querySelector('.user-avatar');
+            const dropdown = document.getElementById('user-dropdown');
+
+            if (!avatar || !dropdown) return;
+
+            if (!avatar.contains(event.target) && !dropdown.contains(event.target)) {
+                dropdown.classList.add('hidden');
+            }
+        });
+    </script>
 
 </body>
 </html>

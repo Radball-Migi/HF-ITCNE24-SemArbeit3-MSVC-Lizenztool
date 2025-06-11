@@ -7,15 +7,18 @@ from apiflask.validators import Length
 from app.models.license import LicenseModel, LicenseIn, LicenseOut, LicenseStatusOut, LicenseStatusAllOut
 from app.modules.mggraph import GraphLicenseClient, push_license_status_to_sharepoint
 from pathlib import Path
+from app.auth.utils import login_required
 import re
 import json
 
 # Templates-Route
 @bp.get('/status/tenant')
-def show_frontend():
+@login_required
+def show_tenant():
     return render_template("tenant.html")
 
 @bp.get('/statusall')
+@login_required
 def show_status_all():
     return render_template("statusall.html")
 
@@ -24,6 +27,7 @@ def show_status_all():
 
 @bp.get('/')
 @bp.output(LicenseOut(many=True))
+@login_required
 def get_licenses():
     licenses = LicenseModel.query.all()
     return licenses
@@ -31,6 +35,7 @@ def get_licenses():
 
 @bp.get('/<int:license_id>')
 @bp.output(LicenseOut)
+@login_required
 def get_license(license_id):
     license = LicenseModel.query.get_or_404(license_id)
     return license
@@ -39,6 +44,7 @@ def get_license(license_id):
 @bp.post('/')
 @bp.input(LicenseIn, location='json')
 @bp.output(LicenseOut, status_code=201)
+@login_required
 def create_license(json_data):
     license = LicenseModel(**json_data)
     db.session.add(license)
@@ -48,7 +54,8 @@ def create_license(json_data):
 
 @bp.get('/status/show')
 @bp.output(LicenseStatusAllOut(many=True))
-def get_license_all():
+@login_required
+def get_license_show_all():
     config_path = Path("config-profiles")
     statusall = []
 
@@ -95,6 +102,7 @@ def get_license_all():
    
 @bp.get('/status/show/<tenant_name>')
 @bp.output(LicenseStatusOut(many=True))
+@login_required
 def get_license_status_tenant_show(tenant_name):
     try:
         config_file = f"config-profiles/config-{tenant_name}-profile.json"
@@ -130,6 +138,7 @@ def get_license_status_tenant_show(tenant_name):
 
 @bp.get('/status/show-fetch')
 @bp.output(LicenseStatusAllOut(many=True))
+@login_required
 def get_license_all_showfetch():
     config_path = Path("config-profiles")
     statusall = []
@@ -180,6 +189,7 @@ def get_license_all_showfetch():
 
 @bp.get('/status/show-fetch/<tenant_name>')
 @bp.output(LicenseStatusOut(many=True))
+@login_required
 def get_license_status_tenant_showfetch(tenant_name):
     try:
         config_file = f"config-profiles/config-{tenant_name}-profile.json"

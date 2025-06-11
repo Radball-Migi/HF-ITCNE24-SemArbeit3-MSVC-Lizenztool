@@ -6,40 +6,62 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='tenant.css') }}">
     </head>
     <body>
-
-        <!-- 🔄 Spinner Overlay -->
+        <!-- Spinner Overlay -->
         <div id="spinner" class="spinner-overlay">
             <div class="spinner"></div>
         </div>
 
-        <div class="header">
-            <a href="https://www.iseag.ch" target="_blank">
+       <header class="header">
+            <a href="http://localhost:5000">
                 <img src="https://www.iseag.ch/wp-content/uploads/logo_iseag_transparent_400.png"
                     alt="ISEAG Logo"
                     class="header-logo">
             </a>
-            <h2 class="header-title">Lizenzstatus für Tenant abfragen</h2>
-            <div class="header-spacer"></div>
-        </div>
 
-        <!-- 🟢 Buttons zur Moduswahl -->
-        <div class="filter-container">
-            <div class="button-section">
-                <strong>Ansicht wählen:</strong><br>
-                <button id="showBtn" class="mode-button" type="button">Nur anzeigen</button>
-                <button id="updateBtn" class="mode-button" type="button">Anzeigen & aktualisieren</button>
+            <h1 class="header-title">Status aller Lizenzen</h1>
+
+            <!-- Benutzeranzeige -->
+            <div class="user-menu">
+                {% if session.user %}
+                    <div class="user-avatar" onclick="toggleDropdown()">
+                        {{ session.user.name[:1] }}{{ session.user.name.split(' ')[1][:1] if session.user.name.split(' ')|length > 1 else '' }}
+                    </div>
+                    <div id="user-dropdown" class="user-dropdown hidden">
+                        <p class="dropdown-name">{{ session.user.name }}</p>
+                        <p class="dropdown-email">{{ session.user.email }}</p>
+                        <a href="{{ url_for('auth.logout') }}" class="dropdown-button">🚪 Logout</a>
+                    </div>
+                {% else %}
+                    <a href="{{ url_for('auth.login') }}" class="main-button login-button">🔐 Login mit Microsoft</a>
+                {% endif %}
             </div>
+        </header>
+
+        <div class="main-wrapper">
+            <div class="filter-row">
+                <!-- Buttons zur Moduswahl -->
+                <div class="filter-container">
+                    <div class="button-section">
+                        <strong>Ansicht wählen:</strong><br>
+                        <button id="showBtn" class="mode-button" type="button">Nur anzeigen</button>
+                        <button id="updateBtn" class="mode-button" type="button">Anzeigen & SP aktualisieren</button>
+                    </div>
+                </div>
+
+                <!-- Formular -->
+                <div class="form-container">
+                    <form id="tenantForm">
+                        <label for="tenant_name">Tenant Name:</label>
+                        <input type="text" name="tenant_name" id="tenant_name" required>
+                        <button type="submit" class="mode-button">Abfragen</button>
+                    </form>
+                </div>
+            </div>
+
+            <hr>
+
+            <div id="result"></div>
         </div>
-
-        <form id="tenantForm">
-            <label for="tenant_name">Tenant Name:</label>
-            <input type="text" name="tenant_name" id="tenant_name" required>
-            <button type="submit">Abfragen</button>
-        </form>
-
-        <hr>
-
-        <div id="result"></div>
 
         <script>
             let fullData = [];
@@ -149,6 +171,22 @@
             // Initialstatus setzen
             currentEndpoint = '/api/v1/licenses/status/show';
             toggleButtons("showBtn");
+
+            function toggleDropdown() {
+                const dropdown = document.getElementById('user-dropdown');
+                dropdown.classList.toggle('hidden');
+            }
+
+            document.addEventListener('click', function(event) {
+                const avatar = document.querySelector('.user-avatar');
+                const dropdown = document.getElementById('user-dropdown');
+
+                if (!avatar || !dropdown) return;
+
+                if (!avatar.contains(event.target) && !dropdown.contains(event.target)) {
+                    dropdown.classList.add('hidden');
+                }
+            });
         </script>
     </body>
 </html>
