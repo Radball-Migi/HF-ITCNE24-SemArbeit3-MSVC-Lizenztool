@@ -71,7 +71,7 @@
         }
 
         // Daten holen und initial anzeigen
-        fetch('/api/v1/licenses/status')
+        fetch('/api/v1/licenses/status/show/all')
             .then(response => response.json())
             .then(data => {
                 fullData = data;

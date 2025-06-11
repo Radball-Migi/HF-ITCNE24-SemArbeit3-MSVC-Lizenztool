@@ -11,14 +11,20 @@ import re
 import json
 
 # Templates-Route
-@bp.get('/frontend')
-def show_frontend():
-    return render_template("frontend.html")
+@bp.get('/tenant')
+def show_tenant():
+    return render_template("tenant.html")
 
-@bp.get('/statusall')
-def show_status_all():
+@bp.get('/status')
+def show_status():
+    return render_template("status.html")
+
+@bp.get('/status/all/fetch')
+def show_statusall():
     return render_template("statusall.html")
-
+    
+#---------------------------------------------------------------------------
+# API-Routen
 
 @bp.get('/')
 @bp.output(LicenseOut(many=True))
@@ -44,7 +50,7 @@ def create_license(json_data):
     return license
 
 
-@bp.get('/status')
+@bp.get('/status/all')
 @bp.output(LicenseStatusAllOut(many=True))
 def get_license_all():
     config_path = Path("config-profiles")
@@ -87,6 +93,53 @@ def get_license_all():
 
             # Push Lizenzdaten für diesen Tenant ins SharePoint
             push_license_status_to_sharepoint(display_name, licenses)
+
+        except Exception as e:
+            print(f"Fehler bei Tenant {tenant_id}: {e}")
+            continue
+
+    return statusall
+
+@bp.get('/status/show/all')
+@bp.output(LicenseStatusAllOut(many=True))
+def get_license_show_all():
+    config_path = Path("config-profiles")
+    statusall = []
+
+    for config_file in config_path.glob("config-*-profile.json"):
+        match = re.match(r"config-(.*?)-profile\.json", config_file.name)
+        if not match:
+            continue
+
+        tenant_id = match.group(1)
+
+        try:
+            with open(config_file, "r") as f:
+                config_data = json.load(f)
+
+            display_name = config_data.get("tenant_name") or config_data.get("name") or tenant_id
+
+            client = GraphLicenseClient(tenant_id)
+            data = client.get_license_status()
+
+            licenses = []
+
+            for item in data.get("value", []):
+                consumed = item.get('consumedUnits', 0)
+                available = item.get('prepaidUnits', {}).get('enabled', 0)
+                free = int(available) - int(consumed)
+
+                license_info = {
+                    'skuid': item.get('skuId', 'UNKNOWN'),
+                    'skupartnumber': item.get('skuPartNumber', 'UNKNOWN'),
+                    'consumed_units': consumed,
+                    'available_units': available,
+                    'free_units': free,
+                    'tenant': display_name
+                }
+
+                licenses.append(license_info)
+                statusall.append(license_info)
 
         except Exception as e:
             print(f"Fehler bei Tenant {tenant_id}: {e}")
