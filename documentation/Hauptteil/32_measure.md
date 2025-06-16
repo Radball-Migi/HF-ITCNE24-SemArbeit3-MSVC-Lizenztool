@@ -26,7 +26,7 @@ Im aktuellen Prozess werden Microsoft-Lizenzen **nicht aktiv überwacht**. Es ex
         
     - sich ein Kunde meldet, weil Benutzer keinen Zugriff auf Office-Dienste haben.
 
-![Comicimage of client and user](error_licenses.png)
+![Comicimage of client and user](../../ressources/images/error_licenses.png)
 
 2. **Manuelle Eskalation**  
     Das Support-Team oder der/die zuständige IT-Mitarbeiter:in prüft manuell den Lizenzstatus im Microsoft-Admin-Center.
