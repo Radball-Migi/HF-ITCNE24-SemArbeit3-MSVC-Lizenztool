@@ -23,6 +23,7 @@ ressources/licensetool/app/licenses/__pycache__
 ressources/licensetool/app/main/__pycache__
 ressources/licensetool/app/models/__pycache__
 ressources/licensetool/app/modules/__pycache__
+ressources/licensetool/app/auth/__pycache__
 
 #Ignore all certificate files
 ressources/licensetool/certs/**/*.crt
@@ -35,3 +36,5 @@ ressources/licensetool/certs/**/*.key
 ressources/licensetool/certs/infos/cert-**-info.json
 ressources/licensetool/config-profiles/config-**-profile.json
 ressources/licensetool/app/test-output/*.jsonc
+ressources/licensetool/app/config-profiles/auth
+ressources/licensetool/app/config-profiles/sharepoint
