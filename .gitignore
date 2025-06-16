@@ -36,5 +36,6 @@ ressources/licensetool/certs/**/*.key
 ressources/licensetool/certs/infos/cert-**-info.json
 ressources/licensetool/config-profiles/config-**-profile.json
 ressources/licensetool/app/test-output/*.jsonc
-ressources/licensetool/app/config-profiles/auth
-ressources/licensetool/app/config-profiles/sharepoint
+ressources/licensetool/config-profiles/auth
+ressources/licensetool/config-profiles/sharepoint
+

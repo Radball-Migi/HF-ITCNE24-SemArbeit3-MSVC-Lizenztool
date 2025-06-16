@@ -37,9 +37,6 @@ Für die Umsetzung der Semesterarbeit stehen folgende Ressourcen zur Verfügung:
 - **Power Automate**  
   Automatisierte Benachrichtigungen bei kritischen Lizenzständen.
 
-- **Projektbetreuung durch Expert:innen**  
-  Fachliche Unterstützung, Feedback und Reviews während des Projektverlaufs.
-
 
 
 ## Warum wird die Zielvorstellung aktuell nicht erreicht?
@@ -52,4 +49,5 @@ Um die angestrebte Zielvorstellung zu erreichen, müssen folgende neue technisch
 - Eine **strukturierte SharePoint-Liste** zur zentralen und weiterverarbeitbaren Speicherung der Daten.
 - Ein **Power Automate-Flow**, der bei kritischen Lizenzständen automatische Benachrichtigungen versendet.
 
-Diese Komponenten sind notwendig, da bestehende Tools diese Funktionen nicht integriert abbilden können.
+Diese Komponenten sind erforderlich, da bestehende Tools die benötigten Funktionen nicht vollständig und integriert bereitstellen. Ziel ist es, unseren Kunden eine gleichbleibend hohe Qualität zu gewährleisten und Betriebsunterbrechungen auf ein Minimum zu reduzieren.
+
