@@ -98,7 +98,7 @@ class SharePointClientTask(SharePointClient):
         result = app.acquire_token_for_client(scopes=["https://graph.microsoft.com/.default"])
         if "access_token" not in result:
             raise Exception(f"Token acquisition failed: {result.get('error_description')}")
-        token = result["access_token"]
+        token = result["access_token"] 
         headers = {
             "Authorization": f"Bearer {token}",
             "Content-Type": "application/json"
@@ -144,11 +144,29 @@ class SharePointClientTask(SharePointClient):
             # Felder zusammenstellen (nur Zahlen bei Update)
             if match:
                 item_id = match["id"]
+                # Standard-Felder
                 sp_fields = {
                     field_mapping["Frei"]: free,
                     field_mapping["Gebraucht"]: used,
                     field_mapping["Verfügbar"]: avail
                 }
+
+                # Zusätzliche Logik: Supporter informieren?
+                if free == 0:
+                    # Falls es ein bestehendes Item ist, prüfe ob technician_informed gesetzt ist
+                    trigger_field = field_mapping.get("Infosup", "trigger_inform_supporter")
+                    if match:
+                        technician_informed = match["fields"].get("technician_informed", False)
+                        if not technician_informed:
+                            sp_fields[trigger_field] = True
+                    else:
+                        # Bei Neuanlage können wir davon ausgehen, dass niemand informiert ist
+                        sp_fields[trigger_field] = True
+                else:
+                    # Wenn wieder Lizenzen verfügbar sind, kannst du optional zurücksetzen:
+                    trigger_field = field_mapping.get("Infosup", "trigger_inform_supporter")
+                    sp_fields[trigger_field] = False
+                    
                 url_update = f"https://graph.microsoft.com/v1.0/sites/{site_id}/lists/{license_list_id}/items/{item_id}/fields"
                 response = requests.patch(url_update, headers=headers, json=sp_fields)
                 print(f"🔁 Lizenz '{sku}' für Tenant '{tenant_name}' wurde aktualisiert.")

@@ -1,0 +1,38 @@
+$ docker compose up
+time="2025-06-16T23:41:46+02:00" level=warning msg="Found orphan containers ([test-hf-itcne24-semarbeit3-msvc-lizenztool]) for this project. If you removed or renamed this service in your compose file, you can run this command with the --remove-orphans flag to clean it up."
+[+] Running 1/0
+ ✔ Container prod-hf-itcne24-semarbeit3-msvc-lizenztool  Created                                                         0.0s 
+Attaching to prod-hf-itcne24-semarbeit3-msvc-lizenztool
+prod-hf-itcne24-semarbeit3-msvc-lizenztool  |  * Serving Flask app 'app'
+prod-hf-itcne24-semarbeit3-msvc-lizenztool  |  * Debug mode: on
+prod-hf-itcne24-semarbeit3-msvc-lizenztool  | WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+prod-hf-itcne24-semarbeit3-msvc-lizenztool  |  * Running on all addresses (0.0.0.0)
+prod-hf-itcne24-semarbeit3-msvc-lizenztool  |  * Running on http://127.0.0.1:5000
+prod-hf-itcne24-semarbeit3-msvc-lizenztool  |  * Running on http://172.22.0.2:5000
+prod-hf-itcne24-semarbeit3-msvc-lizenztool  | Press CTRL+C to quit
+prod-hf-itcne24-semarbeit3-msvc-lizenztool  |  * Restarting with stat                                                                                                                                                                                                                                                                                                                                                                         
+prod-hf-itcne24-semarbeit3-msvc-lizenztool  | WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+prod-hf-itcne24-semarbeit3-msvc-lizenztool  |  * Running on all addresses (0.0.0.0)
+prod-hf-itcne24-semarbeit3-msvc-lizenztool  |  * Running on http://127.0.0.1:5000
+prod-hf-itcne24-semarbeit3-msvc-lizenztool  |  * Running on http://172.22.0.2:5000
+prod-hf-itcne24-semarbeit3-msvc-lizenztool  | Press CTRL+C to quit
+prod-hf-itcne24-semarbeit3-msvc-lizenztool  |  * Restarting with stat
+prod-hf-itcne24-semarbeit3-msvc-lizenztool  |  * Debugger is active!
+prod-hf-itcne24-semarbeit3-msvc-lizenztool  |  * Debugger PIN: 105-832-640
+prod-hf-itcne24-semarbeit3-msvc-lizenztool  | 172.22.0.1 - - [16/Jun/2025 21:42:06] "GET / HTTP/1.1" 200 -
+prod-hf-itcne24-semarbeit3-msvc-lizenztool  | 172.22.0.1 - - [16/Jun/2025 21:42:06] "GET /static/mainpage.css HTTP/1.1" 200 -
+prod-hf-itcne24-semarbeit3-msvc-lizenztool  | 172.22.0.1 - - [16/Jun/2025 21:42:06] "GET /static/images/logo_license-tool_mainpage.png HTTP/1.1" 200 -
+prod-hf-itcne24-semarbeit3-msvc-lizenztool  | 172.22.0.1 - - [16/Jun/2025 21:42:06] "GET /favicon.ico HTTP/1.1" 404 -
+prod-hf-itcne24-semarbeit3-msvc-lizenztool  | 172.22.0.1 - - [16/Jun/2025 21:42:28] "GET /api/v1/licenses/statusall HTTP/1.1" 302 -
+prod-hf-itcne24-semarbeit3-msvc-lizenztool  | 172.22.0.1 - - [16/Jun/2025 21:42:28] "GET /api/v1/auth/login HTTP/1.1" 302 -
+prod-hf-itcne24-semarbeit3-msvc-lizenztool  | 172.22.0.1 - - [16/Jun/2025 21:42:57] "GET /api/v1/auth/callback?code=1.AR8AIjGhWpEZB0msVqfdOxxmbK8f_3kjeJVMg-ekCqByFPaFAAAfAA.AgABBAIAAABVrSpeuWamRam2jAF1XRQEAwDs_wUA9P_FMp9hdnbmd2QjIUhj7RLHldJwV6MqUS5cVdQ-IcquFf_lfCsdxelVmY8YDv2ugtGZ0NjJsPd8APvGt-_V8HpLtOG3X8AhJa_TPCj991gnJwY7hVIooiZ2BZ0VhkaIUQfm6rcUsOQCnVGHSyCFWIvWbubDdOyaC2jqj2uaF754tHtr-QOG0mh_M6sGB15wl_3JiyWFNyGuvIEIY_a2vT0mteBvmQOsaYaXJEFC3ZEXUhEL_Ka4z7Bp54cpCUMeqzoF5sEf_f_vfnQ_WYXVHusFRJs72FVkR7_bye_mzHKELlUaSg0lEDTzJ77DyTEfjZFv0PFalM5lQcwN2Fjdmm4JM6E65V8Y1-W7Dx7tvFK1N-9Ry6t3uqDRphDlIDsHy3keQq8Z0nKgGOtjDrU6RD1y7NjvnblDNAf33RMxZQ8LS7tkvQMIvVd_k0cP31suYn2YPk5ZZlTqQK_tbMKsCBv_5q9p5PvczWI0zsd9a3NEg2F6meZriZ_deiFVuU778LfMK5tHEKNzD9vo1IPffNzfRsBHaHT6fnx4fCqPRM1H8g6X3H3_5yhNCrknovTNhu5rMLryMEjrwPEygo4sFo373W0yfeYp87L4tbOtest8IimTk24KZIYpHiVwES9eD8rkvZAYxUAsA56bjYKtE6ix-PrtSKSg_xxMQcbymK60R-eE9kvAqVl9BPn1_zClPV3cJGxpTQHDYt2L782g-bbL3KfD7JEcERW8M9yiz9Uf-HkG&state=4c23163f-e2c1-44e9-80c6-4cdf0d19edd1&session_state=005e0669-1065-4757-a9a3-bac679b57331 HTTP/1.1" 302 -
+prod-hf-itcne24-semarbeit3-msvc-lizenztool  | 172.22.0.1 - - [16/Jun/2025 21:42:57] "GET / HTTP/1.1" 200 -
+prod-hf-itcne24-semarbeit3-msvc-lizenztool  | 172.22.0.1 - - [16/Jun/2025 21:42:57] "GET /static/mainpage.css HTTP/1.1" 304 -
+prod-hf-itcne24-semarbeit3-msvc-lizenztool  | 172.22.0.1 - - [16/Jun/2025 21:42:57] "GET /static/images/logo_license-tool_mainpage.png HTTP/1.1" 304 -
+prod-hf-itcne24-semarbeit3-msvc-lizenztool  | 172.22.0.1 - - [16/Jun/2025 21:43:37] "GET /api/v1/licenses/statusall HTTP/1.1" 200 -
+prod-hf-itcne24-semarbeit3-msvc-lizenztool  | 172.22.0.1 - - [16/Jun/2025 21:43:37] "GET /static/statusall.css HTTP/1.1" 200 -
+prod-hf-itcne24-semarbeit3-msvc-lizenztool  | 172.22.0.1 - - [16/Jun/2025 21:43:38] "GET /api/v1/licenses/status/show HTTP/1.1" 200 -
+prod-hf-itcne24-semarbeit3-msvc-lizenztool  | 172.22.0.1 - - [16/Jun/2025 21:44:53] "GET /api/v1/auth/logout HTTP/1.1" 302 -
+prod-hf-itcne24-semarbeit3-msvc-lizenztool  | 172.22.0.1 - - [16/Jun/2025 21:44:57] "GET / HTTP/1.1" 200 -
+prod-hf-itcne24-semarbeit3-msvc-lizenztool  | 172.22.0.1 - - [16/Jun/2025 21:44:57] "GET /static/mainpage.css HTTP/1.1" 304 -
+prod-hf-itcne24-semarbeit3-msvc-lizenztool  | 172.22.0.1 - - [16/Jun/2025 21:44:57] "GET /static/images/logo_license-tool_mainpage.png HTTP/1.1" 304 -
