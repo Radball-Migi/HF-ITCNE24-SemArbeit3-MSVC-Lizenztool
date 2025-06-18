@@ -24,6 +24,7 @@ ressources/licensetool/app/main/__pycache__
 ressources/licensetool/app/models/__pycache__
 ressources/licensetool/app/modules/__pycache__
 ressources/licensetool/app/auth/__pycache__
+ressources/licensetool/app/monitoring/__pycache__
 
 #Ignore all certificate files
 ressources/licensetool/certs/**/*.crt
