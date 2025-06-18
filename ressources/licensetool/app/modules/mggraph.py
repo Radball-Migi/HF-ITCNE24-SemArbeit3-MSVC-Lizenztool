@@ -144,32 +144,28 @@ class SharePointClientTask(SharePointClient):
             # Felder zusammenstellen (nur Zahlen bei Update)
             if match:
                 item_id = match["id"]
-                # Standard-Felder
+                match_fields = match["fields"]
+                technician_informed = match_fields.get("technician_informed", False)
+
                 sp_fields = {
                     field_mapping["Frei"]: free,
                     field_mapping["Gebraucht"]: used,
                     field_mapping["Verfügbar"]: avail
                 }
 
-                # Zusätzliche Logik: Supporter informieren?
-                if free == 0:
-                    # Falls es ein bestehendes Item ist, prüfe ob technician_informed gesetzt ist
-                    trigger_field = field_mapping.get("Infosup", "trigger_inform_supporter")
-                    if match:
-                        technician_informed = match["fields"].get("technician_informed", False)
-                        if not technician_informed:
-                            sp_fields[trigger_field] = True
-                    else:
-                        # Bei Neuanlage können wir davon ausgehen, dass niemand informiert ist
-                        sp_fields[trigger_field] = True
-                else:
-                    # Wenn wieder Lizenzen verfügbar sind, kannst du optional zurücksetzen:
-                    trigger_field = field_mapping.get("Infosup", "trigger_inform_supporter")
-                    sp_fields[trigger_field] = False
-                    
+                # Wenn freie Lizenzen 0 und Techniker noch nicht informiert
+                if free == 0 and not technician_informed:
+                    sp_fields[field_mapping["Infosup"]] = True
+
+                # Wenn Lizenzen verfügbar sind und Techniker war informiert → zurücksetzen
+                if free > 0 and technician_informed:
+                    sp_fields["technician_informed"] = False
+
                 url_update = f"https://graph.microsoft.com/v1.0/sites/{site_id}/lists/{license_list_id}/items/{item_id}/fields"
                 response = requests.patch(url_update, headers=headers, json=sp_fields)
+                response.raise_for_status()
                 print(f"🔁 Lizenz '{sku}' für Tenant '{tenant_name}' wurde aktualisiert.")
+
             else:
                 # Neuanlage – vollständige Felder setzen
                 sp_fields = {
