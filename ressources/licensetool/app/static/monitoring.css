@@ -1,0 +1,288 @@
+/* Header */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 20px;
+    background: linear-gradient(to right, #1e1e1e, #292929);
+    border-bottom: 1px solid #333;
+    text-align: center;
+}
+
+.header-logo {
+    height: 80px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.header-title {
+    flex-grow: 1;
+    font-size: 24px;
+    margin: 10px 0;
+    color: #f0f0f0;
+    text-align: center;
+}
+
+.user-menu {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+/* Login/Avatar Styles */
+.login-button {
+    background-color: #2a2a2a;
+    padding: 10px 18px;
+    border: 1px solid #444;
+    border-radius: 6px;
+    text-decoration: none;
+    color: #fff;
+    font-size: 14px;
+}
+
+.user-avatar {
+    background-color: #555;
+    border-radius: 50%;
+    color: white;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    cursor: pointer;
+    user-select: none;
+    font-size: 20px;
+}
+
+.user-dropdown {
+    position: absolute;
+    right: 0;
+    top: 50px;
+    background-color: #1e1e1e;
+    border: 1px solid #444;
+    border-radius: 6px;
+    padding: 12px;
+    min-width: 200px;
+    z-index: 1001;
+    text-align: left;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.dropdown-name {
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    margin: 0 0 4px 0;
+}
+
+.dropdown-email {
+    font-size: 13px;
+    color: #aaa;
+    margin: 0 0 12px 0;
+    word-break: break-word;
+}
+
+.dropdown-button {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 10px 0;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.dropdown-button:hover {
+    background-color: #444;
+}
+
+.hidden {
+    display: none;
+}
+
+/* ---------- Body ---------- */
+body {
+    background-color: #121212; /* dunkles Grau */
+    color: #f0f0f0;            /* heller Text */
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+.main-wrapper {
+    background-color: #121212;
+    color: #f0f0f0;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+/* ---------- Formular ---------- */
+form {
+    text-align: right;
+    margin-bottom: 10px;
+}
+
+input[type="text"] {
+    padding: 6px;
+    background-color: #1f1f1f;
+    color: #f0f0f0;
+    border: 1px solid #555;
+    border-radius: 4px;
+}
+
+/* ---------- Tabelle ---------- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    background-color: #000000;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #333;
+}
+
+th {
+    background-color: #2a2a2a;
+    color: #ffffff;
+    font-weight: bold;
+    border-radius: 4px 4px 0 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+tr:nth-child(even) {
+    background-color: #1a1a1a;
+}
+
+tr:nth-child(odd) {
+    background-color: #222;
+}
+
+tr.low-license {
+    background-color: #5a0000;
+    color: #fff;
+}
+
+input#filterInput {
+    padding: 6px;
+    background-color: #1f1f1f;
+    color: #f0f0f0;
+    border: 1px solid #555;
+    border-radius: 4px;
+}
+
+/* ---------- Filter & Button Container ---------- */
+.filter-container {
+    display: flex;
+    justify-content: start;
+    gap: 10px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+.button-section {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+/* ---------- Buttons ---------- */
+.mode-button {
+    padding: 6px 12px;
+    background-color: #2a2a2a;
+    color: #f0f0f0;
+    border: 1px solid #555;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.mode-button:disabled {
+    background-color: #555;
+    color: #999;
+    cursor: not-allowed;
+}
+
+/* ---------- Spinner ---------- */
+.spinner-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(18, 18, 18, 0.6);
+    z-index: 999;
+    justify-content: center;
+    align-items: center;
+}
+
+.spinner {
+    border: 6px solid #444;
+    border-top: 6px solid #f0f0f0;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ---------- Layout für Ansicht + Formular ---------- */
+.filter-row {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: flex-end;
+    margin-bottom: 20px;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Formularinhalt auf eine Zeile bringen */
+.form-container form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+.status-enabled {
+    background-color: #194d33; /* leicht grün */
+    color: #d4f8d4;
+}
+
+.status-disabled {
+    background-color: #5a0000; /* leicht rot */
+    color: #f8d4d4;
+}
+
+/* Sichtbares Modal, wenn NICHT .hidden */
+.spinner-overlay:not(.hidden) {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Standard-Hidden-Zustand */
+.hidden {
+    display: none !important;
+}

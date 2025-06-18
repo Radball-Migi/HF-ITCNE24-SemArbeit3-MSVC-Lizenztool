@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Lizenztool - Monitoring</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{{ url_for('static', filename='monitoring.css') }}">
+  <style>
+    .edit-icon {
+      margin-left: 12px;
+      cursor: pointer;
+    }
+
+    .edit-icon:hover {
+      color: #00afff;
+    }
+
+    .modal-content {
+      background-color: #222;
+      padding: 20px;
+      border-radius: 10px;
+      color: #fff;
+    }
+
+    .spinner-overlay.visible {
+      display: flex !important;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Spinner -->
+<div id="spinner" class="spinner-overlay hidden">
+  <div class="spinner"></div>
+</div>
+
+<!-- Header -->
+<header class="header">
+  <a href="http://localhost:5000">
+    <img src="https://www.iseag.ch/wp-content/uploads/logo_iseag_transparent_400.png"
+         alt="ISEAG Logo" class="header-logo">
+  </a>
+  <h1 class="header-title">Lizenztool - Monitoring</h1>
+  <div class="user-menu">
+    {% if session.user %}
+      <div class="user-avatar" onclick="toggleDropdown()">
+        {{ session.user.name[:1] }}{{ session.user.name.split(' ')[1][:1] if session.user.name.split(' ')|length > 1 else '' }}
+      </div>
+      <div id="user-dropdown" class="user-dropdown hidden">
+        <p class="dropdown-name">{{ session.user.name }}</p>
+        <p class="dropdown-email">{{ session.user.email }}</p>
+        <a href="{{ url_for('auth.logout') }}" class="dropdown-button">🚪 Logout</a>
+      </div>
+    {% else %}
+      <a href="{{ url_for('auth.login') }}" class="login-button">🔐 Login mit Microsoft</a>
+    {% endif %}
+  </div>
+</header>
+
+<!-- Inhalt -->
+<div class="main-wrapper">
+  <div class="filter-row">
+    <div class="button-section">
+      <label for="filterInput">Filter (Tenant):</label>
+      <input type="text" id="filterInput" placeholder="z. B. iseag">
+      <button id="resetButton" class="mode-button">Zurücksetzen</button>
+    </div>
+  </div>
+
+  <table id="monitoringTable">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Titel</th>
+      <th>Aktiv</th>
+      <th>Monitoring</th>
+    </tr>
+    </thead>
+    <tbody id="monitoringBody">
+    <!-- Wird per JS befüllt -->
+    </tbody>
+  </table>
+</div>
+
+<!-- Modal zur Änderung -->
+<div id="confirmationModal" class="spinner-overlay hidden" style="background-color: rgba(0,0,0,0.8);">
+  <div class="modal-content">
+    <p id="confirmText">Einstellungen anpassen:</p>
+    <label><input type="checkbox" id="modalEnabled"> Aktivieren</label><br>
+    <label><input type="checkbox" id="modalMonitoring"> Monitoring einschalten</label><br><br>
+    <div style="text-align: right;">
+      <button class="mode-button" onclick="askConfirm()">✅ Weiter</button>
+      <button class="mode-button" onclick="cancelChange()">❌ Abbrechen</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  let pendingChange = { id: null, title: "", enabled: null, monitoring: null };
+
+  function toggleDropdown() {
+    const dropdown = document.getElementById('user-dropdown');
+    dropdown.classList.toggle('hidden');
+  }
+
+  document.addEventListener('click', function(event) {
+    const avatar = document.querySelector('.user-avatar');
+    const dropdown = document.getElementById('user-dropdown');
+    if (!avatar || !dropdown) return;
+    if (!avatar.contains(event.target) && !dropdown.contains(event.target)) {
+      dropdown.classList.add('hidden');
+    }
+  });
+
+  function openEditModal(id, title, enabled, monitoring) {
+    pendingChange = { id, title, enabled, monitoring };
+    document.getElementById("confirmText").innerText = `⚙️ Einstellungen für "${title}" anpassen:`;
+    document.getElementById("modalEnabled").checked = enabled;
+    document.getElementById("modalMonitoring").checked = monitoring;
+    document.getElementById("confirmationModal").classList.remove("hidden");
+  }
+
+  function cancelChange() {
+    pendingChange = { id: null, title: "", enabled: null, monitoring: null };
+    document.getElementById("confirmationModal").classList.add("hidden");
+  }
+
+  function askConfirm() {
+    const enabled = document.getElementById("modalEnabled").checked;
+    const monitoring = document.getElementById("modalMonitoring").checked;
+    const confirmMsg = `Möchten Sie diese Änderung speichern?\n\nAktiv: ${enabled ? '✅' : '❌'}\nMonitoring: ${monitoring ? '✅' : '❌'}`;
+    if (confirm(confirmMsg)) {
+      confirmChange(enabled, monitoring);
+    }
+  }
+
+  function confirmChange(enabled, monitoring) {
+    const url = `/api/v1/monitoring/tenants/${pendingChange.id}`;
+    const spinner = document.getElementById("spinner");
+    spinner.style.display = "flex";
+
+    fetch(url, {
+        method: "PATCH",
+        headers: {
+        "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+        enabled: enabled,
+        monitoring: monitoring
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        console.log("Aktualisiert:", data);
+        fetchMonitoringData(); // Liste neu laden
+    })
+    .catch(err => console.error("Update-Fehler:", err))
+    .finally(() => {
+        cancelChange(); // Modal schließen
+        spinner.style.display = "none"; // Spinner ausblenden
+    });
+    }
+
+  function renderMonitoringTable(data) {
+    const tbody = document.getElementById("monitoringBody");
+    tbody.innerHTML = '';
+    data.forEach(tenant => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${tenant.id}</td>
+        <td>
+          ${tenant.title}
+          <span class="edit-icon" title="Bearbeiten"
+                onclick="openEditModal(${tenant.id}, '${tenant.title}', ${tenant.enabled}, ${tenant.monitoring})">✏️</span>
+        </td>
+        <td class="${tenant.enabled ? 'status-enabled' : 'status-disabled'}">
+          ${tenant.enabled ? '✅ Aktiv' : '❌ Inaktiv'}
+        </td>
+        <td class="${tenant.monitoring ? 'status-enabled' : 'status-disabled'}">
+          ${tenant.monitoring ? '✅ Aktiv' : '❌ Inaktiv'}
+        </td>
+      `;
+      tbody.appendChild(row);
+    });
+  }
+
+  function fetchMonitoringData() {
+    const spinner = document.getElementById("spinner");
+    spinner.style.display = "flex";
+
+    fetch("/api/v1/monitoring/tenants")
+        .then(response => {
+        if (!response.ok) throw new Error("Fehler beim Laden");
+        return response.json();
+        })
+        .then(data => {
+        renderMonitoringTable(data);
+        })
+        .catch(error => {
+        console.error("Fehler beim Laden der Monitoring-Daten:", error);
+        alert("Fehler beim Laden der Daten.");
+        })
+        .finally(() => {
+        spinner.style.display = "none"; // Hier wird der Spinner **immer** beendet
+        });
+    }
+
+  document.getElementById("filterInput").addEventListener("keyup", () => {
+    const query = document.getElementById("filterInput").value.toLowerCase();
+    const rows = document.querySelectorAll("#monitoringBody tr");
+    rows.forEach(row => {
+      const text = row.innerText.toLowerCase();
+      row.style.display = text.includes(query) ? "" : "none";
+    });
+  });
+
+  document.getElementById("resetButton").addEventListener("click", () => {
+    document.getElementById("filterInput").value = "";
+    document.querySelectorAll("#monitoringBody tr").forEach(row => row.style.display = "");
+  });
+
+  fetchMonitoringData();
+</script>
+
+</body>
+</html>

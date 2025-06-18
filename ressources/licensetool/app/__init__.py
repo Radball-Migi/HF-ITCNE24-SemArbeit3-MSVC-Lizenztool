@@ -19,6 +19,9 @@ def create_app(config_class=Config):
     from app.auth import bp as auth_bp
     app.register_blueprint(auth_bp, url_prefix='/api/v1/auth')
     
+    from app.monitoring import bp as monitoring_bp
+    app.register_blueprint(monitoring_bp, url_prefix='/api/v1/monitoring')
+    
     
     # Datenbank erstellen (nur beim ersten Start erforderlich)
     with app.app_context():

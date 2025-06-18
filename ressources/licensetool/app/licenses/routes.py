@@ -5,7 +5,7 @@ from app.licenses import bp
 from apiflask.fields import Integer as APIInteger, String as APIString
 from apiflask.validators import Length
 from app.models.license import LicenseModel, LicenseIn, LicenseOut, LicenseStatusOut, LicenseStatusAllOut
-from app.modules.mggraph import GraphLicenseClient, push_license_status_to_sharepoint
+from app.modules.mggraph import GraphLicenseClient, SharePointClientTask
 from pathlib import Path
 from app.auth.utils import login_required
 import re
@@ -179,7 +179,7 @@ def get_license_all_showfetch():
                 statusall.append(license_info)
 
             # Push Lizenzdaten für diesen Tenant ins SharePoint
-            push_license_status_to_sharepoint(display_name, licenses)
+            SharePointClientTask.push_license_status_to_sharepoint(display_name, licenses)
 
         except Exception as e:
             print(f"Fehler bei Tenant {tenant_id}: {e}")
@@ -223,7 +223,7 @@ def get_license_status_tenant_showfetch(tenant_name):
             })
 
         # Optional: Push in SharePoint
-        push_license_status_to_sharepoint(display_name, licenses)
+        SharePointClientTask.push_license_status_to_sharepoint(display_name, licenses)
 
         print(f"[DEBUG] Lizenzliste ({len(licenses)} Einträge) erfolgreich erstellt.")
         return licenses
