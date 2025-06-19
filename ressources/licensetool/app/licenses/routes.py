@@ -8,6 +8,7 @@ from app.models.license import LicenseModel, LicenseIn, LicenseOut, LicenseStatu
 from app.modules.mggraph import GraphLicenseClient, SharePointClientTask
 from pathlib import Path
 from app.auth.utils import login_required
+from app.modules.sku_mapping import SKU_DISPLAY_NAMES
 import re
 import json
 
@@ -70,7 +71,7 @@ def get_license_show_all():
             with open(config_file, "r") as f:
                 config_data = json.load(f)
 
-            display_name = config_data.get("tenant_name") or config_data.get("name") or tenant_id
+            tenant_display_name = config_data.get("tenant_name") or config_data.get("name") or tenant_id
 
             client = GraphLicenseClient(tenant_id)
             data = client.get_license_status()
@@ -81,14 +82,16 @@ def get_license_show_all():
                 consumed = item.get('consumedUnits', 0)
                 available = item.get('prepaidUnits', {}).get('enabled', 0)
                 free = int(available) - int(consumed)
+                
+                sku_display_name = SKU_DISPLAY_NAMES.get(item.get('skuPartNumber'), item.get('skuPartNumber'))
 
                 license_info = {
                     'skuid': item.get('skuId', 'UNKNOWN'),
-                    'skupartnumber': item.get('skuPartNumber', 'UNKNOWN'),
+                    'skupartnumber': f"{sku_display_name}<br>({item.get('skuPartNumber', 'UNKNOWN')})",
                     'consumed_units': consumed,
                     'available_units': available,
                     'free_units': free,
-                    'tenant': display_name
+                    'tenant': tenant_display_name
                 }
 
                 licenses.append(license_info)
@@ -111,23 +114,24 @@ def get_license_status_tenant_show(tenant_name):
 
         client = GraphLicenseClient(tenant_name)
         data = client.get_license_status()
-        display_name = config_data.get("tenant_name")
+        tenant_display_name = config_data.get("tenant_name")
 
         licenses = []
         for item in data.get("value", []):
             consumed = item.get('consumedUnits', 0)
             available = item.get('prepaidUnits', {}).get('enabled', 0)
             free = int(available) - int(consumed)
+            sku_display_name = SKU_DISPLAY_NAMES.get(item.get('skuPartNumber'), item.get('skuPartNumber'))
 
             licenses.append({
                 'skuid': item.get('skuId', 'UNKNOWN'),
-                'skupartnumber': item.get('skuPartNumber', 'UNKNOWN'),
+                'skupartnumber': f"{sku_display_name}<br>({item.get('skuPartNumber', 'UNKNOWN')})",
                 'consumed_units': consumed,
                 'available_units': available,
                 'free_units': free
             })
 
-        print(display_name)
+        print(tenant_display_name)
 
         return licenses
 
@@ -154,7 +158,7 @@ def get_license_all_showfetch():
             with open(config_file, "r") as f:
                 config_data = json.load(f)
 
-            display_name = config_data.get("tenant_name") or config_data.get("name") or tenant_id
+            tenant_display_name = config_data.get("tenant_name") or config_data.get("name") or tenant_id
 
             client = GraphLicenseClient(tenant_id)
             data = client.get_license_status()
@@ -165,21 +169,22 @@ def get_license_all_showfetch():
                 consumed = item.get('consumedUnits', 0)
                 available = item.get('prepaidUnits', {}).get('enabled', 0)
                 free = int(available) - int(consumed)
+                sku_display_name = SKU_DISPLAY_NAMES.get(item.get('skuPartNumber'), item.get('skuPartNumber'))
 
                 license_info = {
                     'skuid': item.get('skuId', 'UNKNOWN'),
-                    'skupartnumber': item.get('skuPartNumber', 'UNKNOWN'),
+                    'skupartnumber': f"{sku_display_name} ({item.get('skuPartNumber', 'UNKNOWN')})",
                     'consumed_units': consumed,
                     'available_units': available,
                     'free_units': free,
-                    'tenant': display_name
+                    'tenant': tenant_display_name
                 }
 
                 licenses.append(license_info)
                 statusall.append(license_info)
 
             # Push Lizenzdaten für diesen Tenant ins SharePoint
-            SharePointClientTask.push_license_status_to_sharepoint(display_name, licenses)
+            SharePointClientTask.push_license_status_to_sharepoint(tenant_display_name, licenses)
 
         except Exception as e:
             print(f"Fehler bei Tenant {tenant_id}: {e}")
@@ -198,8 +203,8 @@ def get_license_status_tenant_showfetch(tenant_name):
         with open(config_file, "r") as f:
             config_data = json.load(f)
 
-        display_name = config_data.get("tenant_name")
-        print(f"[DEBUG] Display-Name aus Konfig: {display_name}")
+        tenant_display_name = config_data.get("tenant_name")
+        print(f"[DEBUG] Display-Name aus Konfig: {tenant_display_name}")
 
         client = GraphLicenseClient(tenant_name)
         data = client.get_license_status()
@@ -213,17 +218,18 @@ def get_license_status_tenant_showfetch(tenant_name):
             consumed = item.get('consumedUnits', 0)
             available = item.get('prepaidUnits', {}).get('enabled', 0)
             free = int(available) - int(consumed)
+            sku_display_name = SKU_DISPLAY_NAMES.get(item.get('skuPartNumber'), item.get('skuPartNumber'))
 
             licenses.append({
                 'skuid': item.get('skuId', 'UNKNOWN'),
-                'skupartnumber': item.get('skuPartNumber', 'UNKNOWN'),
+                'skupartnumber': f"{sku_display_name} ({item.get('skuPartNumber', 'UNKNOWN')})",
                 'consumed_units': consumed,
                 'available_units': available,
                 'free_units': free
             })
 
         # Optional: Push in SharePoint
-        SharePointClientTask.push_license_status_to_sharepoint(display_name, licenses)
+        SharePointClientTask.push_license_status_to_sharepoint(tenant_display_name, licenses)
 
         print(f"[DEBUG] Lizenzliste ({len(licenses)} Einträge) erfolgreich erstellt.")
         return licenses
