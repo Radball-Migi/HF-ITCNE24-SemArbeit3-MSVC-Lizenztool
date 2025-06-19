@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Lizenztool</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='statusall.css') }}">
+</head>
+<body>
+
+    <!-- 🔄 Spinner Overlay -->
+    <div id="spinner" class="spinner-overlay">
+        <div class="spinner"></div>
+    </div>
+
+    <header class="header">
+        <a href="http://localhost:5000">
+            <img src="https://www.iseag.ch/wp-content/uploads/logo_iseag_transparent_400.png"
+                 alt="ISEAG Logo"
+                 class="header-logo">
+        </a>
+
+        <h1 class="header-title">Status aller Lizenzen</h1>
+
+        <!-- Benutzeranzeige -->
+        <div class="user-menu">
+            {% if session.user %}
+                <div class="user-avatar" onclick="toggleDropdown()">
+                    {{ session.user.name[:1] }}{{ session.user.name.split(' ')[1][:1] if session.user.name.split(' ')|length > 1 else '' }}
+                </div>
+                <div id="user-dropdown" class="user-dropdown hidden">
+                    <p class="dropdown-name">{{ session.user.name }}</p>
+                    <p class="dropdown-email">{{ session.user.email }}</p>
+                    <a href="{{ url_for('auth.logout') }}" class="dropdown-button">🚪 Logout</a>
+                </div>
+            {% else %}
+                <a href="{{ url_for('auth.login') }}" class="main-button login-button">🔐 Login mit Microsoft</a>
+            {% endif %}
+        </div>
+    </header>
+
+    <div class="main-wrapper">
+        <!-- Filter & Tabellenbereich -->
+        <div class="filter-row">
+            <div class="button-section">
+                <strong>Ansicht wählen:</strong><br>
+                <button id="showBtn" class="mode-button" type="button">Nur anzeigen</button>
+                <button id="updateBtn" class="mode-button" type="button">Anzeigen & SP aktualisieren</button>
+            </div>
+
+            <div class="filter-section">
+                <label for="filterInput">Filter (Tenant oder Lizenz):</label>
+                <input type="text" id="filterInput" placeholder="z. B. ISE School">
+                <button id="resetButton" type="button">Zurücksetzen</button>
+            </div>
+        </div>
+
+        <table id="licenseTable">
+            <thead>
+                <tr>
+                    <th>Tenant</th>
+                    <th>SKU Part Number</th>
+                    <th>SKU ID</th>
+                    <th>Verfügbar</th>
+                    <th>Verbraucht</th>
+                    <th>Frei</th>
+                </tr>
+            </thead>
+            <tbody id="licenseBody">
+                <!-- Inhalte werden hier eingefügt -->
+            </tbody>
+        </table>
+    </div>
+    <!-- JS -->
+    <script>
+        let fullData = [];
+        let currentEndpoint = '/api/v1/licenses/status/show';
+
+        function showSpinner() {
+            document.getElementById("spinner").style.display = "flex";
+        }
+
+        function hideSpinner() {
+            document.getElementById("spinner").style.display = "none";
+        }
+
+        function renderTable(data) {
+            const tbody = document.getElementById('licenseBody');
+            tbody.innerHTML = '';
+            data.forEach(item => {
+                const row = document.createElement('tr');
+                if (item.free_units <= 0) {
+                    row.classList.add('low-license');
+                }
+                row.innerHTML = `
+                    <td>${item.tenant}</td>
+                    <td>${item.skupartnumber}</td>
+                    <td>${item.skuid}</td>
+                    <td>${item.available_units}</td>
+                    <td>${item.consumed_units}</td>
+                    <td>${item.free_units}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function filterTable() {
+            const query = document.getElementById("filterInput").value.toLowerCase();
+            const filtered = fullData.filter(item =>
+                item.tenant.toLowerCase().includes(query) ||
+                item.skupartnumber.toLowerCase().includes(query)
+            );
+            renderTable(filtered);
+        }
+
+        function loadData() {
+            showSpinner();
+            fetch(currentEndpoint)
+                .then(response => response.json())
+                .then(data => {
+                    fullData = Array.isArray(data) ? data : data.tenants || data.beispiele || [];
+                    renderTable(fullData);
+                })
+                .catch(error => {
+                    console.error("Fehler beim Laden der Daten:", error);
+                })
+                .finally(() => {
+                    hideSpinner();
+                });
+        }
+
+        function toggleButtons(activeId) {
+            document.getElementById("showBtn").disabled = (activeId === "showBtn");
+            document.getElementById("updateBtn").disabled = (activeId === "updateBtn");
+        }
+
+        document.getElementById("filterInput").addEventListener("keyup", filterTable);
+        document.getElementById("resetButton").addEventListener("click", () => {
+            document.getElementById("filterInput").value = "";
+            renderTable(fullData);
+        });
+
+        document.getElementById("showBtn").addEventListener("click", () => {
+            currentEndpoint = '/api/v1/licenses/status/show';
+            toggleButtons("showBtn");
+            loadData();
+        });
+
+        document.getElementById("updateBtn").addEventListener("click", () => {
+            currentEndpoint = '/api/v1/licenses/status/show-fetch';
+            toggleButtons("updateBtn");
+            loadData();
+        });
+
+        toggleButtons("showBtn");
+        loadData();
+
+        function toggleDropdown() {
+            const dropdown = document.getElementById('user-dropdown');
+            dropdown.classList.toggle('hidden');
+        }
+
+        document.addEventListener('click', function(event) {
+            const avatar = document.querySelector('.user-avatar');
+            const dropdown = document.getElementById('user-dropdown');
+            if (!avatar || !dropdown) return;
+            if (!avatar.contains(event.target) && !dropdown.contains(event.target)) {
+                dropdown.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>

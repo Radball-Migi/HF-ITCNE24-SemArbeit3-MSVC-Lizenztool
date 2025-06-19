@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="de">
+    <head>
+        <meta charset="UTF-8">
+        <title>Lizenztool</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='tenant.css') }}">
+    </head>
+    <body>
+        <!-- Spinner Overlay -->
+        <div id="spinner" class="spinner-overlay">
+            <div class="spinner"></div>
+        </div>
+
+       <header class="header">
+            <a href="http://localhost:5000">
+                <img src="https://www.iseag.ch/wp-content/uploads/logo_iseag_transparent_400.png"
+                    alt="ISEAG Logo"
+                    class="header-logo">
+            </a>
+
+            <h1 class="header-title">Status aller Lizenzen</h1>
+
+            <!-- Benutzeranzeige -->
+            <div class="user-menu">
+                {% if session.user %}
+                    <div class="user-avatar" onclick="toggleDropdown()">
+                        {{ session.user.name[:1] }}{{ session.user.name.split(' ')[1][:1] if session.user.name.split(' ')|length > 1 else '' }}
+                    </div>
+                    <div id="user-dropdown" class="user-dropdown hidden">
+                        <p class="dropdown-name">{{ session.user.name }}</p>
+                        <p class="dropdown-email">{{ session.user.email }}</p>
+                        <a href="{{ url_for('auth.logout') }}" class="dropdown-button">🚪 Logout</a>
+                    </div>
+                {% else %}
+                    <a href="{{ url_for('auth.login') }}" class="main-button login-button">🔐 Login mit Microsoft</a>
+                {% endif %}
+            </div>
+        </header>
+
+        <div class="main-wrapper">
+            <div class="filter-row">
+                <!-- Buttons zur Moduswahl -->
+                <div class="filter-container">
+                    <div class="button-section">
+                        <strong>Ansicht wählen:</strong><br>
+                        <button id="showBtn" class="mode-button" type="button">Nur anzeigen</button>
+                        <button id="updateBtn" class="mode-button" type="button">Anzeigen & SP aktualisieren</button>
+                    </div>
+                </div>
+
+                <!-- Formular -->
+                <div class="form-container">
+                    <form id="tenantForm">
+                        <label for="tenant_name">Tenant Name:</label>
+                        <input type="text" name="tenant_name" id="tenant_name" required>
+                        <button type="submit" class="mode-button">Abfragen</button>
+                    </form>
+                </div>
+            </div>
+
+            <hr>
+
+            <div id="result"></div>
+        </div>
+
+        <script>
+            let fullData = [];
+            let currentEndpoint = '/api/v1/licenses/status/show'; // Default
+            const tenantInput = document.getElementById("tenant_name");
+            const resultDiv = document.getElementById("result");
+
+            function showSpinner() {
+                document.getElementById("spinner").style.display = "flex";
+            }
+
+            function hideSpinner() {
+                document.getElementById("spinner").style.display = "none";
+            }
+
+            function toggleButtons(activeId) {
+                document.getElementById("showBtn").disabled = (activeId === "showBtn");
+                document.getElementById("updateBtn").disabled = (activeId === "updateBtn");
+            }
+
+            function renderTable(data, tenantName) {
+                const table = document.createElement('table');
+                table.setAttribute('cellpadding', '5');
+                table.setAttribute('border', '1');
+
+                table.innerHTML = `
+                    <thead>
+                        <tr>
+                            <th>Tenant</th>
+                            <th>SKU Part Number</th>
+                            <th>SKU ID</th>
+                            <th>Verfügbar</th>
+                            <th>Verbraucht</th>
+                            <th>Frei</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${data.map(lic => `
+                            <tr class="${lic.free_units <= 0 ? 'low-license' : ''}">
+                                <td>${tenantName}</td>
+                                <td>${lic.skupartnumber || 'UNKNOWN'}</td>
+                                <td>${lic.skuid || 'UNKNOWN'}</td>
+                                <td>${lic.available_units}</td>
+                                <td>${lic.consumed_units}</td>
+                                <td>${lic.free_units}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                `;
+                return table;
+            }
+
+            async function loadData() {
+                const tenantName = tenantInput.value.trim();
+                if (!tenantName) {
+                    resultDiv.innerHTML = "<p style='color:red;'>Bitte einen Tenant eingeben.</p>";
+                    return;
+                }
+
+                resultDiv.innerHTML = '';
+                showSpinner();
+
+                try {
+                    const url = `${currentEndpoint}/${tenantName}`;
+                    const response = await fetch(url);
+
+                    if (!response.ok) {
+                        resultDiv.innerHTML = `<p style='color:red;'>Fehler beim Abrufen: ${response.statusText}</p>`;
+                        return;
+                    }
+
+                    const data = await response.json();
+                    fullData = Array.isArray(data) ? data : [];
+
+                    if (!fullData.length) {
+                        resultDiv.innerHTML = "<p>Keine Lizenzen gefunden.</p>";
+                        return;
+                    }
+
+                    resultDiv.appendChild(renderTable(fullData, tenantName));
+                } catch (err) {
+                    resultDiv.innerHTML = `<p style="color:red;">Fehler: ${err.message}</p>`;
+                } finally {
+                    hideSpinner();
+                }
+            }
+
+            // Event: Buttons
+            document.getElementById("showBtn").addEventListener("click", () => {
+                currentEndpoint = '/api/v1/licenses/status/show';
+                toggleButtons("showBtn");
+                loadData();
+            });
+
+            document.getElementById("updateBtn").addEventListener("click", () => {
+                currentEndpoint = '/api/v1/licenses/status/show-fetch';
+                toggleButtons("updateBtn");
+                loadData();
+            });
+
+            // Event: Enter-Taste / Formular
+            document.getElementById("tenantForm").addEventListener("submit", function (e) {
+                e.preventDefault();
+                loadData(); // lädt mit aktuellem Endpunkt
+            });
+
+            // Initialstatus setzen
+            currentEndpoint = '/api/v1/licenses/status/show';
+            toggleButtons("showBtn");
+
+            function toggleDropdown() {
+                const dropdown = document.getElementById('user-dropdown');
+                dropdown.classList.toggle('hidden');
+            }
+
+            document.addEventListener('click', function(event) {
+                const avatar = document.querySelector('.user-avatar');
+                const dropdown = document.getElementById('user-dropdown');
+
+                if (!avatar || !dropdown) return;
+
+                if (!avatar.contains(event.target) && !dropdown.contains(event.target)) {
+                    dropdown.classList.add('hidden');
+                }
+            });
+        </script>
+    </body>
+</html>

@@ -9,8 +9,9 @@ def client():
     app.config.update({
         "TESTING": True,
     })
+    client = app.test_client()
 
     with app.app_context():
         create_test_data()
 
-    return app.test_client()
+    return client
