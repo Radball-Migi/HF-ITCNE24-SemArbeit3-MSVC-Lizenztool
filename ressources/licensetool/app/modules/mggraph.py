@@ -5,6 +5,9 @@ import os
 import requests
 from urllib.parse import quote
 from msal import ConfidentialClientApplication
+import logging
+
+logger = logging.getLogger(__name__)
 
 class GraphLicenseClient:
     def __init__(self, tenant_name: str):
@@ -29,6 +32,7 @@ class GraphLicenseClient:
         )
         result = app.acquire_token_for_client(scopes=["https://graph.microsoft.com/.default"])
         if "access_token" not in result:
+            logger.error(f"Token acquisition failed: {result.get('error_description')}")
             raise Exception(f"Token acquisition failed: {result.get('error_description')}")
         return result["access_token"]
 
@@ -36,6 +40,7 @@ class GraphLicenseClient:
         headers = {"Authorization": f"Bearer {self.token}"}
         response = requests.get("https://graph.microsoft.com/v1.0/subscribedSkus", headers=headers, timeout=10)
         if response.status_code != 200:
+            logger.error(f"Graph API error: {response.status_code} - {response.text}")
             raise Exception(f"Graph API error: {response.status_code} - {response.text}")
         return response.json()
 
@@ -61,6 +66,7 @@ class SharePointClient:
         )
         result = app.acquire_token_for_client(scopes=["https://graph.microsoft.com/.default"])
         if "access_token" not in result:
+            logger.error(f"SharePoint Token error: {result.get('error_description')}")
             raise Exception(f"SharePoint Token error: {result.get('error_description')}")
         return result["access_token"]
 
@@ -84,7 +90,6 @@ class SharePointClientTask(SharePointClient):
         field_mapping = sp_config["field_mapping"]
         tenant_field = sp_config["tenant_field"]
 
-        # Authentifizierung
         authority = f"https://login.microsoftonline.com/{tenant_id}"
         app = ConfidentialClientApplication(
             client_id=client_id,
@@ -97,7 +102,9 @@ class SharePointClientTask(SharePointClient):
 
         result = app.acquire_token_for_client(scopes=["https://graph.microsoft.com/.default"])
         if "access_token" not in result:
+            logger.error(f"Token acquisition failed: {result.get('error_description')}")
             raise Exception(f"Token acquisition failed: {result.get('error_description')}")
+
         token = result["access_token"] 
         headers = {
             "Authorization": f"Bearer {token}",
@@ -113,11 +120,11 @@ class SharePointClientTask(SharePointClient):
         matching_tenant = next((item for item in tenant_items if item["fields"].get("Title") == tenant_name), None)
 
         if not matching_tenant:
-            print(f"❌ Tenant '{tenant_name}' NICHT in Tenantliste gefunden – Abbruch.")
+            logger.warning(f"Tenant '{tenant_name}' NICHT in Tenantliste gefunden – Abbruch.")
             return
 
         if not matching_tenant["fields"].get("enabled", True):
-            print(f"⚠️ Tenant '{tenant_name}' ist inaktiv (enabled=False) – Abbruch.")
+            logger.info(f"Tenant '{tenant_name}' ist inaktiv (enabled=False) – Abbruch.")
             return
 
         # Schritt 2: Hole bestehende Lizenz-Einträge
@@ -141,7 +148,6 @@ class SharePointClientTask(SharePointClient):
                 None
             )
 
-            # Felder zusammenstellen (nur Zahlen bei Update)
             if match:
                 item_id = match["id"]
                 match_fields = match["fields"]
@@ -153,21 +159,16 @@ class SharePointClientTask(SharePointClient):
                     field_mapping["Verfügbar"]: avail
                 }
 
-                # Wenn freie Lizenzen 0 und Techniker noch nicht informiert
                 if free == 0 and not technician_informed:
                     sp_fields[field_mapping["Infosup"]] = True
-
-                # Wenn Lizenzen verfügbar sind und Techniker war informiert → zurücksetzen
                 if free > 0 and technician_informed:
                     sp_fields["technician_informed"] = False
 
                 url_update = f"https://graph.microsoft.com/v1.0/sites/{site_id}/lists/{license_list_id}/items/{item_id}/fields"
                 response = requests.patch(url_update, headers=headers, json=sp_fields)
                 response.raise_for_status()
-                print(f"🔁 Lizenz '{sku}' für Tenant '{tenant_name}' wurde aktualisiert.")
-
+                logger.info(f"Lizenz '{sku}' für Tenant '{tenant_name}' wurde aktualisiert.")
             else:
-                # Neuanlage – vollständige Felder setzen
                 sp_fields = {
                     field_mapping["Tenant"]: tenant_name,
                     field_mapping["Lizenzname"]: sku,
@@ -177,11 +178,9 @@ class SharePointClientTask(SharePointClient):
                 }
                 url_create = f"https://graph.microsoft.com/v1.0/sites/{site_id}/lists/{license_list_id}/items"
                 response = requests.post(url_create, headers=headers, json={"fields": sp_fields})
-                print(f"🆕 Neue Lizenz '{sku}' für Tenant '{tenant_name}' erstellt.")
+                response.raise_for_status()
+                logger.info(f"Neue Lizenz '{sku}' für Tenant '{tenant_name}' erstellt.")
 
-            response.raise_for_status()
-            
-            
     def get_tenants_from_sharepoint():
         config_file = "config-profiles/sharepoint/sp-config-iseschool2013-profile.json"
         with open(config_file, "r") as f:
@@ -203,6 +202,7 @@ class SharePointClientTask(SharePointClient):
 
         result = app.acquire_token_for_client(scopes=["https://graph.microsoft.com/.default"])
         if "access_token" not in result:
+            logger.error(f"Token acquisition failed: {result.get('error_description')}")
             raise Exception(f"Token acquisition failed: {result.get('error_description')}")
 
         token = result["access_token"]
@@ -223,11 +223,11 @@ class SharePointClientTask(SharePointClient):
                 "id": item.get("id"),
                 "title": fields.get("Title"),
                 "enabled": fields.get("enabled", True),
-                "monitoring": fields.get("monitoring", False)  # falls vorhanden
+                "monitoring": fields.get("monitoring", False)
             })
 
         return tenant_list
-    
+
     @staticmethod
     def update_tenant_fields(item_id: int, enabled=None, monitoring=None):
         config_file = "config-profiles/sharepoint/sp-config-iseschool2013-profile.json"
@@ -250,6 +250,7 @@ class SharePointClientTask(SharePointClient):
 
         result = app.acquire_token_for_client(scopes=["https://graph.microsoft.com/.default"])
         if "access_token" not in result:
+            logger.error(f"Token acquisition failed: {result.get('error_description')}")
             raise Exception(f"Token acquisition failed: {result.get('error_description')}")
 
         token = result["access_token"]
@@ -258,7 +259,6 @@ class SharePointClientTask(SharePointClient):
             "Content-Type": "application/json"
         }
 
-        # Nur Felder befüllen, die angegeben sind
         fields = {}
         if enabled is not None:
             fields["enabled"] = enabled
@@ -272,7 +272,5 @@ class SharePointClientTask(SharePointClient):
         response = requests.patch(url, headers=headers, json=fields)
         response.raise_for_status()
 
+        logger.info(f"Tenant '{item_id}' erfolgreich aktualisiert: {fields}")
         return {"id": item_id, "updated": fields}
-
-
-

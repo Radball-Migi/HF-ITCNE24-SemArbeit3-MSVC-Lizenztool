@@ -3,8 +3,10 @@ from apiflask.fields import Integer, String
 from apiflask.validators import Length, OneOf
 from config import Config
 from app.extensions import db
+from app.modules.logging_config import setup_logging
 
 def create_app(config_class=Config):
+    setup_logging()  # Logging initialisieren
     app = APIFlask(__name__, docs_path='/api/v1/docs', template_folder='templates')
     app.config.from_object(config_class)
     
