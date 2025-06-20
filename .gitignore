@@ -40,3 +40,6 @@ ressources/licensetool/app/test-output/*.jsonc
 ressources/licensetool/config-profiles/auth
 ressources/licensetool/config-profiles/sharepoint
 
+ressources/licensetool/logs
+
+
