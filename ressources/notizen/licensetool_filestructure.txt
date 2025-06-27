@@ -1,0 +1,66 @@
+licensetool
+├── app
+│   ├── Auth
+│   │    ├── __init.py
+│   │    ├── routes.py
+│   │    └── utils.py
+│   ├── licenses
+│   │    ├── __init.py
+│   │    └── routes.py
+│   ├── main
+│   │    ├── __init.py
+│   │    └── routes.py
+│   ├── models
+│   │    └── license.py
+│   ├── modules
+│   │    ├── logging.py
+│   │    ├── mggraph.py
+│   │    └── sku_mapping.py
+│   ├── monitoring
+│   │    ├── __init.py
+│   │    └── routes.py
+│   ├── static
+│   │    ├── images
+│   │	   │    └── frontend.css
+│   │    ├── frontend.css
+│   │    ├── mainpage.css
+│   │    ├── monitoring.css
+│   │    ├── statusall.css
+│   │    └── tenant.css
+│   ├── templates
+│   │    ├── frontend.html
+│   │    ├── mainpage.html
+│   │    ├── monitoring.html
+│   │    ├── statusall.html
+│   │    └── tenant.html
+│   ├── __init__.py
+│   └── extensions.py
+├── certs
+│   ├── *certfolder foreach tenant*
+│   ├── *info folder foreach tenant*
+│   └── certcreation.sh
+├── config
+│   └── sku_mapping.json
+├── config-profiles
+│   ├── auth
+│   │    └── *Config-profile for auth-module*
+│   ├── sharepoint
+│   │    └── *Config-profile for sharepoint-connection (licenselist)*
+│   └── *cofig-profile foreach tenant*
+├── logs
+│   └── licensetool.log
+├── test
+│   ├── __init__.py
+│   ├── conftest.py
+│   ├── create_test_data.py
+│   ├── test_auth.py
+│   ├── test_license.py
+│   ├── test_main.py
+│   └── test_monitoring.py
+├── app.db
+├── compose.test.yaml
+├── compose.yaml
+├── config.py
+├── dockerfile
+├── dockerfile.test
+└── requirements.txt
