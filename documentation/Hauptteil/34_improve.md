@@ -174,7 +174,7 @@ licensetool
 
 ### 📡 Lizenzabfrage via Microsoft Graph API
 
-Die eigentliche Abfrage der Lizenzinformationen (`subscribedSkus`) erfolgt über das Modul [`mggraph.py`](../../ressources/licensetool/app/modules/mggraph.py). Dort übernimmt die Klasse `GraphLicenseClient` die Authentifizierung sowie die API-Kommunikation.
+Die eigentliche Abfrage der Lizenzinformationen (`subscribedSkus`) erfolgt über das Modul [`mggraph.py`](../../ressources/licensetool/app/modules/). Dort übernimmt die Klasse `GraphLicenseClient` die Authentifizierung sowie die API-Kommunikation.
 
 ```python
 class GraphLicenseClient:
