@@ -126,7 +126,7 @@ Zusätzlich wurde ein **Swagger-Dokumentationsinterface** eingerichtet, um alle 
 👉 [Lizenztool Swagger UI (lokal)](http://localhost:5000/api/v1/docs) *(nur aktiv bei laufendem Docker-Container)*
 
 
-### Erweiterung: Lizenzabfrage bei anderen Tenants (via Microsoft Graph)
+### Implementierung: Lizenzabfrage bei anderen Tenants (via Microsoft Graph)
 
 Nachdem das Grundgerüst des Microservices steht und die ersten API-Tests erfolgreich durchgeführt wurden, ging es im nächsten Schritt darum, **die Lizenzdaten automatisiert für verschiedene Microsoft-Tenants abzufragen** und für die spätere Weiterverarbeitung (z. B. Speicherung oder Eskalation) bereitzustellen.
 
@@ -169,8 +169,6 @@ licensetool
 │   └── *config-profile foreach tenant*
 │...
 ```
-
----
 
 ### 📡 Lizenzabfrage via Microsoft Graph API
 
@@ -215,8 +213,6 @@ class GraphLicenseClient:
         return response.json()
 ```
 
----
-
 ### Beispielhafte API-Antwort
 
 Die `get_license_status()`-Methode liefert eine strukturierte JSON-Antwort mit allen abonnierten Lizenzen des Tenants:
@@ -224,39 +220,39 @@ Die `get_license_status()`-Methode liefert eine strukturierte JSON-Antwort mit a
 ```json
 [
   {
-    "available_units": 70,
-    "consumed_units": 25,
-    "free_units": 45,
-    "skuid": "94763226-9b3c-4e75-a931-5c89701abe66",
-    "skupartnumber": "Office 365 A1 f\u00fcr Lehrpersonal<br>(STANDARDWOFFPACK_FACULTY)"
-  },
-  {
-    "available_units": 4,
-    "consumed_units": 3,
+    "available_units": 20,
+    "consumed_units": 19,
     "free_units": 1,
-    "skuid": "0e142028-345e-45da-8d92-8bfd4093bbb9",
-    "skupartnumber": "Microsoft Teams Telefon-Ressourcenkonto f\u00fcr Lehrpersonal<br>(PHONESYSTEM_VIRTUALUSER_FACULTY)"
+    "skuid": "94763226-9b3c-4e75-a931-5c89701abe66",
+    "skupartnumber": "STANDARDWOFFPACK_FACULTY"
   },
   {
-    "available_units": 4,
-    "consumed_units": 4,
+    "available_units": 1,
+    "consumed_units": 1,
     "free_units": 0,
+    "skuid": "0e142028-345e-45da-8d92-8bfd4093bbb9",
+    "skupartnumber": "PHONESYSTEM_VIRTUALUSER_FACULTY"
+  },
+  {
+    "available_units": 12,
+    "consumed_units": 10,
+    "free_units": 2,
     "skuid": "d979703c-028d-4de5-acbf-7955566b69b9",
-    "skupartnumber": "Microsoft Teams Telefon Standard f\u00fcr Lehrpersonal<br>(MCOEV_FACULTY)"
+    "skupartnumber": "MCOEV_FACULTY"
   },
   {
-    "available_units": 100,
-    "consumed_units": 20,
-    "free_units": 80,
+    "available_units": 2000,
+    "consumed_units": 1500,
+    "free_units": 500,
     "skuid": "314c4481-f395-4525-be8b-2ec4bb1e9d91",
-    "skupartnumber": "Office 365 A1 f\u00fcr Sch\u00fcler und Studenten<br>(STANDARDWOFFPACK_STUDENT)"
+    "skupartnumber": "STANDARDWOFFPACK_STUDENT"
   },
   {
-    "available_units": 10000,
+    "available_units": 100000,
     "consumed_units": 7,
-    "free_units": 9993,
+    "free_units": 99930,
     "skuid": "f30db892-07e9-47e9-837c-80727f46fd3d",
-    "skupartnumber": "Microsoft Power Automate Free<br>(FLOW_FREE)"
+    "skupartnumber": "FLOW_FREE"
   }
 ]
 ```
@@ -265,7 +261,225 @@ Die `get_license_status()`-Methode liefert eine strukturierte JSON-Antwort mit a
 > Die angezeigten Lizenzzahlen wurden zu Test- und Demonstrationszwecken **angepasst** und entsprechen **nicht den realen Werten** produktiver Microsoft-Tenants.  
 > Zudem wurden sämtliche darstellbaren Informationen im Sinne des Datenschutzes **anonymisiert oder verfremdet**, um Rückschlüsse auf reale Kundendaten auszuschliessen.
 
+Somit haben wir bereits einen wichtigen Schritt gemacht, indem wir die Lizenzen als JSON zurück erhalten.
+Als nächstes, müssen wir die Daten aufwerten und bereitmachen für das Frontend. 
+
+___
+
+
+### ### Implementierung: Frontend zur Visualisierung der Lizenzdaten
+
+Nachdem die Lizenzdaten erfolgreich über die Microsoft Graph API abgerufen und als JSON verarbeitet werden konnten, wurde im nächsten Schritt ein **benutzerfreundliches Frontend** entwickelt. Dieses dient allen Mitarbeitenden – unabhängig vom technischen Hintergrund – als zentrale Übersicht, um den aktuellen Lizenzstatus jederzeit auf einen Blick einsehen zu können.
+
+Ziel war es, eine **intuitive und optisch ansprechende Oberfläche** bereitzustellen, die den aktuellen Zustand der Lizenzen klar darstellt, Filtermöglichkeiten bietet und potenzielle Engpässe direkt ersichtlich macht – ohne dass die Nutzer mit technischen Details wie API-Calls oder Datenbanken konfrontiert werden.
+
+#### Verfügbare Ansichten im Frontend
+
+Es wurden mehrere HTML-Seiten (Templates) implementiert, jeweils mit eigener CSS-Datei zur Gestaltung:
+
+| Template-Datei    | Beschreibung                                                                                                             |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `statusall.html`  | Übersicht aller Lizenzen aus allen Tenants in einer zentralen Tabelle                                                    |
+| `tenant.html`     | Einzelabfrage eines spezifischen Tenants (z. B. Detailansicht)                                                           |
+| `mainpage.html`   | Startseite / Einstiegsseite ins Tool                                                                                     |
+| `monitoring.html` | Verwaltungsansicht zur Steuerung ob ein Tenant aktiv ist oder ob Mitteilungen zu diesem Tenant versendet werden sollen.  |
+
+
+```text
+├── app
+│   ├── static
+│   │    ├── images
+│   │	 │    └── frontend.css
+│   │    ├── mainpage.css
+│   │    ├── monitoring.css
+│   │    ├── statusall.css
+│   │    └── tenant.css
+│   ├── templates
+│   │    ├── mainpage.html
+│   │    ├── monitoring.html
+│   │    ├── statusall.html
+│   │    └── tenant.html
+│...
+```
+
+> `frontend.html` wurde zu Beginn verwendet, ist jedoch mittlerweile **veraltet** und nicht mehr im Einsatz.
+
+#### Routenbindung der Templates
+
+Die Templates werden mit dem Flask-Modul `render_template()` in den jeweiligen Blueprints geladen.
+
+```python
+# Beispiel einer Template-Route 
+@bp.get('/status/tenant')
+def show_tenant():
+    return render_template("tenant.html")
+```
+
+Ausschnitt aus [`app/licenses/routes.py`](https://github.com/Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool/blob/main/ressources/licensetool/app/licenses/routes.py)
+
+#### Funktionen im Frontend
+
+- **Tabellarische Darstellung** aller Lizenzdaten
+- **Farbliche Hervorhebung** bei kritischem Lizenzstand
+- **Such- und Filterfunktionen** über JavaScript
+- **Anbindung an API-Endpoint** über `fetch()` zur Anzeige der aktuellen Daten
+- **Trennung von HTML, CSS und Logik (JavaScript)** für bessere Wartbarkeit
+
+#### Beispielhafte HTML-/JS-Integration (`statusall.html`)
+
+```html
+<input type="text" id="filterInput" placeholder="z. B. ISE School">
+...
+<table id="licenseTable">
+  <thead>
+    <tr>
+      <th>Tenant</th>
+      <th>SKU Part Number</th>
+      <th>SKU ID</th>
+      <th>Verfügbar</th>
+      <th>Verbraucht</th>
+      <th>Frei</th>
+    </tr>
+  </thead>
+  <tbody id="licenseBody">
+    <!-- Dynamischer Inhalt -->
+  </tbody>
+</table>
+
+<script>
+  let fullData = [];
+
+  function renderTable(data) {
+    const tbody = document.getElementById('licenseBody');
+    tbody.innerHTML = '';
+    data.forEach(item => {
+      const row = document.createElement('tr');
+      if (item.free_units <= 0) row.classList.add('low-license');
+      row.innerHTML = `
+        <td>${item.tenant}</td>
+        <td>${item.skupartnumber}</td>
+        <td>${item.skuid}</td>
+        <td>${item.available_units}</td>
+        <td>${item.consumed_units}</td>
+        <td>${item.free_units}</td>
+      `;
+      tbody.appendChild(row);
+    });
+  }
+
+  fetch('/api/v1/licenses/status')
+    .then(response => response.json())
+    .then(data => {
+      fullData = data;
+      renderTable(fullData);
+    });
+
+  document.getElementById("filterInput").addEventListener("keyup", () => {
+    const query = document.getElementById("filterInput").value.toLowerCase();
+    const filtered = fullData.filter(item =>
+      item.tenant.toLowerCase().includes(query) ||
+      item.skupartnumber.toLowerCase().includes(query)
+    );
+    renderTable(filtered);
+  });
+</script>
+```
+
+#### Ziel des Frontends
+
+Das Frontend schafft eine klare Benutzeroberfläche, in der Lizenzdaten:
+
+- **tabellarisch dargestellt** werden
+- durch **Farben oder Filter** visuell hervorgehoben sind
+- gezielt nach Tenants oder Lizenztypen **gefiltert** werden können
+- **aktuell** bleiben dank direkter API-Anbindung
+
+Damit kann jede Person schnell erfassen, ob **Handlungsbedarf** besteht – z. B. vollständigem Verbrauch.
+
+___ 
+
+### Implementierung: SharePoint-Einbindung
+
+Da in unserem Unternehmen intensiv mit **SharePoint** gearbeitet wird, war von Beginn an vorgesehen, die Lizenzdaten und Konfigurationen dort zentral zu verwalten. Der Microservice kommuniziert über die **Microsoft Graph API** mit SharePoint – sowohl zur Datenablage als auch zur Steuerung der Lizenzüberwachung.
+
+Ein zusätzlicher Grund für die SharePoint-Einbindung liegt in der geplanten **Alarmierung bei Lizenzengpässen über PowerAutomate**, die auf Felder in den SharePoint-Listen reagiert. PowerAutomate wird an anderer Stelle genauer erklärt – an dieser Stelle reicht es zu wissen, dass der SharePoint auch dafür als Trigger dient.
+
+Für den Zugriff wurde eine eigene App-Registrierung erstellt, welche ausschließlich die Berechtigungen für den SharePoint-Zugriff besitzt.
+
+```text
+├── config-profiles
+│   ├── sharepoint
+│   │    └── sp-config-<name>-profile.json
+```
+
+
+#### Übersicht der SharePoint-Listen und Felder
+
+##### Parameterliste – Systemweite Konfigurationswerte
+
+|Feldname|Typ|Beschreibung|
+|---|---|---|
+|`Parameter`|Textfeld|Der technische Name des Parameters (z. B. Mail-Adresse)|
+|`Parameterwert`|Textfeld|Der zugehörige Wert (z. B. support@iseag.ch)|
+
+> Wird verwendet für globale Konfigurationswerte wie Empfänger, Absender, Kommunikationskanal etc.
+
 ---
+
+##### Tenantliste – Steuerung der zu überwachenden Tenants
+
+|Feldname|Typ|Beschreibung|
+|---|---|---|
+|`Title`|Textfeld|Anzeigename / Name des Tenants|
+|`enabled`|Ja/Nein|Ob der Tenant aktiv überwacht werden soll|
+|`monitoring`|Ja/Nein|Ob bei Lizenzmangel eine Alarmierung (PowerAutomate) ausgelöst werden soll|
+|`cert_expires`|Datum|Ablaufdatum des hinterlegten App-Zertifikats|
+
+> Diese Liste ist für das Aktivieren/Deaktivieren einzelner Tenants zuständig und wird bei jeder Abfrage vor der Datenverarbeitung geprüft.
+
+---
+
+##### Lizenzstatusliste – Aktuelle Lizenzwerte pro Tenant
+
+|Feldname|Typ|Beschreibung|
+|---|---|---|
+|`Lizenzname`|Textfeld|Name/Bezeichnung der Lizenz (z. B. STANDARDWOFFPACK_STUDENT)|
+|`Verfügbar`|Zahl|Anzahl insgesamt verfügbarer Lizenzen|
+|`Gebraucht`|Zahl|Anzahl aktuell verwendeter Lizenzen|
+|`Frei`|Zahl|Differenz zwischen Verfügbar und Gebraucht|
+|`tenant`|Textfeld|Name des zugehörigen Tenants|
+|`trigger_inform_supporter`|Ja/Nein|Wird bei 0 freien Lizenzen gesetzt, um den Flow via PowerAutomate zu starten|
+|`technician_informed`|Ja/Nein|Gibt an, ob der Support bereits informiert wurde|
+
+> Diese Liste ist der zentrale Datenspeicher des Lizenzstatus und dient zugleich als Triggerquelle für PowerAutomate.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Bei späteren Tests, wurde ersichtlich, dass wenn ich es zusammen mit dem Frontend kombiniere, ist die Ladezeit imens, nur schon bei 2 Tennatns mit insgesamt 25 Lizenzen, wurde die Ladezeit zum PRoblem, weshalb ich fürs Frontend weiterhin auf eine SQLite-Datenbank setze, um die abgefragten Daten zu cachen. 
+
 
 
 
