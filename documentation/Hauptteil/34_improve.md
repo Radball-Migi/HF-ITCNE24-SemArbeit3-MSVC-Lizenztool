@@ -28,7 +28,7 @@ Als Endprodukt habe ich einen Microservice, welcher mittels FlaskAPI und dessen 
 
 Das *Know-how* habe ich mir durch meine aktive Teilnahme am MSVC-Unterricht bei Boris Langert sowie durch die YouTube-Tutorials  <a href="https://www.youtube.com/watch?v=QXeEoD0pB3E&list=PLsyeobzWxl7poL9JTVyndKe62ieoN-MZ3" target="_blank">Python for Beginners | Telusko</a> von <a href="https://www.youtube.com/@Telusko" target="_blank">Telusko</a>. 
 
-> ⚠️ Wichtig <br>
+> ⚠️ **Wichtig **<br>
 > Die gesammte Umsetzung wird nur in einer lokalen Dockerumgebung aufgebaut. Da diese Semesterarbeit später auch in einer Produktiven umgebung in den Einsatz kommen kann, soll diese zuerst lokal funktionieren. 
 > Zusätzlich, wäre die Produktivumgebung später auch auf einem Server und würde durch Dockerdesktop betrieben/gehostet werden. Dieser Server ist aber nur durch das interne Netzwerk der Firma erreichbar
 > Somit ist das Szenario, lokal auf dem eigenen Notebook realistisch und fast 1:1 das gleiche.
@@ -107,7 +107,7 @@ licensetool
 
 Bereits mit diesem Setup war es möglich, erste **simulative API-Calls** durchzuführen. In der Anfangsphase wurden Testdaten manuell in die Datenbank eingetragen, um die korrekte Funktion der API-Endpunkte zu validieren.
 
-> ℹ️ Information <br>
+> ℹ️ **Information** <br>
 >Die SQLite-Datenbank dient in der Entwicklungsphase primär zu Testzwecken.
 
 #### Technische Eckdaten des Microservices
@@ -136,7 +136,8 @@ Da es sich bei den zu überwachenden Tenants um Microsoft-365-Umgebungen handelt
 
 In der ersten Version waren die Authentifizierungsdaten fest im Code hinterlegt – das war aus Sicherheits- und Wartungsgründen jedoch nicht ideal. Für die produktionsnahe Umsetzung habe ich mich deshalb für **dynamisch ladbare JSON-Konfigurationsprofile** entschieden. Diese enthalten alle nötigen Angaben (z. B. `tenant_id`, Zertifikatspfad, Ablaufdatum) und lassen sich bei Zertifikatserneuerung einfach austauschen.
 
-> ℹ️ Diese Abstraktion erlaubt eine saubere Trennung von Code und Konfiguration. Neue Tenants können künftig mit minimalem Aufwand eingebunden werden – es reicht ein neues Config-File und Zertifikat im jeweiligen Ordner.
+> ℹ️ **Information** <br>
+> Diese Abstraktion erlaubt eine saubere Trennung von Code und Konfiguration. Neue Tenants können künftig mit minimalem Aufwand eingebunden werden – es reicht ein neues Config-File und Zertifikat im jeweiligen Ordner.
 
 ##### Beispiel eines Config-Files:
 
@@ -149,7 +150,6 @@ In der ersten Version waren die Authentifizierungsdaten fest im Code hinterlegt 
   "cert_path": "certs/<tenantname>/mycert_<tenantname>.pem",
   "expires": "2026-05-19"
 }
-
 ```
 
 #### Erweiterung der Struktur
@@ -174,7 +174,7 @@ licensetool
 
 ### 📡 Lizenzabfrage via Microsoft Graph API
 
-Die eigentliche Abfrage der Lizenzinformationen (`subscribedSkus`) erfolgt über das Modul `mggraph.py`. Dort übernimmt die Klasse `GraphLicenseClient` die Authentifizierung sowie die API-Kommunikation.
+Die eigentliche Abfrage der Lizenzinformationen (`subscribedSkus`) erfolgt über das Modul [`mggraph.py`](../../ressources/licensetool/app/modules/mggraph.py). Dort übernimmt die Klasse `GraphLicenseClient` die Authentifizierung sowie die API-Kommunikation.
 
 ```python
 class GraphLicenseClient:
