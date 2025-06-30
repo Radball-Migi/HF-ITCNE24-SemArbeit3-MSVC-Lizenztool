@@ -28,7 +28,7 @@ Als Endprodukt habe ich einen Microservice, welcher mittels FlaskAPI und dessen 
 
 Das *Know-how* habe ich mir durch meine aktive Teilnahme am MSVC-Unterricht bei Boris Langert sowie durch die YouTube-Tutorials  <a href="https://www.youtube.com/watch?v=QXeEoD0pB3E&list=PLsyeobzWxl7poL9JTVyndKe62ieoN-MZ3" target="_blank">Python for Beginners | Telusko</a> von <a href="https://www.youtube.com/@Telusko" target="_blank">Telusko</a>. 
 
-> [!warning]
+> ⚠️ Wichtig
 > Die gesammte Umsetzung wird nur in einer lokalen Dockerumgebung aufgebaut. Da diese Semesterarbeit später auch in einer Produktiven umgebung in den Einsatz kommen kann, soll diese zuerst lokal funktionieren. 
 > Zusätzlich, wäre die Produktivumgebung später auch auf einem Server und würde durch Dockerdesktop betrieben/gehostet werden. Dieser Server ist aber nur durch das interne Netzwerk der Firma erreichbar
 > Somit ist das Szenario, lokal auf dem eigenen Notebook realistisch und fast 1:1 das gleiche.
@@ -38,7 +38,7 @@ Das *Know-how* habe ich mir durch meine aktive Teilnahme am MSVC-Unterricht be
 > 
 > Als erster Aufbau werden zwei Testtenants der ISE AG verwendet. Diese Simulieren dann alle Tenants, welche später ggf. gemonitort werden. 
 
-### Grundgerüst des Microservices
+### Grundgerüst des Microservices 
 
 Zu beginn habe ich mit der App begonnen, dort habe ich mit der Vorlage aus dem Unterricht begonnen und auf dieser Aufgebaut. 
 Da wir im Unterricht immer wieder ergänzugen gemacht haben, habe ich eigentlich von 0 begonnen und bis zum schritt alles vorbereitet, bis ich dort angelangt bin, bis dahin, wo ich auf der App aufbauen möchte. 
@@ -79,7 +79,7 @@ Das initiale Setup konzentrierte sich auf eine schlanke, aber funktionale Strukt
 - **Blueprints** zur sauberen Trennung von Funktionen und Routen
 - **SQLite** als leichtgewichtiges Datenbanksystem für die Entwicklungsphase
 
-#### 📂 Projektstruktur
+#### Projektstruktur
 
 ```text
 licensetool
@@ -107,7 +107,7 @@ licensetool
 
 Bereits mit diesem Setup war es möglich, erste **simulative API-Calls** durchzuführen. In der Anfangsphase wurden Testdaten manuell in die Datenbank eingetragen, um die korrekte Funktion der API-Endpunkte zu validieren.
 
->[! info]
+> ℹ️ Information
 >Die SQLite-Datenbank dient in der Entwicklungsphase primär zu Testzwecken.
 
 #### Technische Eckdaten des Microservices
@@ -120,6 +120,7 @@ Bereits mit diesem Setup war es möglich, erste **simulative API-Calls** durchzu
 | **API-Endpunkt** | `http://localhost:5000/api/v1`      |
 | **Swagger UI**   | `http://localhost:5000/api/v1/docs` |
 
+
 Zusätzlich wurde ein **Swagger-Dokumentationsinterface** eingerichtet, um alle API-Routen übersichtlich darzustellen. Dies erleichtert nicht nur die Entwicklung, sondern auch die spätere Integration in andere Systeme.
 
 👉 [Lizenztool Swagger UI (lokal)](http://localhost:5000/api/v1/docs) _(nur aktiv bei laufendem Docker-Container)_
@@ -127,28 +128,146 @@ Zusätzlich wurde ein **Swagger-Dokumentationsinterface** eingerichtet, um alle 
 
 ### Erweiterung: Lizenzabfrage bei anderen Tenants (via Microsoft Graph)
 
-Da nun das Grundgerüst steht und die API abfragen auf die Datenbank funktionieren, schauen wir nun, wie wir die Lizenzdaten in die Datenbank hinzufügen können. 
+Nachdem das Grundgerüst des Microservices steht und die ersten API-Tests erfolgreich durchgeführt wurden, ging es im nächsten Schritt darum, **die Lizenzdaten automatisiert für verschiedene Microsoft-Tenants abzufragen** und für die spätere Weiterverarbeitung (z. B. Speicherung oder Eskalation) bereitzustellen.
 
-Da es sich bei diesen Tenants um Microsoft-Tenants handelt, ist es eigentlich fast klar, das wir die daten via Microsoft Graph (MGGraph oder auch Graph) auslesen müssen. 
+Da es sich bei den zu überwachenden Tenants um Microsoft-365-Umgebungen handelt, bot sich die **Microsoft Graph API** als zentrale Schnittstelle an. Ich konnte hierfür auf bestehende Erfahrungen zurückgreifen, da ich eine ähnliche Funktion bereits in einem anderen Projekt implementiert hatte.
 
-Eine Connection mit Microsoft Graph, hatte ich bereits über ein anderes Projekt, an dem ich diese Funktion geschrieben habe. Deshalb habe ich zu beginn auch dieses verwendet. Das Rad müssen wir ja nicht neu erfinden, wenn es bereits vorhanden ist, nur das vorhandene verbessern ;)
+#### Sicherheit durch Config-Profile
 
-Bei der ersten Version der funktion, waren die Logindaten hardcoded im Code. 
-Für eine dynamische Struktur und den geplanten Einsatz, ist dies sehr suboptimal, da wir die Logins auch schützen möchten. Somit habe ich mich bei uns einmal umgeschaut und wir arbeiten in vielen Apps und auch Scripts mit Config-Profiles, welche JSON-Files sind, welche alle Informationen enthalten. Ein weiterer Vorteil dieser Config-Profiles ist dass wir dort zentrall alle Angaben zu einen Tenant oder Aufgabe mitgeben können, indem wir dies dort einfach hinterlegen. 
-Da die Zertifikate für die App-Registrierung (folgt später) nur 1 Jahr gültig ist, muss dies immer wieder erneuert werden (Sicherheitsgründe). So muss man nur das Config-Profile anpassen und nicht im Script rumsuchen.
+In der ersten Version waren die Authentifizierungsdaten fest im Code hinterlegt – das war aus Sicherheits- und Wartungsgründen jedoch nicht ideal. Für die produktionsnahe Umsetzung habe ich mich deshalb für **dynamisch ladbare JSON-Konfigurationsprofile** entschieden. Diese enthalten alle nötigen Angaben (z. B. `tenant_id`, Zertifikatspfad, Ablaufdatum) und lassen sich bei Zertifikatserneuerung einfach austauschen.
+
+> ℹ️ Diese Abstraktion erlaubt eine saubere Trennung von Code und Konfiguration. Neue Tenants können künftig mit minimalem Aufwand eingebunden werden – es reicht ein neues Config-File und Zertifikat im jeweiligen Ordner.
+
+##### Beispiel eines Config-Files:
 
 ```json
 {
-    "tenant_id": "<tenantid>",
-    "tenant_name": "tenantname",
-    "client_id": "<clientid>",
-    "thumbprint": "<thumbprint>",
-    "cert_path": "certs/<tenantname>/mycert_<tenantname>.pem",
-    "expires": "2026-05-19"
+  "tenant_id": "<tenantid>",
+  "tenant_name": "tenantname",
+  "client_id": "<clientid>",
+  "thumbprint": "<thumbprint>",
+  "cert_path": "certs/<tenantname>/mycert_<tenantname>.pem",
+  "expires": "2026-05-19"
 }
+
 ```
 
-*Beispiel eines config-profiles*
+#### Erweiterung der Struktur
+
+Im Projekt wurden folgende Ordner ergänzt:
+
+```text
+licensetool
+├── app
+│   ├── modules
+│   │   └── mggraph.py      # Graph-Modul zur Lizenzabfrage
+├── certs
+│   ├── *certfolder foreach tenant*
+│   ├── *info folder foreach tenant*
+│   └── certcreation.sh
+├── config-profiles
+│   └── *config-profile foreach tenant*
+│...
+```
+
+---
+
+### 📡 Lizenzabfrage via Microsoft Graph API
+
+Die eigentliche Abfrage der Lizenzinformationen (`subscribedSkus`) erfolgt über das Modul `mggraph.py`. Dort übernimmt die Klasse `GraphLicenseClient` die Authentifizierung sowie die API-Kommunikation.
+
+```python
+class GraphLicenseClient:
+    def __init__(self, tenant_name: str):
+        self.tenant_name = tenant_name
+        self.config = self._load_config()
+        self.token = self._authenticate()
+
+    def _load_config(self):
+        config_file = f"config-profiles/config-{self.tenant_name}-profile.json"
+        with open(config_file, "r") as f:
+            return json.load(f)
+
+    def _authenticate(self):
+        authority = f"https://login.microsoftonline.com/{self.config['tenant_id']}"
+        app = ConfidentialClientApplication(
+            client_id=self.config['client_id'],
+            authority=authority,
+            client_credential={
+                "private_key": open(self.config['cert_path'], "r").read(),
+                "thumbprint": self.config['thumbprint']
+            }
+        )
+        result = app.acquire_token_for_client(scopes=["https://graph.microsoft.com/.default"])
+        if "access_token" not in result:
+            raise Exception(f"Token acquisition failed: {result.get('error_description')}")
+        return result["access_token"]
+
+    def get_license_status(self):
+        headers = {"Authorization": f"Bearer {self.token}"}
+        response = requests.get(
+            "https://graph.microsoft.com/v1.0/subscribedSkus",
+            headers=headers,
+            timeout=10
+        )
+        if response.status_code != 200:
+            raise Exception(f"Graph API error: {response.status_code} - {response.text}")
+        return response.json()
+```
+
+---
+
+### Beispielhafte API-Antwort
+
+Die `get_license_status()`-Methode liefert eine strukturierte JSON-Antwort mit allen abonnierten Lizenzen des Tenants:
+
+```json
+[
+  {
+    "available_units": 70,
+    "consumed_units": 25,
+    "free_units": 45,
+    "skuid": "94763226-9b3c-4e75-a931-5c89701abe66",
+    "skupartnumber": "Office 365 A1 f\u00fcr Lehrpersonal<br>(STANDARDWOFFPACK_FACULTY)"
+  },
+  {
+    "available_units": 4,
+    "consumed_units": 3,
+    "free_units": 1,
+    "skuid": "0e142028-345e-45da-8d92-8bfd4093bbb9",
+    "skupartnumber": "Microsoft Teams Telefon-Ressourcenkonto f\u00fcr Lehrpersonal<br>(PHONESYSTEM_VIRTUALUSER_FACULTY)"
+  },
+  {
+    "available_units": 4,
+    "consumed_units": 4,
+    "free_units": 0,
+    "skuid": "d979703c-028d-4de5-acbf-7955566b69b9",
+    "skupartnumber": "Microsoft Teams Telefon Standard f\u00fcr Lehrpersonal<br>(MCOEV_FACULTY)"
+  },
+  {
+    "available_units": 100,
+    "consumed_units": 20,
+    "free_units": 80,
+    "skuid": "314c4481-f395-4525-be8b-2ec4bb1e9d91",
+    "skupartnumber": "Office 365 A1 f\u00fcr Sch\u00fcler und Studenten<br>(STANDARDWOFFPACK_STUDENT)"
+  },
+  {
+    "available_units": 10000,
+    "consumed_units": 7,
+    "free_units": 9993,
+    "skuid": "f30db892-07e9-47e9-837c-80727f46fd3d",
+    "skupartnumber": "Microsoft Power Automate Free<br>(FLOW_FREE)"
+  }
+]
+```
+
+> ℹ️ **Hinweis zu Daten und Datenschutz**  
+> Die angezeigten Lizenzzahlen wurden zu Test- und Demonstrationszwecken **angepasst** und entsprechen **nicht den realen Werten** produktiver Microsoft-Tenants.  
+> Zudem wurden sämtliche darstellbaren Informationen im Sinne des Datenschutzes **anonymisiert oder verfremdet**, um Rückschlüsse auf reale Kundendaten auszuschliessen.
+
+---
+
+
 
 
 
