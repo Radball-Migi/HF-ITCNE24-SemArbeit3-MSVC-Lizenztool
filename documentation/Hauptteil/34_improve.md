@@ -28,7 +28,7 @@ Als Endprodukt habe ich einen Microservice, welcher mittels FlaskAPI und dessen 
 
 Das *Know-how* habe ich mir durch meine aktive Teilnahme am MSVC-Unterricht bei Boris Langert sowie durch die YouTube-Tutorials  <a href="https://www.youtube.com/watch?v=QXeEoD0pB3E&list=PLsyeobzWxl7poL9JTVyndKe62ieoN-MZ3" target="_blank">Python for Beginners | Telusko</a> von <a href="https://www.youtube.com/@Telusko" target="_blank">Telusko</a>. 
 
-> ⚠️ Wichtig
+> ⚠️ Wichtig <br>
 > Die gesammte Umsetzung wird nur in einer lokalen Dockerumgebung aufgebaut. Da diese Semesterarbeit später auch in einer Produktiven umgebung in den Einsatz kommen kann, soll diese zuerst lokal funktionieren. 
 > Zusätzlich, wäre die Produktivumgebung später auch auf einem Server und würde durch Dockerdesktop betrieben/gehostet werden. Dieser Server ist aber nur durch das interne Netzwerk der Firma erreichbar
 > Somit ist das Szenario, lokal auf dem eigenen Notebook realistisch und fast 1:1 das gleiche.
@@ -57,10 +57,10 @@ Mit dieser Struktur, konnte bereits mittels ersten simulativen API Calls geteste
 
 #### Angaben zum Microsoervice
 
-Technologie: FlaskAPI
-Scriptsprache: Python
-Endpunkt: http://localhost:5000/api/v1
-Swagger-UI: http://localhost:5000/api/v1/docs
+Technologie: FlaskAPI <br>
+Scriptsprache: Python <br>
+Endpunkt: http://localhost:5000/api/v1 <br>
+Swagger-UI: http://localhost:5000/api/v1/docs <br>
 
 
 Zusätzlich wurde auch ein Swagger eingerichtet, um die einzelnen Routen zu dokumentieren.
@@ -107,7 +107,7 @@ licensetool
 
 Bereits mit diesem Setup war es möglich, erste **simulative API-Calls** durchzuführen. In der Anfangsphase wurden Testdaten manuell in die Datenbank eingetragen, um die korrekte Funktion der API-Endpunkte zu validieren.
 
-> ℹ️ Information
+> ℹ️ Information <br>
 >Die SQLite-Datenbank dient in der Entwicklungsphase primär zu Testzwecken.
 
 #### Technische Eckdaten des Microservices
@@ -123,7 +123,7 @@ Bereits mit diesem Setup war es möglich, erste **simulative API-Calls** durchzu
 
 Zusätzlich wurde ein **Swagger-Dokumentationsinterface** eingerichtet, um alle API-Routen übersichtlich darzustellen. Dies erleichtert nicht nur die Entwicklung, sondern auch die spätere Integration in andere Systeme.
 
-👉 [Lizenztool Swagger UI (lokal)](http://localhost:5000/api/v1/docs) _(nur aktiv bei laufendem Docker-Container)_
+👉 [Lizenztool Swagger UI (lokal)](http://localhost:5000/api/v1/docs) *(nur aktiv bei laufendem Docker-Container)*
 
 
 ### Erweiterung: Lizenzabfrage bei anderen Tenants (via Microsoft Graph)
