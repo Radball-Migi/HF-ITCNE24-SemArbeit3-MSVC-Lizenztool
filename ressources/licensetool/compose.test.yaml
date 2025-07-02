@@ -8,4 +8,4 @@ services:
       dockerfile: 'dockerfile.test'
     container_name: test-hf-itcne24-semarbeit3-msvc-lizenztool
     env_file:
-      - .env.test
+      - .env
