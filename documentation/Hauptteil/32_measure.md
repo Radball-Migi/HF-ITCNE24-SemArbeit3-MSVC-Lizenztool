@@ -62,7 +62,7 @@ Zur Analyse des aktuellen Lizenzprozesses wurden folgende Daten erhoben:
     
 - **Ressourceneinsatz**: Anzahl der Mitarbeitenden (z. B. IT-Support, Admins), die regelmäßig in die Bearbeitung von Lizenzthemen involviert sind.    
 
-Die Ergebnisse dieser Datenerhebung bilden die Grundlage für die nachfolgende [Analyse](./33_analize.md), in der Engpässe, Ineffizienzen und potenzielle Ursachen für Schwankungen im Prozessverlauf detailliert untersucht werden.
+Die Ergebnisse dieser Datenerhebung bilden die Grundlage für die nachfolgende [Analyse](33_analyze.md), in der Engpässe, Ineffizienzen und potenzielle Ursachen für Schwankungen im Prozessverlauf detailliert untersucht werden.
 
 
 

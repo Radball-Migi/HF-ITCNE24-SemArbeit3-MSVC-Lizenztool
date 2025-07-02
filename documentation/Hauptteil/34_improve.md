@@ -267,7 +267,7 @@ Als nächstes, müssen wir die Daten aufwerten und bereitmachen für das Fronten
 ___
 
 
-### ### Implementierung: Frontend zur Visualisierung der Lizenzdaten
+### Implementierung: Frontend zur Visualisierung der Lizenzdaten
 
 Nachdem die Lizenzdaten erfolgreich über die Microsoft Graph API abgerufen und als JSON verarbeitet werden konnten, wurde im nächsten Schritt ein **benutzerfreundliches Frontend** entwickelt. Dieses dient allen Mitarbeitenden – unabhängig vom technischen Hintergrund – als zentrale Übersicht, um den aktuellen Lizenzstatus jederzeit auf einen Blick einsehen zu können.
 
@@ -424,7 +424,6 @@ Für den Zugriff wurde eine eigene App-Registrierung erstellt, welche ausschlie�
 
 > Wird verwendet für globale Konfigurationswerte wie Empfänger, Absender, Kommunikationskanal etc.
 
----
 
 ##### Tenantliste – Steuerung der zu überwachenden Tenants
 
@@ -437,7 +436,6 @@ Für den Zugriff wurde eine eigene App-Registrierung erstellt, welche ausschlie�
 
 > Diese Liste ist für das Aktivieren/Deaktivieren einzelner Tenants zuständig und wird bei jeder Abfrage vor der Datenverarbeitung geprüft.
 
----
 
 ##### Lizenzstatusliste – Aktuelle Lizenzwerte pro Tenant
 
@@ -452,6 +450,11 @@ Für den Zugriff wurde eine eigene App-Registrierung erstellt, welche ausschlie�
 |`technician_informed`|Ja/Nein|Gibt an, ob der Support bereits informiert wurde|
 
 > Diese Liste ist der zentrale Datenspeicher des Lizenzstatus und dient zugleich als Triggerquelle für PowerAutomate.
+
+
+___ 
+
+### Implementierung PowerAutomate Flow
 
 
 
