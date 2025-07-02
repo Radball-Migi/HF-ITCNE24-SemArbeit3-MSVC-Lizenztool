@@ -284,7 +284,6 @@ Es wurden mehrere HTML-Seiten (Templates) implementiert, jeweils mit eigener CSS
 | `mainpage.html`   | Startseite / Einstiegsseite ins Tool                                                                                     |
 | `monitoring.html` | Verwaltungsansicht zur Steuerung ob ein Tenant aktiv ist oder ob Mitteilungen zu diesem Tenant versendet werden sollen.  |
 
-
 ```text
 ├── app
 │   ├── static
@@ -301,8 +300,6 @@ Es wurden mehrere HTML-Seiten (Templates) implementiert, jeweils mit eigener CSS
 │   │    └── tenant.html
 │...
 ```
-
-> `frontend.html` wurde zu Beginn verwendet, ist jedoch mittlerweile **veraltet** und nicht mehr im Einsatz.
 
 #### Routenbindung der Templates
 
@@ -404,7 +401,7 @@ Da in unserem Unternehmen intensiv mit **SharePoint** gearbeitet wird, war von B
 
 Ein zusätzlicher Grund für die SharePoint-Einbindung liegt in der geplanten **Alarmierung bei Lizenzengpässen über PowerAutomate**, die auf Felder in den SharePoint-Listen reagiert. PowerAutomate wird an anderer Stelle genauer erklärt – an dieser Stelle reicht es zu wissen, dass der SharePoint auch dafür als Trigger dient.
 
-Für den Zugriff wurde eine eigene App-Registrierung erstellt, welche ausschließlich die Berechtigungen für den SharePoint-Zugriff besitzt.
+Für den Zugriff wurde eine eigene App-Registrierung erstellt, welche ausschliesslich die Berechtigungen für den SharePoint-Zugriff besitzt.
 
 ```text
 ├── config-profiles
@@ -452,19 +449,204 @@ Für den Zugriff wurde eine eigene App-Registrierung erstellt, welche ausschlie�
 > Diese Liste ist der zentrale Datenspeicher des Lizenzstatus und dient zugleich als Triggerquelle für PowerAutomate.
 
 
+##### Technische Umsetzung im Code
+
+Die Aktualisierung bzw. Erstellung der SharePoint-Einträge erfolgt im Modul `mggraph.py` innerhalb der Funktion `push_license_status_to_sharepoint()`.
+
+Für jede Lizenz wird geprüft, ob ein Eintrag bereits existiert. Falls ja, wird dieser **aktualisiert** – andernfalls **neu erstellt**. Die Entscheidung, ob das Feld `trigger_inform_supporter` gesetzt wird, basiert auf folgender Logik:
+
+```python
+if free == 0 and not technician_informed:
+    sp_fields[field_mapping["Infosup"]] = True
+if free > 0 and technician_informed:
+    sp_fields["technician_informed"] = False
+```
+
+- **Erklärung der Triggerlogik:**
+    
+    - Wenn **keine freien Lizenzen** mehr verfügbar sind (`free == 0`) und der Techniker **noch nicht informiert** wurde (`technician_informed = false`), wird `trigger_inform_supporter = true` gesetzt.  
+        → Dies löst den PowerAutomate-Flow zur Benachrichtigung aus.
+        
+    - Sobald **wieder freie Lizenzen** verfügbar sind (`free > 0`) und `technician_informed = true`, wird dieses Feld **automatisch auf `false` zurückgesetzt**, um zukünftige Trigger zu ermöglichen.
+        
+##### Vollständiger Ablauf zur Verarbeitung eines Lizenz-Datensatzes
+
+Der Ablauf zur Speicherung und Aktualisierung einer Lizenz im SharePoint umfasst folgende Schritte:
+
+```python
+# Schritt 1: Tenantprüfung – nur wenn aktiv & monitoring aktiv
+tenant_list_url = f"https://graph.microsoft.com/v1.0/sites/{site_id}/lists/{tenant_list_id}/items?expand=fields"
+tenant_list_resp = requests.get(tenant_list_url, headers=headers)
+tenant_list_resp.raise_for_status()
+
+tenant_items = tenant_list_resp.json().get("value", [])
+matching_tenant = next((item for item in tenant_items if item["fields"].get("Title") == tenant_name), None)
+
+if not matching_tenant:
+    logger.warning(f"Tenant '{tenant_name}' NICHT in Tenantliste gefunden – Abbruch.")
+    return
+
+if not matching_tenant["fields"].get("enabled", True):
+    logger.info(f"Tenant '{tenant_name}' ist inaktiv – Abbruch.")
+    return
+
+if not matching_tenant["fields"].get("monitoring", False):
+    logger.info(f"Monitoring für Tenant '{tenant_name}' ist deaktiviert – Abbruch.")
+    return
+```
+
+```python
+# Schritt 2: Abfrage bestehender Lizenz-Einträge aus SharePoint
+license_list_url = f"https://graph.microsoft.com/v1.0/sites/{site_id}/lists/{license_list_id}/items?expand=fields"
+license_list_resp = requests.get(license_list_url, headers=headers)
+license_list_resp.raise_for_status()
+existing_items = license_list_resp.json().get("value", [])
+```
+
+```python
+# Schritt 3: Verarbeitung jeder Lizenz
+for lic in licenses:
+    sku = lic.get("skupartnumber", "UNKNOWN")
+    free = lic.get("free_units", 0)
+    used = lic.get("consumed_units", 0)
+    avail = lic.get("available_units", 0)
+
+    match = next(
+        (item for item in existing_items if
+         item["fields"].get("Title") == sku and
+         item["fields"].get(tenant_field) == tenant_name),
+        None
+    )
+
+    sp_fields = {
+        field_mapping["Frei"]: free,
+        field_mapping["Gebraucht"]: used,
+        field_mapping["Verfügbar"]: avail
+    }
+
+    if match:
+        item_id = match["id"]
+        technician_informed = match["fields"].get("technician_informed", False)
+
+        # Triggerlogik: Engpass und Rücksetzung
+        if free == 0 and not technician_informed:
+            sp_fields[field_mapping["Infosup"]] = True
+        if free > 0 and technician_informed:
+            sp_fields["technician_informed"] = False
+
+        # PATCH – Eintrag aktualisieren
+        url_update = f"https://graph.microsoft.com/v1.0/sites/{site_id}/lists/{license_list_id}/items/{item_id}/fields"
+        response = requests.patch(url_update, headers=headers, json=sp_fields)
+        response.raise_for_status()
+        logger.info(f"Lizenz '{sku}' für Tenant '{tenant_name}' wurde aktualisiert.")
+    else:
+        # POST – Neuer Eintrag
+        sp_fields.update({
+            field_mapping["Tenant"]: tenant_name,
+            field_mapping["Lizenzname"]: sku
+        })
+        url_create = f"https://graph.microsoft.com/v1.0/sites/{site_id}/lists/{license_list_id}/items"
+        response = requests.post(url_create, headers=headers, json={"fields": sp_fields})
+        response.raise_for_status()
+        logger.info(f"Neue Lizenz '{sku}' für Tenant '{tenant_name}' erstellt.")
+```
+
+
+#### Verwendete Microsoft Graph Endpunkte (SharePoint)
+
+|Aktion|HTTP-Methode|Graph-Endpunkt|
+|---|---|---|
+|Tenantliste abrufen|`GET`|`/sites/{site_id}/lists/{tenant_list_id}/items?expand=fields`|
+|Lizenzstatus abrufen|`GET`|`/sites/{site_id}/lists/{license_list_id}/items?expand=fields`|
+|Lizenzstatus aktualisieren|`PATCH`|`/sites/{site_id}/lists/{license_list_id}/items/{item_id}/fields`|
+|Lizenzstatus neu erstellen|`POST`|`/sites/{site_id}/lists/{license_list_id}/items`|
+
+
 ___ 
 
-### Implementierung PowerAutomate Flow
+### Implementierung: PowerAutomate Flow
+
+Damit bei einem Lizenzengpass nicht manuell geprüft werden muss, ob Handlungsbedarf besteht, wurde ein **PowerAutomate-Flow** eingerichtet, der bei bestimmten Bedingungen **automatisch eine Benachrichtigung an den Support** sendet.
+
+#### Lizenzüberwachung – Trigger bei Engpass
+
+Der Flow wird jedes Mal ausgelöst, wenn in der **Lizenzstatusliste** ein Eintrag **geändert** wird. Dabei prüft PowerAutomate, ob das Feld `trigger_inform_supporter` auf `true` gesetzt wurde.
+
+Die Logik im Lizenz-Microservice sieht wie folgt aus:
+
+- Wenn **`free_units = 0`** (also keine Lizenzen mehr verfügbar sind)  
+    **und** der Techniker **noch nicht informiert** wurde (`technician_informed = false`),  
+    wird `trigger_inform_supporter = true` gesetzt → Flow wird getriggert.
+    
+- Ist `technician_informed = true`, wird **kein neuer Trigger gesetzt**, um Mehrfachbenachrichtigungen zu vermeiden.
+    
+
+Der Flow sendet bei Auslösung eine E-Mail mit den relevanten Informationen an das Support-Team.
+
+![PowerAutomate Flow Monitoringalert](../../ressources/images/powerautomate_flow_monitoring.png)
+
+> _Ablauf des PowerAutomate-Flows bei Lizenzengpass_
+
+> ℹ️ **Information**  
+> Der MSVC setzt automatisch das Feld `technician_informed` **zurück auf `false`**, sobald bei einem Lizenzprodukt **wieder freie Lizenzen verfügbar sind** (d. h. `free_units > 0`).  
+> Dies stellt sicher, dass beim nächsten Engpass erneut eine Benachrichtigung über den PowerAutomate-Flow ausgelöst werden kann.  
+> Das Rücksetzen erfolgt nur, wenn zuvor `technician_informed = true` war. Die gesamte Logik wird serverseitig im MSVC beim Schreiben in den SharePoint gesteuert.
 
 
+#### Zertifikatsüberwachung – Ablaufwarnung
 
+Ein zweiter Flow dient zur **Überwachung der Gültigkeit von App-Zertifikaten**, welche für die Authentifizierung via Microsoft Graph notwendig sind.
 
+Er wird periodisch ausgeführt und überprüft das **Ablaufdatum (`cert_expires`)** in der Tenantliste. Sobald ein Zertifikat **in weniger als 7 Tagen** abläuft, wird automatisch eine Benachrichtigung verschickt.
 
+![PowerAutomate Flow Zertifikat am ablaufen](../../ressources/images/powerautomate_flow_cert-expiration.png)
 
+> _Ablauf des PowerAutomate-Flows zur Zertifikatsüberwachung_
 
+> ℹ️ **Hinweis:**  
+> Beide Flows greifen direkt auf die **SharePoint-Listenstruktur** zu, welche vom Microservice gepflegt wird. Die Automatisierung sorgt dafür, dass **kritische Zustände (wie Lizenzmangel oder Zertifikatsablauf)** nicht unbemerkt bleiben.
 
+___
 
+### Implementierung: Authentifizierung
 
+Damit nicht jede beliebige Person den Microservice nutzen kann, wurde eine Benutzerauthentifizierung via Microsoft eingebaut. Dabei kommt der **OAuth 2.0 Authorization Code Flow** zum Einsatz, welcher über **Microsofts Azure Active Directory** gesteuert wird. Ein Login ist Voraussetzung, um Zugriff auf API-Endpunkte oder das Frontend zu erhalten.
+
+Ziel war es, keine eigene Benutzerdatenbank aufzubauen, sondern stattdessen bestehende Azure-Konten (Firmen-Accounts) zu nutzen.
+
+#### Funktionsweise
+
+Beim Aufruf geschützter Routen wird geprüft, ob ein gültiger Benutzer-Token vorhanden ist. Falls nicht, wird automatisch auf Microsofts Login-Seite weitergeleitet.
+
+Nach erfolgreichem Login erhält der Microservice über einen Redirect den Access-Token sowie Benutzerinformationen zurück. Diese werden lokal in der **Session** gespeichert und für Folgeanfragen verwendet.
+
+#### Technische Umsetzung
+
+| Datei                   | Funktion                                                                |
+| ----------------------- | ----------------------------------------------------------------------- |
+| `routes.py`             | Regelt Login, Callback, Logout und optionalen Test-Login                |
+| `utils.py`              | Enthält den `login_required`-Decorator zum Absichern von Routen         |
+| `config-profiles/auth/` | Speichert Verbindungsdaten zur Azure App (Client ID, Secret, Tenant ID) |
+
+Im Projekt wurden folgende Ordner ergänzt:
+
+```text
+├── app
+│   └── Auth
+│        ├── __init__.py
+│        ├── routes.py
+│        └── utils.py
+│
+├── config-profiles
+│   └── auth
+│        └── *Config-profile for auth-module*
+│...
+```
+
+🔐 **Wichtig:** Ohne gültige Session wird der Zugriff verweigert – sowohl auf das **Frontend** als auch auf die **API-Endpunkte**.  
+**Ausnahme:** Die `mainpage.html` bleibt öffentlich zugänglich und ist **nicht geschützt**.
+
+___
 
 
 
