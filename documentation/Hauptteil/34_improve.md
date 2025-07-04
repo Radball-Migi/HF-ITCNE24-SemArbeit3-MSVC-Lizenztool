@@ -71,7 +71,7 @@ ___
 > Über die obere Auflistung, kann zu den Sektionen oder zu den Issues mit Userstories gesprungen werden. 
 
 ___ 
-### Grundgerüst des Microservices 
+### Grundgerüst des Microservices
 
 Zu beginn habe ich mit der App begonnen, dort habe ich mit der Vorlage aus dem Unterricht begonnen und auf dieser Aufgebaut. 
 Da wir im Unterricht immer wieder ergänzugen gemacht haben, habe ich eigentlich von 0 begonnen und bis zum schritt alles vorbereitet, bis ich dort angelangt bin, bis dahin, wo ich auf der App aufbauen möchte. 
@@ -80,13 +80,6 @@ Die Struktur war schlicht und nur gerade das nötigste.
 - Docker / Compose Files
 - Blueprint implementiert
 - SQLite DB
-
-Filestruktur mit dem Grundgerüst
-
-Mit dieser Struktur, konnte bereits mittels ersten simulativen API Calls getestet werden, jedoch nur mit Einträgen, welche von Hand in die DB gemacht wurden. 
-
-
-> Zu beginn wird die Datenbank zu testzwecken verwendet, um sicher zu sein, dass die API Calls funktionieren
 
 #### Angaben zum Microsoervice
 
@@ -112,7 +105,7 @@ Das initiale Setup konzentrierte sich auf eine schlanke, aber funktionale Strukt
 - **Blueprints** zur sauberen Trennung von Funktionen und Routen
 - **SQLite** als leichtgewichtiges Datenbanksystem für die Entwicklungsphase
 
-#### Projektstruktur
+#### **Projektstruktur**
 
 ```text
 licensetool
@@ -143,7 +136,7 @@ Bereits mit diesem Setup war es möglich, erste **simulative API-Calls** durchzu
 > ℹ️ **Information** <br>
 >Die SQLite-Datenbank dient in der Entwicklungsphase primär zu Testzwecken.
 
-#### Technische Eckdaten des Microservices
+#### **Technische Eckdaten des Microservices**
 
 | Komponente       | Beschreibung                        |
 | ---------------- | ----------------------------------- |
@@ -161,18 +154,19 @@ Zusätzlich wurde ein **Swagger-Dokumentationsinterface** eingerichtet, um alle 
 
 ### Implementierung: Lizenzabfrage bei anderen Tenants (via Microsoft Graph)
 
+
 Nachdem das Grundgerüst des Microservices steht und die ersten API-Tests erfolgreich durchgeführt wurden, ging es im nächsten Schritt darum, **die Lizenzdaten automatisiert für verschiedene Microsoft-Tenants abzufragen** und für die spätere Weiterverarbeitung (z. B. Speicherung oder Eskalation) bereitzustellen.
 
 Da es sich bei den zu überwachenden Tenants um Microsoft-365-Umgebungen handelt, bot sich die **Microsoft Graph API** als zentrale Schnittstelle an. Ich konnte hierfür auf bestehende Erfahrungen zurückgreifen, da ich eine ähnliche Funktion bereits in einem anderen Projekt implementiert hatte.
 
-#### Sicherheit durch Config-Profile
+#### **Sicherheit durch Config-Profile**
 
 In der ersten Version waren die Authentifizierungsdaten fest im Code hinterlegt – das war aus Sicherheits- und Wartungsgründen jedoch nicht ideal. Für die produktionsnahe Umsetzung habe ich mich deshalb für **dynamisch ladbare JSON-Konfigurationsprofile** entschieden. Diese enthalten alle nötigen Angaben (z. B. `tenant_id`, Zertifikatspfad, Ablaufdatum) und lassen sich bei Zertifikatserneuerung einfach austauschen.
 
 > ℹ️ **Information** <br>
 > Diese Abstraktion erlaubt eine saubere Trennung von Code und Konfiguration. Neue Tenants können künftig mit minimalem Aufwand eingebunden werden – es reicht ein neues Config-File und Zertifikat im jeweiligen Ordner.
 
-##### Beispiel eines Config-Files:
+##### **Beispiel eines Config-Files:**
 
 ```json
 {
@@ -185,7 +179,7 @@ In der ersten Version waren die Authentifizierungsdaten fest im Code hinterlegt 
 }
 ```
 
-#### Erweiterung der Struktur
+#### **Erweiterung der Struktur**
 
 Im Projekt wurden folgende Ordner ergänzt:
 
@@ -203,7 +197,7 @@ licensetool
 │...
 ```
 
-### 📡 Lizenzabfrage via Microsoft Graph API
+### **Lizenzabfrage via Microsoft Graph API**
 
 Die eigentliche Abfrage der Lizenzinformationen (`subscribedSkus`) erfolgt über das Modul [`mggraph.py`](https://github.com/Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool/tree/main/ressources/licensetool/app/modules/mggraph.py). Dort übernimmt die Klasse `GraphLicenseClient` die Authentifizierung sowie die API-Kommunikation.
 
@@ -246,7 +240,7 @@ class GraphLicenseClient:
         return response.json()
 ```
 
-### Beispielhafte API-Antwort
+#### **Beispielhafte API-Antwort**
 
 Die `get_license_status()`-Methode liefert eine strukturierte JSON-Antwort mit allen abonnierten Lizenzen des Tenants:
 
@@ -305,7 +299,7 @@ Nachdem die Lizenzdaten erfolgreich über die Microsoft Graph API abgerufen und 
 
 Ziel war es, eine **intuitive und optisch ansprechende Oberfläche** bereitzustellen, die den aktuellen Zustand der Lizenzen klar darstellt, Filtermöglichkeiten bietet und potenzielle Engpässe direkt ersichtlich macht – ohne dass die Nutzer mit technischen Details wie API-Calls oder Datenbanken konfrontiert werden.
 
-#### Verfügbare Ansichten im Frontend
+#### **Verfügbare Ansichten im Frontend**
 
 Es wurden mehrere HTML-Seiten (Templates) implementiert, jeweils mit eigener CSS-Datei zur Gestaltung:
 
@@ -333,7 +327,7 @@ Es wurden mehrere HTML-Seiten (Templates) implementiert, jeweils mit eigener CSS
 │...
 ```
 
-#### Routenbindung der Templates
+#### **Routenbindung der Templates**
 
 Die Templates werden mit dem Flask-Modul `render_template()` in den jeweiligen Blueprints geladen.
 
@@ -346,7 +340,7 @@ def show_tenant():
 
 Ausschnitt aus [`app/licenses/routes.py`](https://github.com/Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool/blob/main/ressources/licensetool/app/licenses/routes.py)
 
-#### Funktionen im Frontend
+#### **Funktionen im Frontend**
 
 - **Tabellarische Darstellung** aller Lizenzdaten
 - **Farbliche Hervorhebung** bei kritischem Lizenzstand
@@ -354,7 +348,7 @@ Ausschnitt aus [`app/licenses/routes.py`](https://github.com/Radball-Migi/HF-ITC
 - **Anbindung an API-Endpoint** über `fetch()` zur Anzeige der aktuellen Daten
 - **Trennung von HTML, CSS und Logik (JavaScript)** für bessere Wartbarkeit
 
-#### Beispielhafte HTML-/JS-Integration (`statusall.html`)
+#### **Beispielhafte HTML-/JS-Integration (`statusall.html`)**
 
 ```html
 <input type="text" id="filterInput" placeholder="z. B. ISE School">
@@ -414,7 +408,7 @@ Ausschnitt aus [`app/licenses/routes.py`](https://github.com/Radball-Migi/HF-ITC
 </script>
 ```
 
-#### Ziel des Frontends
+#### **Ziel des Frontends**
 
 Das Frontend schafft eine klare Benutzeroberfläche, in der Lizenzdaten:
 
@@ -442,9 +436,14 @@ Für den Zugriff wurde eine eigene App-Registrierung erstellt, welche ausschlies
 ```
 
 
-#### Übersicht der SharePoint-Listen und Felder
+#### **Übersicht der SharePoint-Listen und Felder**
 
-##### Parameterliste – Systemweite Konfigurationswerte
+> ℹ️ **Information**  <br>
+> Der Test-Tenant, auf dem alle Listen & auch die spätere Authentifizierung stattfinden, ist der Tenant Iseschool2013, welcher auch der Testtenant der ISE AG ist. Erst wenn alles korrekt läuft und die Testphase überstanden hat, kann der MSVC in die Produktive umgebung implementiert werden. 
+> Die nachfolgenden SharePoint-Listen, werden auf der Site-Collection: /Sites/misch-sem3arbeit/ gespeichert. 
+
+
+##### **Parameterliste – Systemweite Konfigurationswerte**
 
 |Feldname|Typ|Beschreibung|
 |---|---|---|
@@ -454,7 +453,7 @@ Für den Zugriff wurde eine eigene App-Registrierung erstellt, welche ausschlies
 > Wird verwendet für globale Konfigurationswerte wie Empfänger, Absender, Kommunikationskanal etc.
 
 
-##### Tenantliste – Steuerung der zu überwachenden Tenants
+##### **Tenantliste – Steuerung der zu überwachenden Tenants**
 
 |Feldname|Typ|Beschreibung|
 |---|---|---|
@@ -466,7 +465,7 @@ Für den Zugriff wurde eine eigene App-Registrierung erstellt, welche ausschlies
 > Diese Liste ist für das Aktivieren/Deaktivieren einzelner Tenants zuständig und wird bei jeder Abfrage vor der Datenverarbeitung geprüft.
 
 
-##### Lizenzstatusliste – Aktuelle Lizenzwerte pro Tenant
+##### **Lizenzstatusliste – Aktuelle Lizenzwerte pro Tenant**
 
 |Feldname|Typ|Beschreibung|
 |---|---|---|
@@ -481,7 +480,7 @@ Für den Zugriff wurde eine eigene App-Registrierung erstellt, welche ausschlies
 > Diese Liste ist der zentrale Datenspeicher des Lizenzstatus und dient zugleich als Triggerquelle für PowerAutomate.
 
 
-##### Technische Umsetzung im Code
+##### **Technische Umsetzung im Code**
 
 Die Aktualisierung bzw. Erstellung der SharePoint-Einträge erfolgt im Modul `mggraph.py` innerhalb der Funktion `push_license_status_to_sharepoint()`.
 
@@ -501,7 +500,7 @@ if free > 0 and technician_informed:
         
     - Sobald **wieder freie Lizenzen** verfügbar sind (`free > 0`) und `technician_informed = true`, wird dieses Feld **automatisch auf `false` zurückgesetzt**, um zukünftige Trigger zu ermöglichen.
         
-##### Vollständiger Ablauf zur Verarbeitung eines Lizenz-Datensatzes
+##### **Vollständiger Ablauf zur Verarbeitung eines Lizenz-Datensatzes**
 
 Der Ablauf zur Speicherung und Aktualisierung einer Lizenz im SharePoint umfasst folgende Schritte:
 
@@ -584,7 +583,7 @@ for lic in licenses:
 ```
 
 
-#### Verwendete Microsoft Graph Endpunkte (SharePoint)
+#### **Verwendete Microsoft Graph Endpunkte (SharePoint)**
 
 |Aktion|HTTP-Methode|Graph-Endpunkt|
 |---|---|---|
@@ -600,7 +599,7 @@ ___
 
 Damit bei einem Lizenzengpass nicht manuell geprüft werden muss, ob Handlungsbedarf besteht, wurde ein **PowerAutomate-Flow** eingerichtet, der bei bestimmten Bedingungen **automatisch eine Benachrichtigung an den Support** sendet.
 
-#### Lizenzüberwachung – Trigger bei Engpass
+#### **Lizenzüberwachung – Trigger bei Engpass**
 
 Der Flow wird jedes Mal ausgelöst, wenn in der **Lizenzstatusliste** ein Eintrag **geändert** wird. Dabei prüft PowerAutomate, ob das Feld `trigger_inform_supporter` auf `true` gesetzt wurde.
 
@@ -625,7 +624,7 @@ Der Flow sendet bei Auslösung eine E-Mail mit den relevanten Informationen an d
 > Das Rücksetzen erfolgt nur, wenn zuvor `technician_informed = true` war. Die gesamte Logik wird serverseitig im MSVC beim Schreiben in den SharePoint gesteuert.
 
 
-#### Zertifikatsüberwachung – Ablaufwarnung
+#### **Zertifikatsüberwachung – Ablaufwarnung**
 
 Ein zweiter Flow dient zur **Überwachung der Gültigkeit von App-Zertifikaten**, welche für die Authentifizierung via Microsoft Graph notwendig sind.
 
@@ -646,13 +645,13 @@ Damit nicht jede beliebige Person den Microservice nutzen kann, wurde eine Benut
 
 Ziel war es, keine eigene Benutzerdatenbank aufzubauen, sondern stattdessen bestehende Azure-Konten (Firmen-Accounts) zu nutzen.
 
-#### Funktionsweise
+#### **Funktionsweise**
 
 Beim Aufruf geschützter Routen wird geprüft, ob ein gültiger Benutzer-Token vorhanden ist. Falls nicht, wird automatisch auf Microsofts Login-Seite weitergeleitet.
 
 Nach erfolgreichem Login erhält der Microservice über einen Redirect den Access-Token sowie Benutzerinformationen zurück. Diese werden lokal in der **Session** gespeichert und für Folgeanfragen verwendet.
 
-#### Technische Umsetzung
+#### **Technische Umsetzung**
 
 | Datei                   | Funktion                                                                |
 | ----------------------- | ----------------------------------------------------------------------- |
@@ -675,6 +674,7 @@ Im Projekt wurden folgende Ordner ergänzt:
 │...
 ```
 
+
 >🔐 **Wichtig:** <br>
 >Ohne gültige Session wird der Zugriff verweigert – sowohl auf das **Frontend** als auch auf die **API-Endpunkte**.  
 >**Ausnahme:** Die `mainpage.html` bleibt öffentlich zugänglich und ist **nicht geschützt**.
@@ -687,7 +687,7 @@ Falls es einmal Probleme mit einem Tenant gibt – oder ein neuer Tenant gerade 
 
 Dies erfolgt über den Bildschirm [`monitoring.html`](https://github.com/Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool/blob/main/ressources/licensetool/app/templates/monitoring.html), welcher eine Übersicht aller registrierten Tenants bietet.
 
-![Bild Monitoring]()
+![Bild Frontend Monitoring](../../ressources/images/frontend_monitoring.png)
 
 > Über diesen Screen lassen sich **pro Tenant** sowohl die Option _Aktiv (enabled)_ als auch _Monitoring aktiv (monitoring)_ ein- oder ausschalten.
 
@@ -711,13 +711,13 @@ ___
 
 Um im Fehlerfall gezielt analysieren zu können, **wurde ein zentrales Logging** sowie eine dedizierte **Testumgebung** eingerichtet. Beide Komponenten dienen der Qualitätssicherung und sorgen dafür, dass die Anwendung erst bei stabilem Zustand produktiv eingesetzt wird.
 
-#### Testumgebung & Pytest
+#### **Testumgebung & Pytest**
 
 Vor jedem produktiven Rollout wird der Container in einer **abgeschirmten Laborumgebung** getestet. Dabei simulieren vorbereitete Datensätze typische Szenarien und prüfen die API auf korrekte Funktion.
 
 Die Tests werden mit **`pytest`** ausgeführt – einem flexiblen Framework für automatisiertes Testen in Python. Nur wenn ein definierter Prozentsatz der Tests erfolgreich ist, wird der Service live geschaltet.
 
-#### Ergänzungen in der Projektstruktur
+#### **Ergänzungen in der Projektstruktur**
 
 ```Text
 licensetool
@@ -739,7 +739,7 @@ licensetool
 │...
 ```
 
-#### Logging-Modul
+#### **Logging-Modul**
 
 Das Logging wurde über ein zentrales Modul `logging.py` umgesetzt. Dieses initialisiert sowohl **Datei-Logging** als auch **Konsolen-Ausgabe** mit Rotation:
 
@@ -756,7 +756,7 @@ def setup_logging(log_file='logs/licensetool.log', level=logging.INFO):
 **Log-Ausgabe**:  
 Alle Logs werden standardmäßig unter `logs/licensetool.log` gespeichert und bei 5 MB automatisch rotiert.
 
-Beispielauszug aus dem Log:
+**Beispielauszug aus dem Log:**
 
 ```log
 2025-06-19 11:22:03,699 [INFO] app.licenses.routes: Alle Lizenzstatus werden geladen (status/show)
@@ -777,7 +777,7 @@ Um die **Lesbarkeit und Benutzerfreundlichkeit** zu verbessern, wurde ein zusät
 
 > Die SKU-Nummer bleibt weiterhin erhalten und wird im Datensatz mitgeführt – der Displayname dient ausschließlich zur besseren Darstellung im Frontend.
 
-Beispielhafte Zuordnung im Dictionary:
+**Beispielhafte Zuordnung im Dictionary:**
 
 ```python
 PRODUCT_DISPLAY_NAMES = {
@@ -795,11 +795,11 @@ ___
 
 Wie zu Beginn erwähnt, war die SQLite-Datenbank ursprünglich **nur als temporärer Speicher für Testzwecke** vorgesehen. Während der Entwicklung zeigte sich jedoch, dass der **Microsoft Graph API-Aufruf** – insbesondere in Kombination mit der **SharePoint-Synchronisation** – zu **spürbaren Wartezeiten** im Frontend führte.
 
-#### Performanceproblem durch Live-Abfrage
+#### **Performanceproblem durch Live-Abfrage**
 
 Die Verzögerung trat vor allem dann auf, wenn Lizenzdaten **live über Graph geladen und anschließend in SharePoint geschrieben** wurden. Da dieser Prozess je nach Tenant und Anzahl der Lizenzen mehrere Sekunden dauern kann, **wirkte das Frontend träge** und unresponsive.
 
-#### Lösung: Beibehalten der SQLite-Datenbank
+#### **Lösung: Beibehalten der SQLite-Datenbank**
 
 Um dem entgegenzuwirken, wurde entschieden, die **lokale SQLite-Datenbank weiterhin im System zu belassen** – nicht als primärer Datenspeicher, sondern **als Cache für das Frontend**.
 
@@ -812,7 +812,7 @@ Diese Optimierung bringt mehrere Vorteile:
 - Die **Live-Daten** via Microsoft Graph stehen weiterhin bei Bedarf zur Verfügung
     
 
-#### Zwei Betriebsmodi im Frontend
+#### **Zwei Betriebsmodi im Frontend**
 
 Das System unterscheidet nun zwei Zugriffsarten:
 
@@ -824,7 +824,7 @@ Das System unterscheidet nun zwei Zugriffsarten:
 > 📌 **Hinweis:**  <br>
 > Die zweite Option sollte **nur bei Bedarf** genutzt werden – z. B. zur manuell angestoßenen Aktualisierung oder zur Prüfung, ob eine Alarmierung nötig ist.
 
-#### Zielsetzung
+#### **Zielsetzung**
 
 Die **SQLite-Datenbank** dient in dieser Architektur als **lokaler Zwischenspeicher**, um die Performance und Reaktionszeit des Frontends deutlich zu verbessern – insbesondere bei umfangreichen Lizenzdaten oder mehreren Tenants.
 
@@ -885,11 +885,11 @@ Theoretisch sollte ein solcher Microservice in einer **Cloud-Umgebung gehostet**
 In diesem Projekt wurde jedoch bewusst auf eine lokale Lösung gesetzt, da **Lizenzdaten sensible Informationen enthalten**, deren Verarbeitung in externen Clouds **nicht DSGVO-konform** wäre.  
 (Detaillierte Infos: [Datenschutz in diesem Microservice](#Datenschutz-in-diesem-Microservice))
 
-#### Ziel dieser Sektion
+#### **Ziel dieser Sektion**
 
 Trotz der lokalen Umsetzung soll hier aufgezeigt werden, **wie ein Deployment in der Cloud** aussehen _würde_ – inklusive automatisiertem **Build** und **Deployment** mittels **CI/CD-Pipeline** (am Beispiel GitLab + AWS).
 
-#### Voraussetzungen & Komponenten
+#### **Voraussetzungen & Komponenten**
 
 |Komponente|Zweck|
 |---|---|
@@ -899,9 +899,7 @@ Trotz der lokalen Umsetzung soll hier aufgezeigt werden, **wie ein Deployment in
 |**Docker Desktop**|Für lokale Tests vor Deployment (nicht produktiv verwendet)|
 
 
-#### Infrastruktur & CI/CD-Ablauf
-
-#### Infrastruktur & CI/CD-Ablauf
+#### **Infrastruktur & CI/CD-Ablauf**
 
 1. **Code-Push auf GitLab**  
     Triggert die CI/CD-Pipeline automatisch.
@@ -923,7 +921,7 @@ Trotz der lokalen Umsetzung soll hier aufgezeigt werden, **wie ein Deployment in
 >Die nachfolgenden Konfigurationsdateien sind **nicht Teil der aktuellen Projektstruktur**, da der Microservice bislang **nur lokal betrieben** wird. Sie zeigen exemplarisch, **wie eine Cloud-Integration mittels CI/CD** technisch umgesetzt werden könnte.
 
 
-#### CI/CD-Pipeline-Konfiguration (GitLab)
+#### **CI/CD-Pipeline-Konfiguration (GitLab)**
 
 **`.gitlab-ci.yml`** – Definiert das Build- und Testverhalten:
 
@@ -943,7 +941,7 @@ test:
 
 ```
 
-#### Warum GitLab Container Registry?
+#### **Warum GitLab Container Registry?**
 
 Ein zentrales Element dieser CI/CD-Pipeline ist die Nutzung der **GitLab Container Registry**.  
 Sie ermöglicht es, Docker-Images direkt beim Commit automatisiert zu bauen, zu versionieren und zentral im GitLab-Projekt zu speichern.
@@ -958,7 +956,7 @@ Sie ermöglicht es, Docker-Images direkt beim Commit automatisiert zu bauen, zu 
 | **Sichere Authentifizierung**       | Kein manuelles Passworthandling – Zugriff über `CI_JOB_TOKEN`                              |
 | **Skalierbar & übersichtlich**      | Jedes Projekt verwaltet seine Images isoliert und nachvollziehbar                          |
 
-#### Produktionsumgebung (Docker Compose)
+#### **Produktionsumgebung (Docker Compose)**
 
 **`docker-compose.prod.yaml`** – Setzt API & DB auf:
 
@@ -1002,7 +1000,7 @@ volumes:
 
 ```
 
-#### Produktions-Image mit Gunicorn
+#### **Produktions-Image mit Gunicorn**
 
 **`Dockerfile.prod`** – Für den produktiven Build:
 
@@ -1021,7 +1019,7 @@ CMD gunicorn -b 0.0.0.0:5000 wsgi:app
 
 ```
 
-#### Zusammenfassung: Vorteile der CI/CD-Cloud-Pipeline
+#### **Zusammenfassung: Vorteile der CI/CD-Cloud-Pipeline**
 
 |Schritt|Beschreibung|
 |---|---|
@@ -1045,7 +1043,7 @@ Obwohl der Zugriff über eine **Microsoft-Authentifizierung** abgesichert ist, b
 
 > _„Personendaten müssen durch geeignete technische und organisatorische Massnahmen gegen unbefugtes Bearbeiten geschützt werden.“_
 
-### Sensitive Daten
+#### **Sensitive Daten**
 
 Im Tool ist ersichtlich, welcher Tenant über welche und wie viele Microsoft-Lizenzen verfügt. Anhand dieser Lizenzinformationen – z. B. Lehrer- und Schülerlizenzen an einer Schule – lassen sich Rückschlüsse auf die Anzahl und Zusammensetzung der Benutzergruppen ziehen. Gemäss **Artikel 5 lit. a revDSG** sind Personendaten definiert als:
 
@@ -1055,6 +1053,6 @@ Da bei Schul- oder KMU-Installationen oft klar ist, welche Gruppen (Lehrpersonen
 
 Zudem kann durch Premiumlizenzen indirekt erkannt werden, welche Tools oder Dienste verwendet werden. Diese Informationen erlauben möglicherweise Rückschlüsse auf interne Organisation oder Geschäftsstrategien. Je nach Kontext könnten solche Angaben unter die **besonders schützenswerten Personendaten** gemäss **Artikel 5 lit. c revDSG** fallen, insbesondere wenn sie Rückschlüsse auf berufliche Tätigkeiten, Gruppenzugehörigkeit oder Verhaltensmuster erlauben.
 
-### Kurzgesagt:
+#### **Kurzgesagt:**
 Aus Datenschutzgründen wird der Microservice lokal im Docker-Container betrieben und nicht in der Cloud gehostet. Obwohl Microsoft Authentication verwendet wird, besteht bei kompromittierten Konten ein Restrisiko. Das Tool zeigt sensible Informationen wie Tenant-Daten, Lizenztypen und -anzahl. Daraus lassen sich Rückschlüsse auf Nutzergruppen (z. B. Schüler, Lehrpersonen) und eingesetzte Dienste ziehen – was datenschutzrechtlich heikel sein kann.
 
