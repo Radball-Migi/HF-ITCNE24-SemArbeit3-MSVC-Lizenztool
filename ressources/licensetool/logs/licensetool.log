@@ -32,3 +32,14 @@
 2025-06-19 11:22:46,350 [INFO] app.monitoring.routes: Abfrage aller Tenants über SharePoint gestartet
 2025-06-19 11:22:47,173 [INFO] app.monitoring.routes: 2 Tenants empfangen
 2025-06-19 11:22:47,174 [INFO] werkzeug: 172.22.0.1 - - [19/Jun/2025 11:22:47] "GET /api/v1/monitoring/tenants HTTP/1.1" 200 -
+2025-06-30 19:49:18,868 [INFO] app.modules.logging_config: Logging-System initialisiert
+2025-06-30 19:49:19,243 [INFO] werkzeug: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.2:5000
+2025-06-30 19:49:19,244 [INFO] werkzeug: [33mPress CTRL+C to quit[0m
+2025-06-30 19:49:19,245 [INFO] werkzeug:  * Restarting with stat
+2025-06-30 19:49:19,775 [INFO] app.modules.logging_config: Logging-System initialisiert
+2025-06-30 19:49:20,160 [WARNING] werkzeug:  * Debugger is active!
+2025-06-30 19:49:20,162 [INFO] werkzeug:  * Debugger PIN: 903-351-251
+2025-06-30 19:49:39,513 [INFO] werkzeug: 172.18.0.1 - - [30/Jun/2025 19:49:39] "[33mGET /api/v1/licenses/frontend HTTP/1.1[0m" 404 -

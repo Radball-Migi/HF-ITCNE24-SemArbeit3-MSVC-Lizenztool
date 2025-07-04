@@ -18,7 +18,7 @@ Mit der SEUSAG möchte ich die Systemgrenzen aufzeigen, welche bei meinem Projek
 - **Power Automate** überwacht Lizenzdaten und versendet bei Schwellenwerten automatische E-Mails über **Exchange Online**  
 - Zugriff und Authentifizierung erfolgen über **Graph API** und **EntraID**
 
-## Script-Server (AZ-VM)
+## Script-Server (VM)
 
 - Docker-basierter **Flask-Microservice**, der regelmäßig Lizenzdaten aus Kundensystemen über die Microsoft Graph API abruft  
 - Stellt eine **API** für das Web-Frontend bereit  

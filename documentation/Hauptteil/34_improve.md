@@ -38,6 +38,39 @@ Das *Know-how* habe ich mir durch meine aktive Teilnahme am MSVC-Unterricht be
 > 
 > Als erster Aufbau werden zwei Testtenants der ISE AG verwendet. Diese Simulieren dann alle Tenants, welche später ggf. gemonitort werden. 
 
+| Abschnitt                                           | Beschreibung                                                                     | GitHub-Issue                                                                                                                           |
+| --------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| **Sichere Verbindung zur Graph API**                | Aufbau einer zertifikatsbasierten, sicheren Verbindung zu Microsoft Graph        | [#13 Establish secure connection](https://github.com/Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool/issues/13)                     |
+| **Lizenzdaten automatisch abrufen**                 | Microservice ruft die aktuellen Lizenzstände via Graph API automatisiert ab      | [#16 Implement license fetch via Graph](https://github.com/Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool/issues/16)               |
+| **Flask Microservice Architektur**                  | Aufbau des Services mit Flask, Docker, Blueprints und SQLite                     | [#12 Set up Flask microservice architecture](https://github.com/Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool/issues/12)          |
+| **Lizenzdaten in SharePoint speichern**             | Lizenzstatus wird pro Tenant in einer SharePoint-Liste persistiert               | [#14 Store license data in SharePoint list](https://github.com/Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool/issues/14)           |
+| **Automatische Benachrichtigung via PowerAutomate** | Wenn keine Lizenzen mehr verfügbar sind, wird der Support automatisch informiert | [#15 Create PowerAutomate-Flow for alerting](https://github.com/Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool/issues/15)          |
+| **Frontend zur Lizenzanzeige**                      | Darstellung aller Lizenzdaten in einer übersichtlichen Weboberfläche             | [#17 Create frontend to visualize license data](https://github.com/Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool/issues/17)       |
+| **REST API für Frontend-Integration**               | Bereitstellung von API-Endpunkten für das Frontend                               | [#18 Develop REST API for frontend](https://github.com/Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool/issues/18)                   |
+| **Benutzerauthentifizierung via Azure**             | Zugriff nur nach Login mit Firmen-Microsoft-Konto möglich                        | [#19 Implement authentication and access control](https://github.com/Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool/issues/19)     |
+| **SharePoint als zentrale Steuerung**               | Tenant-Aktivität und Monitoring-Status steuerbar über SharePoint                 | [#20 Create SharePoint List for License Data Storage](https://github.com/Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool/issues/20) |
+| **Monitoring im Frontend steuerbar**                | Möglichkeit, Monitoring pro Tenant direkt über das UI zu aktivieren/deaktivieren | [#22 Control PowerAutomate Monitoring via Frontend](https://github.com/Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool/issues/22)   |
+| **Zentrales Logging**                               | Logfile für Fehler, API-Aufrufe und Systemzustände mit Rotation                  | [#23 Logging](https://github.com/Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool/issues/23)                                         |
+
+### Wie soll der MSVC ablauffen?
+
+Folgendes Diagramm zeigt auf, wie der MSVC ablaufen soll. 
+
+
+![Test Gif](../../ressources/images/scheduled_task_with_writedown.gif)
+
+**Ablaufdiagramm der App**
+- **Blauer Zyklus**: Der Scheduled Task ruft periodisch den Lizenzstatus ab.
+- **Grüner Pfad**: Lizenzen verfügbar – Daten werden dokumentiert.
+- **Roter Pfad**: Lizenzen = 0 – PowerAutomate wird getriggert.
+
+___
+
+> ⚠️ **Wichtig** <br>
+> Nachfolgend werden die einzelnen Implementierungsschritte aufgezeigt, wie der MSVC aufgebaut wurde. 
+> Über die obere Auflistung, kann zu den Sektionen oder zu den Issues mit Userstories gesprungen werden. 
+
+___ 
 ### Grundgerüst des Microservices 
 
 Zu beginn habe ich mit der App begonnen, dort habe ich mit der Vorlage aus dem Unterricht begonnen und auf dieser Aufgebaut. 
@@ -257,7 +290,7 @@ Die `get_license_status()`-Methode liefert eine strukturierte JSON-Antwort mit a
 ]
 ```
 
-> ℹ️ **Hinweis zu Daten und Datenschutz**  
+> ℹ️ **Hinweis zu Daten und Datenschutz**  <br>
 > Die angezeigten Lizenzzahlen wurden zu Test- und Demonstrationszwecken **angepasst** und entsprechen **nicht den realen Werten** produktiver Microsoft-Tenants.  
 > Zudem wurden sämtliche darstellbaren Informationen im Sinne des Datenschutzes **anonymisiert oder verfremdet**, um Rückschlüsse auf reale Kundendaten auszuschliessen.
 
@@ -265,7 +298,6 @@ Somit haben wir bereits einen wichtigen Schritt gemacht, indem wir die Lizenzen 
 Als nächstes, müssen wir die Daten aufwerten und bereitmachen für das Frontend. 
 
 ___
-
 
 ### Implementierung: Frontend zur Visualisierung der Lizenzdaten
 
@@ -587,7 +619,7 @@ Der Flow sendet bei Auslösung eine E-Mail mit den relevanten Informationen an d
 
 > _Ablauf des PowerAutomate-Flows bei Lizenzengpass_
 
-> ℹ️ **Information**  
+> ℹ️ **Information**  <br>
 > Der MSVC setzt automatisch das Feld `technician_informed` **zurück auf `false`**, sobald bei einem Lizenzprodukt **wieder freie Lizenzen verfügbar sind** (d. h. `free_units > 0`).  
 > Dies stellt sicher, dass beim nächsten Engpass erneut eine Benachrichtigung über den PowerAutomate-Flow ausgelöst werden kann.  
 > Das Rücksetzen erfolgt nur, wenn zuvor `technician_informed = true` war. Die gesamte Logik wird serverseitig im MSVC beim Schreiben in den SharePoint gesteuert.
@@ -603,7 +635,7 @@ Er wird periodisch ausgeführt und überprüft das **Ablaufdatum (`cert_expires`
 
 > _Ablauf des PowerAutomate-Flows zur Zertifikatsüberwachung_
 
-> ℹ️ **Hinweis:**  
+> ℹ️ **Hinweis:**  <br>
 > Beide Flows greifen direkt auf die **SharePoint-Listenstruktur** zu, welche vom Microservice gepflegt wird. Die Automatisierung sorgt dafür, dass **kritische Zustände (wie Lizenzmangel oder Zertifikatsablauf)** nicht unbemerkt bleiben.
 
 ___
@@ -643,63 +675,363 @@ Im Projekt wurden folgende Ordner ergänzt:
 │...
 ```
 
-🔐 **Wichtig:** Ohne gültige Session wird der Zugriff verweigert – sowohl auf das **Frontend** als auch auf die **API-Endpunkte**.  
-**Ausnahme:** Die `mainpage.html` bleibt öffentlich zugänglich und ist **nicht geschützt**.
+>🔐 **Wichtig:** <br>
+>Ohne gültige Session wird der Zugriff verweigert – sowohl auf das **Frontend** als auch auf die **API-Endpunkte**.  
+>**Ausnahme:** Die `mainpage.html` bleibt öffentlich zugänglich und ist **nicht geschützt**.
 
 ___
 
+### Implementierung: Monitoring-Verwaltung
+
+Falls es einmal Probleme mit einem Tenant gibt – oder ein neuer Tenant gerade erst erfasst wurde –, kann dessen **Aktivierung** sowie das **Monitoring-Verhalten** direkt über das Frontend gesteuert werden.
+
+Dies erfolgt über den Bildschirm [`monitoring.html`](https://github.com/Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool/blob/main/ressources/licensetool/app/templates/monitoring.html), welcher eine Übersicht aller registrierten Tenants bietet.
+
+![Bild Monitoring]()
+
+> Über diesen Screen lassen sich **pro Tenant** sowohl die Option _Aktiv (enabled)_ als auch _Monitoring aktiv (monitoring)_ ein- oder ausschalten.
+
+Die Änderungen wirken sich direkt auf die **SharePoint-Tenantliste** aus und bestimmen, ob ein Tenant vom Microservice berücksichtigt wird und ob eine Alarmierung via PowerAutomate erfolgen soll.
+
+Mit dem Monitoring werden folgende Strukturanpassungen gemacht:
+
+```text
+licensetool
+├── app
+│   └── monitoring
+│        ├── __init.py
+│        └── routes.py
+│...
+```
 
 
+___
+
+### Implementierung: Logging & Testing
+
+Um im Fehlerfall gezielt analysieren zu können, **wurde ein zentrales Logging** sowie eine dedizierte **Testumgebung** eingerichtet. Beide Komponenten dienen der Qualitätssicherung und sorgen dafür, dass die Anwendung erst bei stabilem Zustand produktiv eingesetzt wird.
+
+#### Testumgebung & Pytest
+
+Vor jedem produktiven Rollout wird der Container in einer **abgeschirmten Laborumgebung** getestet. Dabei simulieren vorbereitete Datensätze typische Szenarien und prüfen die API auf korrekte Funktion.
+
+Die Tests werden mit **`pytest`** ausgeführt – einem flexiblen Framework für automatisiertes Testen in Python. Nur wenn ein definierter Prozentsatz der Tests erfolgreich ist, wird der Service live geschaltet.
+
+#### Ergänzungen in der Projektstruktur
+
+```Text
+licensetool
+├── app
+│   └── modules
+│        └── logging.py
+├── logs
+│   └── licensetool.log
+├── test
+│   ├── __init__.py
+│   ├── conftest.py
+│   ├── create_test_data.py
+│   ├── test_auth.py
+│   ├── test_license.py
+│   ├── test_main.py
+│   └── test_monitoring.py
+├── compose.test.yaml
+├── dockerfile.test
+│...
+```
+
+#### Logging-Modul
+
+Das Logging wurde über ein zentrales Modul `logging.py` umgesetzt. Dieses initialisiert sowohl **Datei-Logging** als auch **Konsolen-Ausgabe** mit Rotation:
+
+```python
+def setup_logging(log_file='logs/licensetool.log', level=logging.INFO):
+    ...
+    file_handler = RotatingFileHandler(log_file, maxBytes=5*1024*1024, backupCount=3)
+    ...
+    root_logger = logging.getLogger()
+    root_logger.setLevel(level)
+    ...
+```
+
+**Log-Ausgabe**:  
+Alle Logs werden standardmäßig unter `logs/licensetool.log` gespeichert und bei 5 MB automatisch rotiert.
+
+Beispielauszug aus dem Log:
+
+```log
+2025-06-19 11:22:03,699 [INFO] app.licenses.routes: Alle Lizenzstatus werden geladen (status/show)
+2025-06-19 11:22:06,092 [INFO] app.licenses.routes: Lade Lizenzstatus für Tenant: ISE School 2013
+2025-06-19 11:22:07,093 [INFO] werkzeug: 172.22.0.1 - - [19/Jun/2025 11:22:07] "GET /api/v1/licenses/status/show HTTP/1.1" 200 -
+```
+
+>ℹ️ **Hinweis:**  <br>
+> Über `logger.info()` und `logger.error()` im gesamten Code lassen sich **zielgerichtet Debug-Informationen** schreiben – etwa bei Authentifizierungsproblemen oder SharePoint-Fehlern.
 
 
+___ 
+### Erweiterung: Lizenz-Produktnamen
+
+Aktuell werden die Lizenzen technisch anhand ihrer **SKU Part Number** identifiziert – zum Beispiel `STANDARDWOFFPACK_STUDENT` oder `FLOW_FREE`. Diese Systemnamen sind jedoch nicht für alle Benutzer direkt verständlich.
+
+Um die **Lesbarkeit und Benutzerfreundlichkeit** zu verbessern, wurde ein zusätzliches **Dictionary** eingeführt, das die **SKU Part Numbers** den entsprechenden **Display Names** (also Klartextnamen) zuordnet.
+
+> Die SKU-Nummer bleibt weiterhin erhalten und wird im Datensatz mitgeführt – der Displayname dient ausschließlich zur besseren Darstellung im Frontend.
+
+Beispielhafte Zuordnung im Dictionary:
+
+```python
+PRODUCT_DISPLAY_NAMES = {
+    "STANDARDWOFFPACK_STUDENT": "Office 365 A1 for Students",
+    "FLOW_FREE": "Power Automate Free",
+    ...
+}
+```
+
+> Das gesamte Mapping-File findet ihr unter [`sku_mappings.json`](https://github.com/Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool/blob/main/ressources/licensetool/config/sku_mappings.json)
+
+___ 
+
+### Optimierung / Erweiterung: Frontend-Datenbank
+
+Wie zu Beginn erwähnt, war die SQLite-Datenbank ursprünglich **nur als temporärer Speicher für Testzwecke** vorgesehen. Während der Entwicklung zeigte sich jedoch, dass der **Microsoft Graph API-Aufruf** – insbesondere in Kombination mit der **SharePoint-Synchronisation** – zu **spürbaren Wartezeiten** im Frontend führte.
+
+#### Performanceproblem durch Live-Abfrage
+
+Die Verzögerung trat vor allem dann auf, wenn Lizenzdaten **live über Graph geladen und anschließend in SharePoint geschrieben** wurden. Da dieser Prozess je nach Tenant und Anzahl der Lizenzen mehrere Sekunden dauern kann, **wirkte das Frontend träge** und unresponsive.
+
+#### Lösung: Beibehalten der SQLite-Datenbank
+
+Um dem entgegenzuwirken, wurde entschieden, die **lokale SQLite-Datenbank weiterhin im System zu belassen** – nicht als primärer Datenspeicher, sondern **als Cache für das Frontend**.
+
+Diese Optimierung bringt mehrere Vorteile:
+
+- **Frontend-Zugriffe** auf Lizenzdaten erfolgen schnell und ohne API- oder Netzwerkaufruf
+    
+- **Benutzerinteraktionen** (z. B. Filterung, Monitoring-Umschaltung) bleiben performant
+    
+- Die **Live-Daten** via Microsoft Graph stehen weiterhin bei Bedarf zur Verfügung
+    
+
+#### Zwei Betriebsmodi im Frontend
+
+Das System unterscheidet nun zwei Zugriffsarten:
+
+|Modus|Beschreibung|
+|---|---|
+|**Nur Ansehen (Default)**|Zeigt die Lizenzdaten aus der SQLite-Datenbank (schnell, reiner Lesezugriff)|
+|**Aktualisieren in SP**|Führt einen Live-API-Call durch, **speichert die Lizenzdaten zuerst lokal in die SQLite-DB** und überträgt sie danach **in den SharePoint**. Dabei kann auch der `trigger_inform_supporter` gesetzt werden|
+
+> 📌 **Hinweis:**  <br>
+> Die zweite Option sollte **nur bei Bedarf** genutzt werden – z. B. zur manuell angestoßenen Aktualisierung oder zur Prüfung, ob eine Alarmierung nötig ist.
+
+#### Zielsetzung
+
+Die **SQLite-Datenbank** dient in dieser Architektur als **lokaler Zwischenspeicher**, um die Performance und Reaktionszeit des Frontends deutlich zu verbessern – insbesondere bei umfangreichen Lizenzdaten oder mehreren Tenants.
+
+Während alle **geschäftskritischen Prozesse** wie Monitoring, Benachrichtigungen oder die langfristige Datenspeicherung weiterhin über **SharePoint** und **Microsoft Graph** abgewickelt werden, sorgt die lokale DB dafür, dass das Frontend auch bei hohen Abfragefrequenzen **stabil und schnell** bleibt.
+
+>  Dadurch bleibt die Anwendung auch bei wachsender Tenant-Anzahl und parallelen Zugriffen **leistungsfähig und nutzerfreundlich**.
+
+Die Datenbankstruktur ist wie folgt aufgebaut:
+
+```mermaid
+classDiagram
+    class LicenseModel {
+        +Integer id
+        +String name
+        +Integer count
+    }
+
+    class LicenseIn {
+        +String name
+        +Integer count
+    }
+
+    class LicenseOut {
+        +Integer id
+        +String name
+        +Integer count
+    }
+
+    class LicenseStatusOut {
+        +String skuid
+        +String skupartnumber
+        +Integer consumed_units
+        +Integer available_units
+        +Integer free_units
+    }
+
+    class LicenseStatusAllOut {
+        +String skuid
+        +String skupartnumber
+        +Integer consumed_units
+        +Integer available_units
+        +Integer free_units
+        +String tenant
+    }
+
+    %% Beziehungen
+    LicenseIn --|> LicenseModel
+    LicenseOut --|> LicenseModel
+    LicenseStatusAllOut --|> LicenseStatusOut
+```
 
 
+___ 
+
+### Was wäre wenn: Cloud-Implementierung (CI/CD mit GitLab & AWS)
+
+Theoretisch sollte ein solcher Microservice in einer **Cloud-Umgebung gehostet** werden – beispielsweise für Hochverfügbarkeit, Skalierbarkeit und zentrale Zugriffe.  
+In diesem Projekt wurde jedoch bewusst auf eine lokale Lösung gesetzt, da **Lizenzdaten sensible Informationen enthalten**, deren Verarbeitung in externen Clouds **nicht DSGVO-konform** wäre.  
+(Detaillierte Infos: [Datenschutz in diesem Microservice](#Datenschutz-in-diesem-Microservice))
+
+#### Ziel dieser Sektion
+
+Trotz der lokalen Umsetzung soll hier aufgezeigt werden, **wie ein Deployment in der Cloud** aussehen _würde_ – inklusive automatisiertem **Build** und **Deployment** mittels **CI/CD-Pipeline** (am Beispiel GitLab + AWS).
+
+#### Voraussetzungen & Komponenten
+
+|Komponente|Zweck|
+|---|---|
+|**AWS EC2**|Virtuelle Linux-Maschine als Cloud-Host|
+|**Elastic IP**|Statische IP für externen Zugriff auf den Microservice|
+|**GitLab Repo**|Source-Code-Management & CI/CD Pipeline|
+|**Docker Desktop**|Für lokale Tests vor Deployment (nicht produktiv verwendet)|
 
 
+#### Infrastruktur & CI/CD-Ablauf
+
+#### Infrastruktur & CI/CD-Ablauf
+
+1. **Code-Push auf GitLab**  
+    Triggert die CI/CD-Pipeline automatisch.
+    
+2. **GitLab CI/CD Pipeline**
+    
+    - Führt Tests mit `pytest` durch
+        
+    - Erstellt ein Docker-Image
+        
+    - **Pusht das Image in die GitLab Container Registry**
+        
+3. **Deployment auf AWS EC2**  
+    Das Docker-Image wird auf einer EC2-Instanz (z. B. Ubuntu) gestartet – zusammen mit einer MySQL-Datenbank.  
+    **Gunicorn** fungiert als produktionsfähiger WSGI-Server.
 
 
+>ℹ️ **Hinweis:**  <br>
+>Die nachfolgenden Konfigurationsdateien sind **nicht Teil der aktuellen Projektstruktur**, da der Microservice bislang **nur lokal betrieben** wird. Sie zeigen exemplarisch, **wie eine Cloud-Integration mittels CI/CD** technisch umgesetzt werden könnte.
 
 
+#### CI/CD-Pipeline-Konfiguration (GitLab)
+
+**`.gitlab-ci.yml`** – Definiert das Build- und Testverhalten:
+
+```yaml
+stages:
+  - test
+
+test:
+  stage: test
+  image: python:3.10
+  before_script:
+    - pip install -r requirements.txt
+    - pip install pytest
+  script:
+    - pytest app/test
+    - pytest --cov=app app/test
+
+```
+
+#### Warum GitLab Container Registry?
+
+Ein zentrales Element dieser CI/CD-Pipeline ist die Nutzung der **GitLab Container Registry**.  
+Sie ermöglicht es, Docker-Images direkt beim Commit automatisiert zu bauen, zu versionieren und zentral im GitLab-Projekt zu speichern.
+
+**Vorteile im Überblick:**
+
+| Vorteil                             | Beschreibung                                                                               |
+| ----------------------------------- | ------------------------------------------------------------------------------------------ |
+| **Nahtlose GitLab-Integration**     | Kein externer Registry-Anbieter notwendig – alles innerhalb von GitLab verwaltet           |
+| **Automatisierter Build & Tagging** | Images werden bei jedem Commit mit `:latest` und `:<commit>` getaggt – ideal für Rollbacks |
+| **Zentraler Zugriffspunkt**         | EC2-Instanzen, Staging-Server oder andere Microservices können direkt darauf zugreifen     |
+| **Sichere Authentifizierung**       | Kein manuelles Passworthandling – Zugriff über `CI_JOB_TOKEN`                              |
+| **Skalierbar & übersichtlich**      | Jedes Projekt verwaltet seine Images isoliert und nachvollziehbar                          |
+
+#### Produktionsumgebung (Docker Compose)
+
+**`docker-compose.prod.yaml`** – Setzt API & DB auf:
+
+```yaml
+services:
+
+  prod-hf-itcne24-semarbeit3-msvc-lizenztool-api:
+    image: ${FLASK_BLUEPRINT_IMAGE}
+    build:
+      context: .
+      dockerfile: 'Dockerfile.prod'
+    container_name: prod-hf-itcne24-semarbeit3-msvc-lizenztool
+    environment:
+      - DATABASE_URI=mysql+mysqlconnector://root:root@prod-hf-itcne24-semarbeit3-msvc-lizenztool-db:3306/msvc-prod
+    ports:
+      - 5000:5000
+    depends_on:
+      prod-hf-itcne24-semarbeit3-msvc-lizenztool-db:
+        condition: service_healthy
+
+  msvc-bp-prod-db:
+    image: mysql:8.4.4
+    container_name: prod-hf-itcne24-semarbeit3-msvc-lizenztool-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: msvc-prod
+    healthcheck:
+      test: mysqladmin ping -h localhost -uroot --password=$$MYSQL_ROOT_PASSWORD
+      start_period: 2s
+      interval: 5s
+      timeout: 5s
+      retries: 55
+    ports:
+      - 3306:3306
+    volumes:
+      - msvc-prod-db:/var/lib/mysql
+
+volumes:
+  prod-hf-itcne24-semarbeit3-msvc-lizenztool-db:
+
+```
+
+#### Produktions-Image mit Gunicorn
+
+**`Dockerfile.prod`** – Für den produktiven Build:
+
+```Dockerfile
+FROM python:alpine3.21
+WORKDIR /app
+
+COPY requirements.txt requirements.txt
+RUN pip install -r requirements.txt
+RUN pip install gunicorn
+
+EXPOSE 5000
+ADD . /app
+
+CMD gunicorn -b 0.0.0.0:5000 wsgi:app
+
+```
+
+#### Zusammenfassung: Vorteile der CI/CD-Cloud-Pipeline
+
+|Schritt|Beschreibung|
+|---|---|
+|**Automatisierter Build**|GitLab erzeugt Image bei jedem Commit|
+|**Testdurchläufe**|Pytest validiert Code vor Deployment|
+|**Cloud-Deployment**|EC2-Instanz erhält aktuelle Version automatisch|
+|**Zugriff via IP**|Externe Anfragen via `http://<elastic-ip>:`|
 
 
-
-Bei späteren Tests, wurde ersichtlich, dass wenn ich es zusammen mit dem Frontend kombiniere, ist die Ladezeit imens, nur schon bei 2 Tennatns mit insgesamt 25 Lizenzen, wurde die Ladezeit zum PRoblem, weshalb ich fürs Frontend weiterhin auf eine SQLite-Datenbank setze, um die abgefragten Daten zu cachen. 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-### Funktionsablauf des MSVC
-
-![Test Gif](../../ressources/images/scheduled_task_with_writedown.gif)
-
-**Ablaufdiagramm der App**
-- **Blauer Zyklus**: Der Scheduled Task ruft periodisch den Lizenzstatus ab.
-- **Grüner Pfad**: Lizenzen verfügbar – Daten werden dokumentiert.
-- **Roter Pfad**: Lizenzen = 0 – PowerAutomate wird getriggert.
-
+___ 
 
 ## Datenschutz in diesem Microservice
 
@@ -725,3 +1057,4 @@ Zudem kann durch Premiumlizenzen indirekt erkannt werden, welche Tools oder Dien
 
 ### Kurzgesagt:
 Aus Datenschutzgründen wird der Microservice lokal im Docker-Container betrieben und nicht in der Cloud gehostet. Obwohl Microsoft Authentication verwendet wird, besteht bei kompromittierten Konten ein Restrisiko. Das Tool zeigt sensible Informationen wie Tenant-Daten, Lizenztypen und -anzahl. Daraus lassen sich Rückschlüsse auf Nutzergruppen (z. B. Schüler, Lehrpersonen) und eingesetzte Dienste ziehen – was datenschutzrechtlich heikel sein kann.
+
