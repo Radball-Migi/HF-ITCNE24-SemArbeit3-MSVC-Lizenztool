@@ -81,12 +81,12 @@ Die Struktur war schlicht und nur gerade das nötigste.
 - Blueprint implementiert
 - SQLite DB
 
-#### Angaben zum Microsoervice
+#### **Angaben zum Microsoervice**
 
-Technologie: FlaskAPI <br>
-Scriptsprache: Python <br>
-Endpunkt: http://localhost:5000/api/v1 <br>
-Swagger-UI: http://localhost:5000/api/v1/docs <br>
+**Technologie:** FlaskAPI <br>
+**Scriptsprache:** Python <br>
+**Endpunkt:** http://localhost:5000/api/v1 <br>
+**Swagger-UI:** http://localhost:5000/api/v1/docs <br>
 
 
 Zusätzlich wurde auch ein Swagger eingerichtet, um die einzelnen Routen zu dokumentieren.
@@ -440,7 +440,7 @@ Für den Zugriff wurde eine eigene App-Registrierung erstellt, welche ausschlies
 
 > ℹ️ **Information**  <br>
 > Der Test-Tenant, auf dem alle Listen & auch die spätere Authentifizierung stattfinden, ist der Tenant Iseschool2013, welcher auch der Testtenant der ISE AG ist. Erst wenn alles korrekt läuft und die Testphase überstanden hat, kann der MSVC in die Produktive umgebung implementiert werden. 
-> Die nachfolgenden SharePoint-Listen, werden auf der Site-Collection: /Sites/misch-sem3arbeit/ gespeichert. 
+> Die nachfolgenden SharePoint-Listen, werden auf der Site-Collection: [/Sites/misch-sem3arbeit/](https://iseschool2013.sharepoint.com/sites/misch-sem3arbeit/) gespeichert. 
 
 
 ##### **Parameterliste – Systemweite Konfigurationswerte**
@@ -883,7 +883,7 @@ ___
 
 Theoretisch sollte ein solcher Microservice in einer **Cloud-Umgebung gehostet** werden – beispielsweise für Hochverfügbarkeit, Skalierbarkeit und zentrale Zugriffe.  
 In diesem Projekt wurde jedoch bewusst auf eine lokale Lösung gesetzt, da **Lizenzdaten sensible Informationen enthalten**, deren Verarbeitung in externen Clouds **nicht DSGVO-konform** wäre.  
-(Detaillierte Infos: [Datenschutz in diesem Microservice](#Datenschutz-in-diesem-Microservice))
+(Detaillierte Infos: [Datenschutz in diesem Microservice](###Datenschutz-in-diesem-Microservice))
 
 #### **Ziel dieser Sektion**
 
