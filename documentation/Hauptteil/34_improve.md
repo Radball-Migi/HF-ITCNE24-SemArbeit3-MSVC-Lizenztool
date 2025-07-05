@@ -883,7 +883,7 @@ ___
 
 Theoretisch sollte ein solcher Microservice in einer **Cloud-Umgebung gehostet** werden – beispielsweise für Hochverfügbarkeit, Skalierbarkeit und zentrale Zugriffe.  
 In diesem Projekt wurde jedoch bewusst auf eine lokale Lösung gesetzt, da **Lizenzdaten sensible Informationen enthalten**, deren Verarbeitung in externen Clouds **nicht DSGVO-konform** wäre.  
-(Detaillierte Infos: [Datenschutz in diesem Microservice](###Datenschutz-in-diesem-Microservice))
+(Detaillierte Infos: [Datenschutz in diesem Microservice](#datenschutz-in-diesem-microservice))
 
 #### **Ziel dieser Sektion**
 
