@@ -687,7 +687,7 @@ Falls es einmal Probleme mit einem Tenant gibt – oder ein neuer Tenant gerade 
 
 Dies erfolgt über den Bildschirm [`monitoring.html`](https://github.com/Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool/blob/main/ressources/licensetool/app/templates/monitoring.html), welcher eine Übersicht aller registrierten Tenants bietet.
 
-![Bild Frontend Monitoring](../../ressources/images/frontend_monitoring.png)
+[![Bild Frontend Monitorin](../../ressources/images/frontend_monitoring.png)]
 
 > Über diesen Screen lassen sich **pro Tenant** sowohl die Option _Aktiv (enabled)_ als auch _Monitoring aktiv (monitoring)_ ein- oder ausschalten.
 
