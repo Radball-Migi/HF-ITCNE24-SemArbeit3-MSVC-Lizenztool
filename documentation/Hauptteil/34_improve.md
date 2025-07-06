@@ -721,6 +721,7 @@ Die Tests werden mit **`pytest`** ausgeführt – einem flexiblen Framework für
 
 #### **Ergänzungen in der Projektstruktur**
 
+
 ```Text
 licensetool
 ├── app
