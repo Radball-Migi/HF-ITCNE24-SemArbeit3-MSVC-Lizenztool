@@ -73,11 +73,11 @@ Mocking wurde eingesetzt, um die Microsoft Graph API und die SharePoint-Kommunik
 
 ### Pytest-Testergebnisse
 
-📌 **Hier wird das Pytest-Ergebnis eingebunden (Screenshot):**
-
-> Testlauf vom 06.07.2025 – ausgeführt über `pytest --cov=app test/`
+**Hier wird das Pytest-Ergebnis eingebunden (Screenshot):**
 
 ![Pytest results](../../ressources/images/pytestresult.png)
+
+> Testlauf vom 06.07.2025 – ausgeführt über `pytest --cov=app test/`
 
 | Kennzahl               | Wert                                        |
 | ---------------------- | ------------------------------------------- |
@@ -115,19 +115,19 @@ ___
 
 ### Testmatrix – Übersicht aller geprüften Szenarien
 
-| Test-ID | Kategorie                      | Ziel                                                                           | Erwartetes Verhalten                                                                     |
-| ------- | ------------------------------ | ------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
-| T01     | Lizenzstatus (alle)            | Abruf aller Lizenzdaten aller Tenants über `/api/v1/licenses/status/show`      | JSON-Rückgabe mit vollständiger Lizenzübersicht                                          |
-| T02     | Lizenzstatus (Tenant)          | Anzeige des Lizenzstatus eines einzelnen Tenants                               | Lizenzdaten korrekt für angegebenen Tenant                                               |
-| T03     | Lizenzstatus + SharePoint Sync | Abruf und direkte Übertragung an SharePoint über `/status/show-fetch/<tenant>` | Daten werden geholt, aufbereitet und gespeichert                                         |
-| T04     | Fehlerbehandlung               | Fehlendes Config-File (z. B. falscher Tenantname)                              | Rückgabe leerer Liste, kein Absturz                                                      |
-| T05     | SharePoint Sync                | Lizenzdaten in SharePoint schreiben                                            | Einträge werden erstellt oder aktualisiert                                               |
-| T06     | Monitoring-Steuerung           | Aktivierung/Deaktivierung von Monitoring per SharePoint                        | Nur aktive Tenants mit werden verarbeitet, Benachrichtigungen nur mit aktivem Monitoring |
-| T07     | Authentifizierung              | Zugriff auf geschützte Seite ohne Login                                        | Weiterleitung zum Login-Endpoint                                                         |
-| T08     | Frontend-Verfügbarkeit         | Statusseiten wie `statusall.html` werden geladen                               | Seiten sind erreichbar, HTML-Code wird geliefert                                         |
-| T09     | Graph API Fehler               | Microsoft Graph simuliert einen Fehler                                         | Fehler wird abgefangen und geloggt                                                       |
-| T10     | JSON Fehlerhandling            | Ungültiges JSON in Konfigurationsdatei                                         | Fehler wird erkannt, API liefert leere Antwort                                           |
-| T11     | Coverage-Ziel                  | Codeabdeckung prüfen                                                           | Über 90 % erreicht, keine ungetesteten Kernteile                                         |
+| Test-ID                                                                 | Kategorie                      | Ziel                                                                           | Erwartetes Verhalten                                                                     |
+| ----------------------------------------------------------------------- | ------------------------------ | ------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
+| [T01](l#t01--lizenzstatus-alle-tenants-anzeigen)                        | Lizenzstatus (alle)            | Abruf aller Lizenzdaten aller Tenants über `/api/v1/licenses/status/show`      | JSON-Rückgabe mit vollständiger Lizenzübersicht                                          |
+| [T02](#t02--lizenzstatus-einzelner-tenant-anzeigen)                     | Lizenzstatus (Tenant)          | Anzeige des Lizenzstatus eines einzelnen Tenants                               | Lizenzdaten korrekt für angegebenen Tenant                                               |
+| [T03](#t03--lizenzstatus--sharepoint-synchronisation)                   | Lizenzstatus + SharePoint Sync | Abruf und direkte Übertragung an SharePoint über `/status/show-fetch/<tenant>` | Daten werden geholt, aufbereitet und gespeichert                                         |
+| [T04](#t04--lizenzstatus-eines-tenants-anzeigen)                        | Fehlerbehandlung               | Fehlendes Config-File (z. B. falscher Tenantname)                              | Rückgabe leerer Liste, kein Absturz                                                      |
+| [T05](#t05--fehler-bei-fehlender-tenant-konfiguration)                  | SharePoint Sync                | Lizenzdaten in SharePoint schreiben                                            | Einträge werden erstellt oder aktualisiert                                               |
+| [T06](#t06--lizenzverarbeitung-basierend-auf-tenant-status--monitoring) | Monitoring-Steuerung           | Aktivierung/Deaktivierung von Monitoring per SharePoint                        | Nur aktive Tenants mit werden verarbeitet, Benachrichtigungen nur mit aktivem Monitoring |
+| [T07](#t07--support-benachrichtigung-bei-engpass)                       | Authentifizierung              | Zugriff auf geschützte Seite ohne Login                                        | Weiterleitung zum Login-Endpoint                                                         |
+| [T08](#t08--zugriff-ohne-login-auth-test)                               | Frontend-Verfügbarkeit         | Statusseiten wie `statusall.html` werden geladen                               | Seiten sind erreichbar, HTML-Code wird geliefert                                         |
+| [T09](#t09--frontend-seiten-erreichbar)                                 | Graph API Fehler               | Microsoft Graph simuliert einen Fehler                                         | Fehler wird abgefangen und geloggt                                                       |
+| [T10](#t10--fehlerhafte-graph-api-behandeln)                            | JSON Fehlerhandling            | Ungültiges JSON in Konfigurationsdatei                                         | Fehler wird erkannt, API liefert leere Antwort                                           |
+| [T11](#t11--ungültige-json-konfiguration)                               | Coverage-Ziel                  | Codeabdeckung prüfen                                                           | Über 90 % erreicht, keine ungetesteten Kernteile                                         |
 
 > 💡 **Hinweis:** <br> 
 > Alle Tests wurden mit der `client`-Fixture aus `conftest.py` durchgeführt und durch Mocking vollständig isoliert. Damit wurde sichergestellt, dass alle APIs reproduzierbar getestet werden können – unabhängig von externer Konnektivität.
