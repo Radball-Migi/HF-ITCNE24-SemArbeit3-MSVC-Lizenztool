@@ -18,23 +18,5 @@ Bei Projektarbeiten sind Risiken immer vorhanden. Diese Risiken können jedoch i
 | Power Automate Benachrichtigungen funktionieren nicht zuverlässig   | Niedrig  | Hoch       | Flows früh einrichten, mit Testfällen absichern, manuelle Kontrolle ergänzen |
 | GitHub-Dokumentation wird nicht laufend gepflegt                    | Niedrig  | Niedrig    | Doku fix in Workflow einplanen, regelmässige Erinnerung im Taskboard         |
 
-```mermaid
-%%{init: {"quadrantChart": {"chartWidth": 500, "chartHeight": 500, "quadrantTextTopPadding": 100}, "themeVariables": {"quadrant1TextFill":"#808080", "quadrant2TextFill":"#808080", "quadrant3TextFill":"#808080", "quadrant4TextFill":"#808080"} }}%%
 
-quadrantChart
-
-  title Risikoanalyse: Eintrittswahrscheinlichkeit vs. Auswirkung
-    x-axis Niedrig --> Hoch
-    y-axis Gering --> Stark
-
-	quadrant-1 Hoch riskant
-    quadrant-2 Kritisch
-    quadrant-3 Akzeptabel
-    quadrant-4 Beobachten
-
-"Debugging": [0.8, 0.5]
-"Fehlerhafte API-Abfragen": [0.5, 0.9]
-"SharePoint-Zugriffsprobleme": [0.5, 0.5]
-"Power Automate": [0.2, 0.9]
-"GitHub-Doku ungepflegt": [0.2, 0.2]
-```
+![Risikoanalyse](../../ressources/images/risikoanalyse.png)

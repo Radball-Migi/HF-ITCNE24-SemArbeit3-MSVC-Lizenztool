@@ -7,7 +7,7 @@ nav_order: 8
 
 #  Kontrollieren (Control) Phase
 
-Die Control-Phase ist der letzte Schritt im DMAIC-Zyklus eines Lean-/Six-Sigma-Projekts. Ziel dieser Phase ist es, sicherzustellen, dass die in der Improve-Phase umgesetzten Maßnahmen langfristig stabil funktionieren und Rückfälle vermieden werden. In diesem Projekt steht besonders im Fokus, dass der Microservice korrekt arbeitet, kontinuierlich überwacht wird und automatisiert auf kritische Zustände reagiert.
+Die Control-Phase ist der letzte Schritt im DMAIC-Zyklus eines Lean-/Six-Sigma-Projekts. Ziel dieser Phase ist es, sicherzustellen, dass die in der Improve-Phase umgesetzten Massnahmen langfristig stabil funktionieren und Rückfälle vermieden werden. In diesem Projekt steht besonders im Fokus, dass der Microservice korrekt arbeitet, kontinuierlich überwacht wird und automatisiert auf kritische Zustände reagiert.
 
 ![control](../../ressources/images/control.png)
 
@@ -101,7 +101,7 @@ Die Abdeckung betrifft insbesondere die kritischen Pfade in:
 
 ### Zusammenfassung der Control-Massnahmen
 
-| Maßnahme                                   | Umgesetzt |
+| Massnahme                                  | Umgesetzt |
 | ------------------------------------------ | --------- |
 | Automatisierte Tests                       | ✅ Ja      |
 | Testabdeckung über 90 %                    | ✅ Ja      |
@@ -117,7 +117,7 @@ ___
 
 | Test-ID                                                                 | Kategorie                      | Ziel                                                                           | Erwartetes Verhalten                                                                     |
 | ----------------------------------------------------------------------- | ------------------------------ | ------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
-| [T01](l#t01--lizenzstatus-alle-tenants-anzeigen)                        | Lizenzstatus (alle)            | Abruf aller Lizenzdaten aller Tenants über `/api/v1/licenses/status/show`      | JSON-Rückgabe mit vollständiger Lizenzübersicht                                          |
+| [T01](#t01--lizenzstatus-alle-tenants-anzeigen)                         | Lizenzstatus (alle)            | Abruf aller Lizenzdaten aller Tenants über `/api/v1/licenses/status/show`      | JSON-Rückgabe mit vollständiger Lizenzübersicht                                          |
 | [T02](#t02--lizenzstatus-einzelner-tenant-anzeigen)                     | Lizenzstatus (Tenant)          | Anzeige des Lizenzstatus eines einzelnen Tenants                               | Lizenzdaten korrekt für angegebenen Tenant                                               |
 | [T03](#t03--lizenzstatus--sharepoint-synchronisation)                   | Lizenzstatus + SharePoint Sync | Abruf und direkte Übertragung an SharePoint über `/status/show-fetch/<tenant>` | Daten werden geholt, aufbereitet und gespeichert                                         |
 | [T04](#t04--lizenzstatus-eines-tenants-anzeigen)                        | Fehlerbehandlung               | Fehlendes Config-File (z. B. falscher Tenantname)                              | Rückgabe leerer Liste, kein Absturz                                                      |

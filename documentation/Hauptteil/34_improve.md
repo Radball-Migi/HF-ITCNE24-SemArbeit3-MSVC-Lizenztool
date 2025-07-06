@@ -757,7 +757,7 @@ def setup_logging(log_file='logs/licensetool.log', level=logging.INFO):
 ```
 
 **Log-Ausgabe**:  
-Alle Logs werden standardmäßig unter `logs/licensetool.log` gespeichert und bei 5 MB automatisch rotiert.
+Alle Logs werden standardmässig unter `logs/licensetool.log` gespeichert und bei 5 MB automatisch rotiert.
 
 **Beispielauszug aus dem Log:**
 
@@ -778,7 +778,7 @@ Aktuell werden die Lizenzen technisch anhand ihrer **SKU Part Number** identifiz
 
 Um die **Lesbarkeit und Benutzerfreundlichkeit** zu verbessern, wurde ein zusätzliches **Dictionary** eingeführt, das die **SKU Part Numbers** den entsprechenden **Display Names** (also Klartextnamen) zuordnet.
 
-> Die SKU-Nummer bleibt weiterhin erhalten und wird im Datensatz mitgeführt – der Displayname dient ausschließlich zur besseren Darstellung im Frontend.
+> Die SKU-Nummer bleibt weiterhin erhalten und wird im Datensatz mitgeführt – der Displayname dient ausschliesslich zur besseren Darstellung im Frontend.
 
 **Beispielhafte Zuordnung im Dictionary:**
 
@@ -800,7 +800,7 @@ Wie zu Beginn erwähnt, war die SQLite-Datenbank ursprünglich **nur als tempor�
 
 #### **Performanceproblem durch Live-Abfrage**
 
-Die Verzögerung trat vor allem dann auf, wenn Lizenzdaten **live über Graph geladen und anschließend in SharePoint geschrieben** wurden. Da dieser Prozess je nach Tenant und Anzahl der Lizenzen mehrere Sekunden dauern kann, **wirkte das Frontend träge** und unresponsive.
+Die Verzögerung trat vor allem dann auf, wenn Lizenzdaten **live über Graph geladen und anschliessend in SharePoint geschrieben** wurden. Da dieser Prozess je nach Tenant und Anzahl der Lizenzen mehrere Sekunden dauern kann, **wirkte das Frontend träge** und unresponsive.
 
 #### **Lösung: Beibehalten der SQLite-Datenbank**
 
@@ -825,7 +825,7 @@ Das System unterscheidet nun zwei Zugriffsarten:
 |**Aktualisieren in SP**|Führt einen Live-API-Call durch, **speichert die Lizenzdaten zuerst lokal in die SQLite-DB** und überträgt sie danach **in den SharePoint**. Dabei kann auch der `trigger_inform_supporter` gesetzt werden|
 
 > 📌 **Hinweis:**  <br>
-> Die zweite Option sollte **nur bei Bedarf** genutzt werden – z. B. zur manuell angestoßenen Aktualisierung oder zur Prüfung, ob eine Alarmierung nötig ist.
+> Die zweite Option sollte **nur bei Bedarf** genutzt werden – z. B. zur manuell angestossenen Aktualisierung oder zur Prüfung, ob eine Alarmierung nötig ist.
 
 #### **Zielsetzung**
 

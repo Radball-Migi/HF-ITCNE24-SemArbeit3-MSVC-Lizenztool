@@ -14,7 +14,7 @@ Die Define-Phase ist der erste Schritt in einem Six Sigma Projekt. In dieser Pha
 
 ## Zielvorstellung
 
-Am Ende der Semesterarbeit soll ein praxistaugliches Tool für die ISE AG entstehen, das eine automatisierte und zentralisierte Lizenzüberwachung ermöglicht. Kern des Systems ist ein Microservice, der regelmäßig Lizenzinformationen aus vordefinierten Microsoft 365 Tenants über die Microsoft Graph API abruft. Die erfassten Daten werden strukturiert in einer SharePoint Online Liste gespeichert, um nahtlos in bestehende Workflows der ISE AG integrierbar zu sein.
+Am Ende der Semesterarbeit soll ein praxistaugliches Tool für die ISE AG entstehen, das eine automatisierte und zentralisierte Lizenzüberwachung ermöglicht. Kern des Systems ist ein Microservice, der regelmässig Lizenzinformationen aus vordefinierten Microsoft 365 Tenants über die Microsoft Graph API abruft. Die erfassten Daten werden strukturiert in einer SharePoint Online Liste gespeichert, um nahtlos in bestehende Workflows der ISE AG integrierbar zu sein.
 
 Auf dieser Basis können anschliessend automatisierte Prozesse – insbesondere über Power Automate – eingerichtet werden, die bei kritischen Lizenzständen Benachrichtigungen auslösen und so ein frühzeitiges Handeln ermöglichen. Das Tool soll sowohl intern nutzbar als auch erweiterbar sein und einen nachhaltigen Mehrwert für den operativen Betrieb im Lizenzmanagement schaffen.
 

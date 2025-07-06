@@ -20,7 +20,7 @@ Mit der SEUSAG möchte ich die Systemgrenzen aufzeigen, welche bei meinem Projek
 
 ## Script-Server (VM)
 
-- Docker-basierter **Flask-Microservice**, der regelmäßig Lizenzdaten aus Kundensystemen über die Microsoft Graph API abruft  
+- Docker-basierter **Flask-Microservice**, der regelmässig Lizenzdaten aus Kundensystemen über die Microsoft Graph API abruft  
 - Stellt eine **API** für das Web-Frontend bereit  
 - Verarbeitet und überträgt die Daten an Microsoft Lists (**Microsoft Copilot (M365) - Tenant der ISE AG**)
 

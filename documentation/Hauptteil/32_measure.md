@@ -60,7 +60,7 @@ Zur Analyse des aktuellen Lizenzprozesses wurden folgende Daten erhoben:
     
 - **Fehlerquote**: Häufigkeit von Problemen im Zusammenhang mit fehlenden, abgelaufenen oder falsch zugewiesenen Lizenzen sowie der Anteil von Nacharbeiten (z. B. durch manuelle Korrekturen).
     
-- **Ressourceneinsatz**: Anzahl der Mitarbeitenden (z. B. IT-Support, Admins), die regelmäßig in die Bearbeitung von Lizenzthemen involviert sind.    
+- **Ressourceneinsatz**: Anzahl der Mitarbeitenden (z. B. IT-Support, Admins), die regelmässig in die Bearbeitung von Lizenzthemen involviert sind.    
 
 Die Ergebnisse dieser Datenerhebung bilden die Grundlage für die nachfolgende [Analyse](33_analyze.md), in der Engpässe, Ineffizienzen und potenzielle Ursachen für Schwankungen im Prozessverlauf detailliert untersucht werden.
 

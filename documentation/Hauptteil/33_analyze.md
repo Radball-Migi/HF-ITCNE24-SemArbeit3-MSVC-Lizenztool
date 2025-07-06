@@ -33,7 +33,7 @@ Die Behebung von Lizenzproblemen dauert im bestehenden Ablauf oft mehrere Tage. 
 
 #### 2. **Fehlerquoten**
 
-Die Fehleranalyse zeigt, dass durch den manuellen Ablauf regelmäßig Probleme entstehen:
+Die Fehleranalyse zeigt, dass durch den manuellen Ablauf regelmässig Probleme entstehen:
 
 - **Doppelte Bearbeitung** bei unzureichender Nachverfolgung
 - **Falsche Lizenztypen bestellt** aufgrund ungenauer Kommunikation
