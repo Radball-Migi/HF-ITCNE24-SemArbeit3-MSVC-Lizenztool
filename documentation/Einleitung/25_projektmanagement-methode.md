@@ -28,7 +28,7 @@ In meiner Semesterarbeit werde ich mit Kanban und Scrum arbeiten.
 Weshalb gleich mit beiden Methoden?
 Kanban ist in GitHub bereits integriert, in welchen man Boards und Tasks selbst erstellen kann. Zusätzlich kann ich verschiedene Ansichten erstellen, wie beispielsweise eine Gant-Projektübersicht, etc. 
 Zusätzlich verwende ich die Sprints, welche in Scrum integriert sind. Da ich jedoch alleine bin, habe ich bei mir nur 3 Sprintgespräche eingeplant. Dies, weil die Daily Sprints wegfallen, da ich die Semesterarbeit als Einzelarbeit mache, somit bin ich Zeitgleich auch der Scrum-Master. 
-Um den Scrum-Prozess etwas aktiver zu gestalten, arbeite ich zudem mit **Userstorys**, welche ich im Projekt dokumentiere und priorisiere.
+Um den Scrum-Prozess etwas aktiver zu gestalten, arbeite ich zudem mit **Userstorys**, welche ich im Projekt dokumentiere und priorisiere. Die Userstorys sind in den jeweiligen Issues im <a href="https://github.com/users/Radball-Migi/projects/7/views/1" target="_blank">License Tool Release</a> enthalten.
 
 Dies ist der Link zu meinem Projektmanagement:
 <a href="https://github.com/users/Radball-Migi/projects/6/views/4" target="_blank">Roadmap · HF ITCNE24 - 3. Semarbeit MSVC - Projectplan</a>
