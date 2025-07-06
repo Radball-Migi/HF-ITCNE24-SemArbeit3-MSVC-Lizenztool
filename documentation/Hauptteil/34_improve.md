@@ -38,19 +38,19 @@ Das *Know-how* habe ich mir durch meine aktive Teilnahme am MSVC-Unterricht be
 > 
 > Als erster Aufbau werden zwei Testtenants der ISE AG verwendet. Diese Simulieren dann alle Tenants, welche später ggf. gemonitort werden. 
 
-| Abschnitt                                                                                                      | Beschreibung                                                                     | GitHub-Issue                                                                                                                           |
-| -------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| [**Sichere Verbindung zur Graph API**](#implementierung-lizenzabfrage-bei-anderen-tenants-via-microsoft-graph) | Aufbau einer zertifikatsbasierten, sicheren Verbindung zu Microsoft Graph        | [#13 Establish secure connection](https://github.com/Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool/issues/13)                     |
-| **Lizenzdaten automatisch abrufen**                                                                            | Microservice ruft die aktuellen Lizenzstände via Graph API automatisiert ab      | [#16 Implement license fetch via Graph](https://github.com/Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool/issues/16)               |
-| **Flask Microservice Architektur**                                                                             | Aufbau des Services mit Flask, Docker, Blueprints und SQLite                     | [#12 Set up Flask microservice architecture](https://github.com/Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool/issues/12)          |
-| **Lizenzdaten in SharePoint speichern**                                                                        | Lizenzstatus wird pro Tenant in einer SharePoint-Liste persistiert               | [#14 Store license data in SharePoint list](https://github.com/Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool/issues/14)           |
-| **Automatische Benachrichtigung via PowerAutomate**                                                            | Wenn keine Lizenzen mehr verfügbar sind, wird der Support automatisch informiert | [#15 Create PowerAutomate-Flow for alerting](https://github.com/Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool/issues/15)          |
-| **Frontend zur Lizenzanzeige**                                                                                 | Darstellung aller Lizenzdaten in einer übersichtlichen Weboberfläche             | [#17 Create frontend to visualize license data](https://github.com/Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool/issues/17)       |
-| **REST API für Frontend-Integration**                                                                          | Bereitstellung von API-Endpunkten für das Frontend                               | [#18 Develop REST API for frontend](https://github.com/Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool/issues/18)                   |
-| **Benutzerauthentifizierung via Azure**                                                                        | Zugriff nur nach Login mit Firmen-Microsoft-Konto möglich                        | [#19 Implement authentication and access control](https://github.com/Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool/issues/19)     |
-| **SharePoint als zentrale Steuerung**                                                                          | Tenant-Aktivität und Monitoring-Status steuerbar über SharePoint                 | [#20 Create SharePoint List for License Data Storage](https://github.com/Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool/issues/20) |
-| **Monitoring im Frontend steuerbar**                                                                           | Möglichkeit, Monitoring pro Tenant direkt über das UI zu aktivieren/deaktivieren | [#22 Control PowerAutomate Monitoring via Frontend](https://github.com/Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool/issues/22)   |
-| **Zentrales Logging**                                                                                          | Logfile für Fehler, API-Aufrufe und Systemzustände mit Rotation                  | [#23 Logging](https://github.com/Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool/issues/23)                                         |
+| Abschnitt                                                                                                     | Beschreibung                                                                     | GitHub-Issue                                                                                                                           |
+| ------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| [**Sichere Verbindung zur Graph API**](#sicherheit-durch-config-profile)                                      | Aufbau einer zertifikatsbasierten, sicheren Verbindung zu Microsoft Graph        | [#13 Establish secure connection](https://github.com/Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool/issues/13)                     |
+| [**Lizenzdaten automatisch abrufen**](#implementierung-lizenzabfrage-bei-anderen-tenants-via-microsoft-graph) | Microservice ruft die aktuellen Lizenzstände via Graph API automatisiert ab      | [#16 Implement license fetch via Graph](https://github.com/Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool/issues/16)               |
+| [**Flask Microservice Architektur**](#grundgerüst-des-microservices-1)                                        | Aufbau des Services mit Flask, Docker, Blueprints und SQLite                     | [#12 Set up Flask microservice architecture](https://github.com/Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool/issues/12)          |
+| [**Lizenzdaten in SharePoint speichern**](#vollständiger-ablauf-zur-verarbeitung-eines-lizenz-datensatzes)    | Lizenzstatus wird pro Tenant in einer SharePoint-Liste persistiert               | [#14 Store license data in SharePoint list](https://github.com/Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool/issues/14)           |
+| [**Automatische Benachrichtigung via PowerAutomate**](#implementierung-powerautomate-flow)                    | Wenn keine Lizenzen mehr verfügbar sind, wird der Support automatisch informiert | [#15 Create PowerAutomate-Flow for alerting](https://github.com/Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool/issues/15)          |
+| [**Frontend zur Lizenzanzeige**](#implementierung-frontend-zur-visualisierung-der-lizenzdaten)                | Darstellung aller Lizenzdaten in einer übersichtlichen Weboberfläche             | [#17 Create frontend to visualize license data](https://github.com/Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool/issues/17)       |
+| [**REST API für Frontend-Integration**](#routenbindung-der-templates)                                         | Bereitstellung von API-Endpunkten für das Frontend                               | [#18 Develop REST API for frontend](https://github.com/Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool/issues/18)                   |
+| [**Benutzerauthentifizierung via Azure**](#implementierung-authentifizierung)                                 | Zugriff nur nach Login mit Firmen-Microsoft-Konto möglich                        | [#19 Implement authentication and access control](https://github.com/Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool/issues/19)     |
+| [**SharePoint als zentrale Steuerung**](#implementierung-sharepoint-einbindung)                               | Tenant-Aktivität und Monitoring-Status steuerbar über SharePoint                 | [#20 Create SharePoint List for License Data Storage](https://github.com/Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool/issues/20) |
+| [**Monitoring im Frontend steuerbar**](#implementierung-monitoring-verwaltung)                                | Möglichkeit, Monitoring pro Tenant direkt über das UI zu aktivieren/deaktivieren | [#22 Control PowerAutomate Monitoring via Frontend](https://github.com/Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool/issues/22)   |
+| [**Zentrales Logging**](#implementierung-logging--testing)                                                    | Logfile für Fehler, API-Aufrufe und Systemzustände mit Rotation                  | [#23 Logging](https://github.com/Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool/issues/23)                                         |
 
 ### Wie soll der MSVC ablauffen?
 
@@ -151,6 +151,8 @@ Zusätzlich wurde ein **Swagger-Dokumentationsinterface** eingerichtet, um alle 
 
 👉 [Lizenztool Swagger UI (lokal)](http://localhost:5000/api/v1/docs) *(nur aktiv bei laufendem Docker-Container)*
 
+
+___
 
 ### Implementierung: Lizenzabfrage bei anderen Tenants (via Microsoft Graph)
 
@@ -687,7 +689,7 @@ Falls es einmal Probleme mit einem Tenant gibt – oder ein neuer Tenant gerade 
 
 Dies erfolgt über den Bildschirm [`monitoring.html`](https://github.com/Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool/blob/main/ressources/licensetool/app/templates/monitoring.html), welcher eine Übersicht aller registrierten Tenants bietet.
 
-[![Bild Frontend Monitorin](../../ressources/images/frontend_monitoring.png)]
+![Bild Frontend Monitorin](../../ressources/images/frontend_monitoring.png)
 
 > Über diesen Screen lassen sich **pro Tenant** sowohl die Option _Aktiv (enabled)_ als auch _Monitoring aktiv (monitoring)_ ein- oder ausschalten.
 
