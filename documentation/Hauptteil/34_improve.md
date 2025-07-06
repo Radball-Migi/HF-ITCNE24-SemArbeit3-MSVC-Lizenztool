@@ -761,7 +761,7 @@ Alle Logs werden standardmässig unter `logs/licensetool.log` gespeichert und be
 
 **Beispielauszug aus dem Log:**
 
-```log
+```output
 2025-06-19 11:22:03,699 [INFO] app.licenses.routes: Alle Lizenzstatus werden geladen (status/show)
 2025-06-19 11:22:06,092 [INFO] app.licenses.routes: Lade Lizenzstatus für Tenant: ISE School 2013
 2025-06-19 11:22:07,093 [INFO] werkzeug: 172.22.0.1 - - [19/Jun/2025 11:22:07] "GET /api/v1/licenses/status/show HTTP/1.1" 200 -
@@ -878,6 +878,9 @@ classDiagram
     LicenseOut --|> LicenseModel
     LicenseStatusAllOut --|> LicenseStatusOut
 ```
+
+> _links wird die DB für die API-Testendpunkte gezeigt_
+> _rechts werden die models des Tools aufgezeigt_
 
 
 ___ 

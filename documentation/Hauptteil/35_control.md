@@ -133,7 +133,7 @@ ___
 > Alle Tests wurden mit der `client`-Fixture aus `conftest.py` durchgeführt und durch Mocking vollständig isoliert. Damit wurde sichergestellt, dass alle APIs reproduzierbar getestet werden können – unabhängig von externer Konnektivität.
 
 
-#### T01 – Lizenzstatus: Alle Tenants anzeigen
+#### **T01 – Lizenzstatus: Alle Tenants anzeigen**
 
 Testet den zentralen API-Endpunkt `/api/v1/licenses/status/show`, der alle Lizenzdaten aus sämtlichen konfigurierten Tenants abruft, verarbeitet und als konsolidierte JSON-Liste zurück liefert.
 
@@ -162,7 +162,7 @@ Testet den zentralen API-Endpunkt `/api/v1/licenses/status/show`, der alle Lizen
 
 ---
 
-#### T02 – Lizenzstatus: Einzelner Tenant anzeigen
+#### **T02 – Lizenzstatus: Einzelner Tenant anzeigen**
 
 Über den Endpunkt `/api/v1/licenses/status/show/<tenant>` wird geprüft, ob der Microservice gezielt Lizenzdaten für einen bestimmten Tenant abruft und korrekt darstellt. Diese Route wird z. B. für Detailansichten im Frontend genutzt.
 
@@ -187,7 +187,7 @@ Testet den zentralen API-Endpunkt `/api/v1/licenses/status/show`, der alle Lizen
 
 ---
 
-#### T03 – Lizenzstatus + SharePoint-Synchronisation
+#### **T03 – Lizenzstatus + SharePoint-Synchronisation**
 
 Testet den vollständigen Ablauf: Lizenzdaten eines Tenants werden über `/status/show-fetch/<tenant>` geladen, verarbeitet und an SharePoint übertragen. Dabei wird geprüft, ob `push_license_status_to_sharepoint()` korrekt ausgeführt wird.
 
@@ -197,7 +197,7 @@ Testet den vollständigen Ablauf: Lizenzdaten eines Tenants werden über `/statu
 
 ---
 
-#### T04 – Lizenzstatus eines Tenants anzeigen
+#### **T04 – Lizenzstatus eines Tenants anzeigen**
 
 Testet `/api/v1/licenses/status/show/<tenant>`. Erwartet: JSON mit Lizenz-Infos (inkl. `available`, `consumed`, `free`).
 
@@ -208,7 +208,7 @@ Testet `/api/v1/licenses/status/show/<tenant>`. Erwartet: JSON mit Lizenz-Infos 
 
 ---
 
-#### T05 – Fehler bei fehlender Tenant-Konfiguration
+#### **T05 – Fehler bei fehlender Tenant-Konfiguration**
 
 Simuliert, dass `config-<tenant>-profile.json` fehlt. Erwartet: API gibt leeres Array zurück.
 
@@ -217,7 +217,7 @@ Simuliert, dass `config-<tenant>-profile.json` fehlt. Erwartet: API gibt leeres 
 > _Leerer Array, weil das Config-Profile nicht existiert_
 
 
-```log
+```output
 2025-07-06 10:24:35,346 [ERROR] app.licenses.routes: Fehler beim Abrufen von Lizenzdaten für iseschool2022
 
 Traceback (most recent call last):
@@ -239,7 +239,7 @@ FileNotFoundError: [Errno 2] No such file or directory: 'config-profiles/config-
 
 ---
 
-#### T06 – Lizenzverarbeitung basierend auf Tenant-Status & Monitoring
+#### **T06 – Lizenzverarbeitung basierend auf Tenant-Status & Monitoring**
 
 Dieser Test prüft die **SharePoint-gesteuerte Steuerung**, ob ein Tenant durch den Microservice verarbeitet wird. Nur wenn `enabled = true` ist, werden Lizenzdaten überhaupt abgefragt. Zusätzlich entscheidet das Feld `monitoring = true`, ob beim Lizenzengpass ein PowerAutomate-Trigger (`trigger_inform_supporter`) gesetzt wird.
 
@@ -250,7 +250,7 @@ Dieser Test prüft die **SharePoint-gesteuerte Steuerung**, ob ein Tenant durch 
 
 ---
 
-#### T07 – Support-Benachrichtigung bei Engpass
+#### **T07 – Support-Benachrichtigung bei Engpass**
 
 Prüft, ob bei `free_units = 0` ein Trigger gesetzt wird.
 
@@ -265,7 +265,7 @@ Prüft, ob bei `free_units = 0` ein Trigger gesetzt wird.
 
 ---
 
-#### T08 – Zugriff ohne Login (Auth-Test)
+#### **T08 – Zugriff ohne Login (Auth-Test)**
 
 Prüft Zugriff auf `/statusall` ohne Authentifizierung.
 
@@ -277,7 +277,7 @@ Prüft Zugriff auf `/statusall` ohne Authentifizierung.
 
 ---
 
-#### T09 – Frontend-Seiten erreichbar
+#### **T09 – Frontend-Seiten erreichbar**
 
 Testet, ob z. B. `statusall.html` lädt.
 
@@ -288,11 +288,11 @@ Testet, ob z. B. `statusall.html` lädt.
 
 ---
 
-#### T10 – Fehlerhafte Graph API behandeln
+#### **T10 – Fehlerhafte Graph API behandeln**
 
 Simuliert API-Ausfall über `side_effect`.
 
-```Log
+```output
 2025-07-06 12:01:18,239 [INFO] app.licenses.routes: Lade Konfiguration für Tenant: missing-tenant
 
 2025-07-06 12:01:18,244 [ERROR] app.licenses.routes: Fehler beim Abrufen von Lizenzdaten für 'missing-tenant'
@@ -314,13 +314,13 @@ FileNotFoundError: [Errno 2] No such file or directory: 'config-profiles/config-
 
 ---
 
-#### T11 – Ungültige JSON-Konfiguration
+#### **T11 – Ungültige JSON-Konfiguration**
 
 Testet defekte `config-*.json`.
 
 ➡️ **Hinzufügen:**
 
-```log
+```output
 2025-07-06 12:11:25,648 [INFO] app.licenses.routes: Lade Lizenzstatus für Tenant 'missing'
 
 2025-07-06 12:11:25,660 [ERROR] app.licenses.routes: Fehler beim Abrufen von Lizenzdaten für missing
@@ -373,7 +373,9 @@ Prüft Coverage nach `pytest --cov`.
 
 ![Pytest results](../../ressources/images/pytestresult.png)
 
-> _Pytest Auswertung alles wurde mit > 80% abgedeckt_
+> _Pytest Auswertung alles wurde mit > 80% abgedeckt_.
+> _Die Codeabdeckung beträgt > 90%_
+
 
 
 ---
