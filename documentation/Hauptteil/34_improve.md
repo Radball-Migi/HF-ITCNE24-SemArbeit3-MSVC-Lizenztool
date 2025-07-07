@@ -837,47 +837,7 @@ Während alle **geschäftskritischen Prozesse** wie Monitoring, Benachrichtigung
 
 Die Datenbankstruktur ist wie folgt aufgebaut:
 
-```mermaid
-classDiagram
-    class LicenseModel {
-        +Integer id
-        +String name
-        +Integer count
-    }
-
-    class LicenseIn {
-        +String name
-        +Integer count
-    }
-
-    class LicenseOut {
-        +Integer id
-        +String name
-        +Integer count
-    }
-
-    class LicenseStatusOut {
-        +String skuid
-        +String skupartnumber
-        +Integer consumed_units
-        +Integer available_units
-        +Integer free_units
-    }
-
-    class LicenseStatusAllOut {
-        +String skuid
-        +String skupartnumber
-        +Integer consumed_units
-        +Integer available_units
-        +Integer free_units
-        +String tenant
-    }
-
-    %% Beziehungen
-    LicenseIn --|> LicenseModel
-    LicenseOut --|> LicenseModel
-    LicenseStatusAllOut --|> LicenseStatusOut
-```
+![DB-Diagram](../../ressources/images/db-diagram.png)
 
 > _links wird die DB für die API-Testendpunkte gezeigt_
 > _rechts werden die models des Tools aufgezeigt_
