@@ -318,7 +318,7 @@ FileNotFoundError: [Errno 2] No such file or directory: 'config-profiles/config-
 
 Testet defekte `config-*.json`.
 
-```yaml
+```output
 
 2025-07-06 12:11:25,648 [INFO] app.licenses.routes: Lade Lizenzstatus für Tenant 'missing'
 

@@ -51,6 +51,8 @@ Das *Know-how* habe ich mir durch meine aktive Teilnahme am MSVC-Unterricht be
 | [**SharePoint als zentrale Steuerung**](#implementierung-sharepoint-einbindung)                               | Tenant-Aktivität und Monitoring-Status steuerbar über SharePoint                 | [#20 Create SharePoint List for License Data Storage](https://github.com/Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool/issues/20) |
 | [**Monitoring im Frontend steuerbar**](#implementierung-monitoring-verwaltung)                                | Möglichkeit, Monitoring pro Tenant direkt über das UI zu aktivieren/deaktivieren | [#22 Control PowerAutomate Monitoring via Frontend](https://github.com/Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool/issues/22)   |
 | [**Zentrales Logging**](#implementierung-logging--testing)                                                    | Logfile für Fehler, API-Aufrufe und Systemzustände mit Rotation                  | [#23 Logging](https://github.com/Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool/issues/23)                                         |
+| [Was wäre wenn / CI/CD](#was-wäre-wenn-cloud-implementierung-cicd-mit-gitlab--aws)                            | Szenario - CI/CD Pipeline für Cloudinstanz                                       | -                                                                                                                                      |
+| [Datenschutz in Microservice](#datenschutz-in-diesem-microservice)                                            | Datenschutz im Microservice                                                      | -                                                                                                                                      |
 
 ### Wie soll der MSVC ablauffen?
 
@@ -894,7 +896,8 @@ Trotz der lokalen Umsetzung soll hier aufgezeigt werden, **wie ein Deployment in
 ```yaml
 stages:
   - test
-
+  - build
+  - deploy
 test:
   stage: test
   image: python:3.10
@@ -902,9 +905,56 @@ test:
     - pip install -r requirements.txt
     - pip install pytest
   script:
-    - pytest app/test
-    - pytest --cov=app app/test
-
+    - echo "Running unit tests... This will take about 60 seconds."
+    - python -m pytest
+build:
+  stage: build
+  image: docker:latest
+  services:
+    - docker:dind
+  variables:
+    DOCKER_DRIVER: overlay2
+    IMAGE_TAG: $CI_REGISTRY_IMAGE:latest
+  before_script:
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin $CI_REGISTRY
+  script:
+    - docker build -f Dockerfile.prod -t $IMAGE_TAG .
+    - docker push $IMAGE_TAG
+  only:
+    - main
+deploy:
+    stage: deploy
+    image: alpine
+    before_script:
+        # install envsubst and ssh-add
+        - apk add gettext openssh-client
+    script:
+        # start ssh-agent and import ssh private key
+        - eval `ssh-agent`
+        - ssh-add <(echo "$SSH_PRIVATE_KEY")
+        # add server to list of known hosts
+        - mkdir -p ~/.ssh
+        - chmod 700 ~/.ssh
+        - touch ~/.ssh/known_hosts
+        - chmod 600 ~/.ssh/known_hosts
+        - echo $SSH_HOST_KEY >> ~/.ssh/known_hosts
+        - echo "HOST *" > ~/.ssh/config
+        - echo "StrictHostKeyChecking no" >> ~/.ssh/config
+        # upload docker-compose file to the server
+        - scp compose.prod.yaml $DEPLOY_TARGET_USER@$DEPLOY_TARGET:/home/$DEPLOY_TARGET_USER/compose_blueprint_flask.yaml
+        # pull newest images from registry and start them
+        - ssh $DEPLOY_TARGET_USER@$DEPLOY_TARGET "cd /home/$DEPLOY_TARGET_USER;
+            sed -i '/^FLASK_BLUEPRINT_IMAGE=/d' .env;
+            echo \"FLASK_BLUEPRINT_IMAGE=$CI_REGISTRY_IMAGE:latest\" >> .env || exit 1;
+            sed -i '/^DB_ROOT_PASSWORD=/d' .env;
+            echo \"DB_ROOT_PASSWORD=$DB_ROOT_PASSWORD\" >> .env || exit 1;
+            docker login -u $CI_REGISTRY_USER 
+                -p $CI_REGISTRY_PASSWORD $CI_REGISTRY;
+            docker compose -f compose_blueprint_flask.yaml pull;
+            docker compose -f compose_blueprint_flask.yaml up -d"
+    rules:
+        # only deploy if new commit on main-branch
+        - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
 ```
 
 #### **Warum GitLab Container Registry?**
