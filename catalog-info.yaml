@@ -1,0 +1,15 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: HF-ITCNE24-SemArbeit2-BPMN-Personalprozess
+  description: Personaleintrittsprozess Verbessert
+  tags:
+    - lizenzen
+    - flask
+    - python
+    - blueprints
+    - mg-graph
+spec:
+  type: service
+  lifecycle: experimental
+  owner: miguel
