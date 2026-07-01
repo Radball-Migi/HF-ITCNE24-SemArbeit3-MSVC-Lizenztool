@@ -1,15 +1,34 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
+
 metadata:
-  name: HF-ITCNE24-SemArbeit3-MSVC-Lizenztool
-  description: License Tool
+  name: hf-itcne24-semarbeit3-msvc-lizenztool
+  title: MSVC Lizenztool
+  description: Flask-basierte Webanwendung zur Verwaltung und Automatisierung von Microsoft-Lizenzprozessen.
+
   tags:
     - lizenzen
     - flask
     - python
     - blueprints
     - mg-graph
+
+  annotations:
+    github.com/project-slug: Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool
+    backstage.io/source-location: url:https://github.com/Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool
+    backstage.io/techdocs-ref: dir:.
+
+  links:
+    - url: https://github.com/Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool
+      title: GitHub Repository
+      icon: github
+
+    - url: https://radball-migi.github.io/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool/
+      title: Projektdokumentation
+      icon: docs
+
 spec:
   type: service
   lifecycle: experimental
-  owner: miguel
+  owner: group:default/hf-itcne24
+  system: semesterarbeiten

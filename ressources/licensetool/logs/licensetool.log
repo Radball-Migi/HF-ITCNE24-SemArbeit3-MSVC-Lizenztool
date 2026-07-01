@@ -197,3 +197,274 @@ Traceback (most recent call last):
                ~~~~~~~~~~~~~~^^^^^^^^
 json.decoder.JSONDecodeError: Expecting ',' delimiter: line 7 column 5 (char 231)
 2025-07-06 12:11:25,678 [INFO] werkzeug: 172.18.0.1 - - [06/Jul/2025 12:11:25] "GET /api/v1/licenses/status/show/missing HTTP/1.1" 200 -
+2025-07-08 22:36:25,465 [INFO] app.modules.logging_config: Logging-System initialisiert
+2025-07-08 22:36:25,885 [INFO] werkzeug: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.2:5000
+2025-07-08 22:36:25,885 [INFO] werkzeug: [33mPress CTRL+C to quit[0m
+2025-07-08 22:36:25,887 [INFO] werkzeug:  * Restarting with stat
+2025-07-08 22:36:26,406 [INFO] app.modules.logging_config: Logging-System initialisiert
+2025-07-08 22:36:26,924 [WARNING] werkzeug:  * Debugger is active!
+2025-07-08 22:36:26,925 [INFO] werkzeug:  * Debugger PIN: 512-523-705
+2025-07-08 22:38:16,056 [INFO] werkzeug: 172.18.0.1 - - [08/Jul/2025 22:38:16] "GET / HTTP/1.1" 200 -
+2025-07-08 22:38:16,102 [INFO] werkzeug: 172.18.0.1 - - [08/Jul/2025 22:38:16] "GET /static/mainpage.css HTTP/1.1" 200 -
+2025-07-08 22:38:16,102 [INFO] werkzeug: 172.18.0.1 - - [08/Jul/2025 22:38:16] "GET /static/images/logo_license-tool_mainpage.png HTTP/1.1" 200 -
+2025-07-08 22:38:16,228 [INFO] werkzeug: 172.18.0.1 - - [08/Jul/2025 22:38:16] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-07-08 22:38:38,237 [INFO] werkzeug: 172.18.0.1 - - [08/Jul/2025 22:38:38] "GET / HTTP/1.1" 200 -
+2025-07-08 22:38:38,317 [INFO] werkzeug: 172.18.0.1 - - [08/Jul/2025 22:38:38] "[36mGET /static/mainpage.css HTTP/1.1[0m" 304 -
+2025-07-08 22:38:38,325 [INFO] werkzeug: 172.18.0.1 - - [08/Jul/2025 22:38:38] "[36mGET /static/images/logo_license-tool_mainpage.png HTTP/1.1[0m" 304 -
+2025-07-08 22:38:39,934 [INFO] app.auth.routes: Login-Route wurde aufgerufen
+2025-07-08 22:38:40,299 [INFO] werkzeug: 172.18.0.1 - - [08/Jul/2025 22:38:40] "[32mGET /api/v1/auth/login HTTP/1.1[0m" 302 -
+2025-07-08 22:38:43,263 [INFO] werkzeug: 172.18.0.1 - - [08/Jul/2025 22:38:43] "[32mGET /api/v1/monitoring/ HTTP/1.1[0m" 302 -
+2025-07-08 22:38:43,271 [INFO] app.auth.routes: Login-Route wurde aufgerufen
+2025-07-08 22:38:43,526 [INFO] werkzeug: 172.18.0.1 - - [08/Jul/2025 22:38:43] "[32mGET /api/v1/auth/login HTTP/1.1[0m" 302 -
+2025-07-08 22:38:43,921 [INFO] app.auth.routes: Auth-Callback erreicht
+2025-07-08 22:38:44,411 [INFO] app.auth.routes: Benutzer eingeloggt: miguel.schneider@iseschool2013.onmicrosoft.com
+2025-07-08 22:38:44,413 [INFO] werkzeug: 172.18.0.1 - - [08/Jul/2025 22:38:44] "[32mGET /api/v1/auth/callback?code=1.AR8AIjGhWpEZB0msVqfdOxxmbK8f_3kjeJVMg-ekCqByFPaFAEEfAA.AgABBAIAAABVrSpeuWamRam2jAF1XRQEAwDs_wUA9P9qNxEZoVXlnMA8mVQQ719JrB__Ztyo1FMzjmPVnier9pBFEaCPYCC_WVOj61a05r7l7DrWwOu5cO05d2bdNQPQXpRPUCp3hViqdZZo_AFubktAGLuz3shqi6rKqM-jF0iXzDUYrua_y71vVn7WXbtiydk64HcZ30OO0rr8mr1bkgdEOn0PU1Ot8hDQ5oPJTkK0xk3wdcynVQmbSII1v5-OnXe2-_NJ44ERajNmuiI_lCWJm1-kGFujkUhBwUzmYwiJTSkv7hNeYfWPDzBLSIZTHge1pCyf9Xu5pIH2fHS8z143OtnMBhv0BmF6LYbspBjMUc-PSBM8jd-pNjd4OH9pgceKYzJVsHSmOfq4LbILRPJVz4P6wwOr9m_DB6DFrJaR--hP1J2GUm1VlV_AMpZ87bMDdEDla0hjc7IUuGnzy5qX2-ju5Fk6sLiH4AOQE2D0im0RwZybWPwmXb2h8wQ6ECHpd2ssjVZblGFffrnVa3VBxH7fiR-hMY_5yJgRKg75MdxkkQ2aXLCz9ZbCYE29CfQUZ6SwwoGW7ovcB2jc8GBphzjVjRrxo25wsyQn__CmSlvjTag51x6LAyE38KQGX0TMLDTPoM9ga4CTqsjy0OLf-vmushapaskOn-AlrfowrIugEWxvtC-K7LAMXIOisqEw4q7TMzNiXaqbA_WpjvadQeNUPhsG7gTkeqib4YKsZafrSE9fezL4sOGXM-fHjwHhnG0isnUh9fUWQcLbe9YC6LYudbZcf0RwbjDSZ_CQRRMynLzKn81zjSRlXKIB&state=6426f4d1-ef8b-41e5-8960-f95c0869fae1&session_state=006b4cd9-26ea-2a79-5f3d-b4f00e4ba925 HTTP/1.1[0m" 302 -
+2025-07-08 22:38:44,427 [INFO] werkzeug: 172.18.0.1 - - [08/Jul/2025 22:38:44] "GET / HTTP/1.1" 200 -
+2025-07-08 22:38:45,591 [INFO] werkzeug: 172.18.0.1 - - [08/Jul/2025 22:38:45] "[36mGET /static/mainpage.css HTTP/1.1[0m" 304 -
+2025-07-08 22:38:45,605 [INFO] werkzeug: 172.18.0.1 - - [08/Jul/2025 22:38:45] "[36mGET /static/images/logo_license-tool_mainpage.png HTTP/1.1[0m" 304 -
+2025-07-08 22:38:45,621 [INFO] werkzeug: 172.18.0.1 - - [08/Jul/2025 22:38:45] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-07-08 22:38:54,440 [INFO] app.licenses.routes: Tenant-Status-Seite angezeigt
+2025-07-08 22:38:54,459 [INFO] werkzeug: 172.18.0.1 - - [08/Jul/2025 22:38:54] "GET /api/v1/licenses/status/tenant HTTP/1.1" 200 -
+2025-07-08 22:38:54,497 [INFO] werkzeug: 172.18.0.1 - - [08/Jul/2025 22:38:54] "[36mGET /static/tenant.css HTTP/1.1[0m" 304 -
+2025-07-08 22:38:56,868 [INFO] werkzeug: 172.18.0.1 - - [08/Jul/2025 22:38:56] "GET / HTTP/1.1" 200 -
+2025-07-08 22:38:56,890 [INFO] werkzeug: 172.18.0.1 - - [08/Jul/2025 22:38:56] "[36mGET /static/mainpage.css HTTP/1.1[0m" 304 -
+2025-07-08 22:38:56,896 [INFO] werkzeug: 172.18.0.1 - - [08/Jul/2025 22:38:56] "[36mGET /static/images/logo_license-tool_mainpage.png HTTP/1.1[0m" 304 -
+2025-07-08 22:38:58,160 [INFO] app.licenses.routes: StatusAll-Seite angezeigt
+2025-07-08 22:38:58,174 [INFO] werkzeug: 172.18.0.1 - - [08/Jul/2025 22:38:58] "GET /api/v1/licenses/statusall HTTP/1.1" 200 -
+2025-07-08 22:38:58,208 [INFO] werkzeug: 172.18.0.1 - - [08/Jul/2025 22:38:58] "[36mGET /static/statusall.css HTTP/1.1[0m" 304 -
+2025-07-08 22:38:58,223 [INFO] app.licenses.routes: Alle Lizenzstatus werden geladen (status/show)
+2025-07-08 22:38:58,233 [INFO] app.licenses.routes: Lade Lizenzstatus für Tenant: ISE School
+2025-07-08 22:38:59,017 [INFO] app.licenses.routes: Lade Lizenzstatus für Tenant: ISE School 2013
+2025-07-08 22:38:59,725 [INFO] app.licenses.routes: 16 Lizenzeinträge geladen
+2025-07-08 22:38:59,727 [INFO] werkzeug: 172.18.0.1 - - [08/Jul/2025 22:38:59] "GET /api/v1/licenses/status/show HTTP/1.1" 200 -
+2025-07-09 11:12:10,398 [INFO] app.modules.logging_config: Logging-System initialisiert
+2025-07-09 11:12:10,954 [INFO] werkzeug: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.2:5000
+2025-07-09 11:12:10,954 [INFO] werkzeug: [33mPress CTRL+C to quit[0m
+2025-07-09 11:12:10,956 [INFO] werkzeug:  * Restarting with stat
+2025-07-09 11:12:11,445 [INFO] app.modules.logging_config: Logging-System initialisiert
+2025-07-09 11:12:11,760 [WARNING] werkzeug:  * Debugger is active!
+2025-07-09 11:12:11,764 [INFO] werkzeug:  * Debugger PIN: 113-627-790
+2025-07-09 11:13:08,663 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 11:13:08] "GET / HTTP/1.1" 200 -
+2025-07-09 11:13:08,708 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 11:13:08] "[36mGET /static/mainpage.css HTTP/1.1[0m" 304 -
+2025-07-09 11:13:08,735 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 11:13:08] "[36mGET /static/images/logo_license-tool_mainpage.png HTTP/1.1[0m" 304 -
+2025-07-09 11:13:08,782 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 11:13:08] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-07-09 11:13:30,361 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 11:13:30] "GET / HTTP/1.1" 200 -
+2025-07-09 11:13:30,451 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 11:13:30] "GET /static/mainpage.css HTTP/1.1" 200 -
+2025-07-09 11:13:30,471 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 11:13:30] "GET /static/images/logo_license-tool_mainpage.png HTTP/1.1" 200 -
+2025-07-09 11:13:30,605 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 11:13:30] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-07-09 12:56:24,586 [INFO] app.modules.logging_config: Logging-System initialisiert
+2025-07-09 12:56:24,901 [INFO] werkzeug: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.2:5000
+2025-07-09 12:56:24,901 [INFO] werkzeug: [33mPress CTRL+C to quit[0m
+2025-07-09 12:56:24,903 [INFO] werkzeug:  * Restarting with stat
+2025-07-09 12:56:25,384 [INFO] app.modules.logging_config: Logging-System initialisiert
+2025-07-09 12:56:25,707 [WARNING] werkzeug:  * Debugger is active!
+2025-07-09 12:56:25,708 [INFO] werkzeug:  * Debugger PIN: 410-188-861
+2025-07-09 12:56:34,660 [INFO] app.auth.routes: Login-Route wurde aufgerufen
+2025-07-09 12:56:34,968 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 12:56:34] "[32mGET /api/v1/auth/login HTTP/1.1[0m" 302 -
+2025-07-09 12:57:03,210 [INFO] app.auth.routes: Auth-Callback erreicht
+2025-07-09 12:57:03,732 [INFO] app.auth.routes: Benutzer eingeloggt: Ahnigkay@iseschool2013.onmicrosoft.com
+2025-07-09 12:57:03,734 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 12:57:03] "[32mGET /api/v1/auth/callback?code=1.AR8AIjGhWpEZB0msVqfdOxxmbK8f_3kjeJVMg-ekCqByFPaFAAAfAA.AgABBAIAAABVrSpeuWamRam2jAF1XRQEAwDs_wUA9P_kcAqw0reR4u0hRVnI9Td8ObEqBvHiEMdOzKmfXtJJfF2VUR0SnMch-xPKpVS9_FWxFj-M6fX0CbhyOuqpVMD5Kte_yMFBknzHKqx6nmxkMuJoqRaRY6sDQ3XyxN5WDrSkR0brLTC39NAegiDSYoQJRu7_Ww95m8fxKlddJxVuFccGL3GKs73B7x6ouwqWOBnhpdVbx9QP3j2WcS4OLc2-7suIL49PGCqtf-C9pip0c2BE1NrAhL39GOeUK4Hi5Ilct0wLa4d1ye0X0TX0OuLyxrTKAg5GREBWs63DJJmw8zJw14OlCv71NPqr19yNdL9oWWC9xgAGCZiBrjA0t_pdVEex5LdeLxOoSWa9AA2JbJTUe94Pw8lvGtxuOv3XLo-WXmW7Eztip8FuF6weQqbcSj6rO5wFEWsTalgyB_pujNPlz9w3k8d1JapXBu7eVlIBGuI3r1ss0aI2wxkuQi6Hldm_W3mA-MRDFP8eJXcIl1WAhZFWHN8Z4wuvO-rXWRJRoSxTbvy-py75ZZ-EYD6XUbchzt1v1F_eP6kcRRldIA8p_MWnTC3JIbE55FFEWAGnfMWn5jWnOZLvyR-hxBprG3PTBaSX-wAUvdgb3S7buzS2QvzMhRRL6J0NuGt7asrsEOR39EHuzwHuE8i6-bSsz1elf-qM_LfxoIbZqyv4QNZ8LWjXtccy1yX67TD3OT-mLknzBgsibEmZNNW8DBuGzGkDuOi643lc_isG1iQj&state=8097d905-7032-4e1b-bc22-579fbab52c0c&session_state=006c3739-937c-efe6-93c0-331eb7be8135 HTTP/1.1[0m" 302 -
+2025-07-09 12:57:03,761 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 12:57:03] "GET / HTTP/1.1" 200 -
+2025-07-09 12:57:03,819 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 12:57:03] "[36mGET /static/mainpage.css HTTP/1.1[0m" 304 -
+2025-07-09 12:57:03,841 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 12:57:03] "[36mGET /static/images/logo_license-tool_mainpage.png HTTP/1.1[0m" 304 -
+2025-07-09 12:57:14,685 [INFO] app.auth.routes: Benutzer ausgeloggt: Ahnigkay@iseschool2013.onmicrosoft.com
+2025-07-09 12:57:14,686 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 12:57:14] "[32mGET /api/v1/auth/logout HTTP/1.1[0m" 302 -
+2025-07-09 12:57:19,157 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 12:57:19] "GET / HTTP/1.1" 200 -
+2025-07-09 12:57:19,208 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 12:57:19] "[36mGET /static/mainpage.css HTTP/1.1[0m" 304 -
+2025-07-09 12:57:19,226 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 12:57:19] "[36mGET /static/images/logo_license-tool_mainpage.png HTTP/1.1[0m" 304 -
+2025-07-09 13:06:07,010 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 13:06:07] "GET / HTTP/1.1" 200 -
+2025-07-09 13:06:07,050 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 13:06:07] "GET /static/mainpage.css HTTP/1.1" 200 -
+2025-07-09 13:06:07,077 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 13:06:07] "GET /static/images/logo_license-tool_mainpage.png HTTP/1.1" 200 -
+2025-07-09 13:06:07,172 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 13:06:07] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-07-09 13:06:09,743 [INFO] app.auth.routes: Login-Route wurde aufgerufen
+2025-07-09 13:06:10,020 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 13:06:10] "[32mGET /api/v1/auth/login HTTP/1.1[0m" 302 -
+2025-07-09 13:07:28,564 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 13:07:28] "GET / HTTP/1.1" 200 -
+2025-07-09 13:07:28,612 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 13:07:28] "GET /static/mainpage.css HTTP/1.1" 200 -
+2025-07-09 13:07:28,638 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 13:07:28] "GET /static/images/logo_license-tool_mainpage.png HTTP/1.1" 200 -
+2025-07-09 13:07:28,736 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 13:07:28] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-07-09 13:28:19,276 [INFO] app.modules.logging_config: Logging-System initialisiert
+2025-07-09 13:28:19,745 [INFO] werkzeug: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.2:5000
+2025-07-09 13:28:19,746 [INFO] werkzeug: [33mPress CTRL+C to quit[0m
+2025-07-09 13:28:19,748 [INFO] werkzeug:  * Restarting with stat
+2025-07-09 13:28:20,418 [INFO] app.modules.logging_config: Logging-System initialisiert
+2025-07-09 13:28:20,806 [WARNING] werkzeug:  * Debugger is active!
+2025-07-09 13:28:20,807 [INFO] werkzeug:  * Debugger PIN: 242-813-586
+2025-07-09 13:28:39,507 [INFO] app.auth.routes: Login-Route wurde aufgerufen
+2025-07-09 13:28:39,745 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 13:28:39] "[32mGET /api/v1/auth/login HTTP/1.1[0m" 302 -
+2025-07-09 13:28:40,103 [INFO] app.auth.routes: Auth-Callback erreicht
+2025-07-09 13:28:40,551 [INFO] app.auth.routes: Benutzer eingeloggt: miguel.schneider@iseschool2013.onmicrosoft.com
+2025-07-09 13:28:40,553 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 13:28:40] "[32mGET /api/v1/auth/callback?code=1.AR8AIjGhWpEZB0msVqfdOxxmbK8f_3kjeJVMg-ekCqByFPaFAEEfAA.AgABBAIAAABVrSpeuWamRam2jAF1XRQEAwDs_wUA9P-WxkEgCXw1ftWm-_2mUHxgOGZr9KSElJ7kMyJyXiZKMkclgGmzVCp6ML5uOBwlidxffv5lnPF_116kfBgYyy4l8bzxZmdi9hCc3EmhqeRnv8U7eF2xi_3yLXU2kIVjVjU1QwwpxtdURzXitwfbS6GeqLtEDVtJOg3_fXuATtV5gfX175Ci7hXhxbycMAvdDl95C_LSe6hSyLOkWYvypSQf9vK-JTlR1jqu9pMLi6xqym9-Yiz-l1lJoTj0K3DEu4GEMxpi_7UuOciH0UBPmKgIpEb7AoUjoUrx864mwBBX3h78BJTy1KnJAikudK3pRuo0U6YF2M2cfBmVbQJB1Uz310RC7r1rqR7Etll5wA8T2T86sH1EBLrvEDylFg63tRhJ8qPQf1qyLt7KH7VWegdbp-_ymNqOhI-nNwhZiumucQ_r60pNKvwZYuJbMUag1UmZXcuqdaq3y5m7kngEXkVa7szC3mWkaK-AS4RcwygEN3Pla2JUPvQon79h6BcWyZllAL2rT-7roqx8Sddtk_VQhLCLgX_klzzfiGcHe1pLGH3eyglCPk8S-0jhTkAWIluXfp-Xjkyuy5TPHs3bXkvMY80Xm_wzZ0BYk0JIRBGVqOQEfYxjbSYNq-xo8UsfL3TlXCqlyygqYLKIWGW5UBSaDCkQX6o9dL0YUyghgzO9ZTlVOZQlBScC-GedfEQzarHyGFPA5JVqevQBHpwrNu1WkjPZ37baqYgb3nmG4D2oDPKh3ocgORbt3DPVCct0IelhUIXiwag-aUx_iFOyVbc&state=6e116735-ce7a-40a9-a9e6-d220de34d097&session_state=006b4cd9-26ea-2a79-5f3d-b4f00e4ba925 HTTP/1.1[0m" 302 -
+2025-07-09 13:28:40,574 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 13:28:40] "GET / HTTP/1.1" 200 -
+2025-07-09 13:28:40,616 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 13:28:40] "[36mGET /static/mainpage.css HTTP/1.1[0m" 304 -
+2025-07-09 13:28:40,620 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 13:28:40] "[36mGET /static/images/logo_license-tool_mainpage.png HTTP/1.1[0m" 304 -
+2025-07-09 13:28:43,045 [INFO] app.auth.routes: Benutzer ausgeloggt: miguel.schneider@iseschool2013.onmicrosoft.com
+2025-07-09 13:28:43,047 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 13:28:43] "[32mGET /api/v1/auth/logout HTTP/1.1[0m" 302 -
+2025-07-09 13:28:51,342 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 13:28:51] "GET / HTTP/1.1" 200 -
+2025-07-09 13:28:51,374 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 13:28:51] "[36mGET /static/mainpage.css HTTP/1.1[0m" 304 -
+2025-07-09 13:28:51,399 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 13:28:51] "[36mGET /static/images/logo_license-tool_mainpage.png HTTP/1.1[0m" 304 -
+2025-07-09 14:08:19,452 [INFO] app.modules.logging_config: Logging-System initialisiert
+2025-07-09 14:08:20,384 [INFO] werkzeug: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.2:5000
+2025-07-09 14:08:20,385 [INFO] werkzeug: [33mPress CTRL+C to quit[0m
+2025-07-09 14:08:20,388 [INFO] werkzeug:  * Restarting with stat
+2025-07-09 14:08:21,490 [INFO] app.modules.logging_config: Logging-System initialisiert
+2025-07-09 14:08:22,343 [WARNING] werkzeug:  * Debugger is active!
+2025-07-09 14:08:22,344 [INFO] werkzeug:  * Debugger PIN: 103-050-974
+2025-07-09 14:08:25,653 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 14:08:25] "GET / HTTP/1.1" 200 -
+2025-07-09 14:08:25,721 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 14:08:25] "[36mGET /static/mainpage.css HTTP/1.1[0m" 304 -
+2025-07-09 14:08:25,729 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 14:08:25] "[36mGET /static/images/logo_license-tool_mainpage.png HTTP/1.1[0m" 304 -
+2025-07-09 14:08:28,552 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 14:08:28] "GET / HTTP/1.1" 200 -
+2025-07-09 14:08:28,590 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 14:08:28] "[36mGET /static/mainpage.css HTTP/1.1[0m" 304 -
+2025-07-09 14:08:28,624 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 14:08:28] "[36mGET /static/images/logo_license-tool_mainpage.png HTTP/1.1[0m" 304 -
+2025-07-09 14:25:53,003 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 14:25:53] "[32mGET /api/v1/licenses/statusall HTTP/1.1[0m" 302 -
+2025-07-09 14:25:53,016 [INFO] app.auth.routes: Login-Route wurde aufgerufen
+2025-07-09 14:25:53,059 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 14:25:53] "[32mGET /api/v1/auth/login HTTP/1.1[0m" 302 -
+2025-07-09 14:25:53,392 [INFO] app.auth.routes: Auth-Callback erreicht
+2025-07-09 14:25:53,756 [INFO] app.auth.routes: Benutzer eingeloggt: miguel.schneider@iseschool2013.onmicrosoft.com
+2025-07-09 14:25:53,759 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 14:25:53] "[32mGET /api/v1/auth/callback?code=1.AR8AIjGhWpEZB0msVqfdOxxmbK8f_3kjeJVMg-ekCqByFPaFAEEfAA.AgABBAIAAABVrSpeuWamRam2jAF1XRQEAwDs_wUA9P_GbasLCNzyJNIIr1AyicQqZyJYXZO5_Gnk8JZQlu_NE78d1sBU4JIoI74WJNYCwXmjiKTREeiMtlQ_3c0vxqo7u3RW3tmqwuoSn436vnU06pIUOOr8QBFdw2ICmMqq0LTxYwmMrb05sGOo6Sk6t0VpFkVUdGJjwm5TYiy8yglX9eRpMU3w24ahD1UPIMO5B3nBg85XkDQsQWNZ7femdCdJLRGuI3nXADdfckuKzEOVAbL7WIQrgv7oSC3_f_H3qCS9J_b332zbXBKfbMaHYXTkvVc-xBj0X_jcnC6nBV6NwW0d1MSHnwbfTqibovdlU3ikqwTJCTcp41zE92kW0SdKVVWzPMIxLehQ9XiWkDCcHPwGeyFr6mfZwUIwY_QJF4wj83jHgi2AVmZCubonergQGlgP13T8wGWOvLcUdhDVqZrkgIcA2S6gqjgZYpCvXrSjH_yBXOJAyQMaRgJ0ZN4QBp8wHv023FPGNfmClrrH-8qAZc5Cxrof_jpcddo8so9r75ZyXhTf2truKGjXCaLHYbf_kS7oUrv0yD1RY_XcS7sLL8MAdumewTJaH0G-EbYDJdhTUlYNPO4Elk3uh90HmqL95wp00zuaMvvbSDwu_lXPMhLlM4_ZmpGx0TK95cw2GFidV_HiirWXQCGPTUwxVU3Tpk-AtjFwnyQ0PhLGiu288aEEAdS-EWz30c7txqHSwIk-9xs_3W3jK5Xso1MFP3ZHu2TIF19RVX3ij5qDCfRAZr8&state=bc07d2a4-0405-4464-a5ac-341e9d164211&session_state=006c3739-1535-cabb-23d6-77bf30918808 HTTP/1.1[0m" 302 -
+2025-07-09 14:25:53,777 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 14:25:53] "GET / HTTP/1.1" 200 -
+2025-07-09 14:25:53,835 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 14:25:53] "[36mGET /static/mainpage.css HTTP/1.1[0m" 304 -
+2025-07-09 14:25:53,842 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 14:25:53] "[36mGET /static/images/logo_license-tool_mainpage.png HTTP/1.1[0m" 304 -
+2025-07-09 14:25:57,741 [INFO] app.licenses.routes: StatusAll-Seite angezeigt
+2025-07-09 14:25:57,759 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 14:25:57] "GET /api/v1/licenses/statusall HTTP/1.1" 200 -
+2025-07-09 14:25:57,792 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 14:25:57] "[36mGET /static/statusall.css HTTP/1.1[0m" 304 -
+2025-07-09 14:25:57,803 [INFO] app.licenses.routes: Alle Lizenzstatus werden geladen (status/show)
+2025-07-09 14:25:57,814 [INFO] app.licenses.routes: Lade Lizenzstatus für Tenant: ISE School
+2025-07-09 14:25:58,385 [INFO] app.licenses.routes: Lade Lizenzstatus für Tenant: ISE School 2013
+2025-07-09 14:25:58,872 [INFO] app.licenses.routes: 16 Lizenzeinträge geladen
+2025-07-09 14:25:58,873 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 14:25:58] "GET /api/v1/licenses/status/show HTTP/1.1" 200 -
+2025-07-09 14:26:27,761 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 14:26:27] "[32mGET /api/v1/licenses/statusall HTTP/1.1[0m" 302 -
+2025-07-09 14:26:27,769 [INFO] app.auth.routes: Login-Route wurde aufgerufen
+2025-07-09 14:26:27,892 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 14:26:27] "[32mGET /api/v1/auth/login HTTP/1.1[0m" 302 -
+2025-07-09 14:27:47,145 [INFO] app.licenses.routes: StatusAll-Seite angezeigt
+2025-07-09 14:27:47,154 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 14:27:47] "GET /api/v1/licenses/statusall HTTP/1.1" 200 -
+2025-07-09 14:27:47,199 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 14:27:47] "[36mGET /static/statusall.css HTTP/1.1[0m" 304 -
+2025-07-09 14:27:47,208 [INFO] app.licenses.routes: Alle Lizenzstatus werden geladen (status/show)
+2025-07-09 14:27:47,216 [INFO] app.licenses.routes: Lade Lizenzstatus für Tenant: ISE School
+2025-07-09 14:27:47,718 [INFO] app.licenses.routes: Lade Lizenzstatus für Tenant: ISE School 2013
+2025-07-09 14:27:48,144 [INFO] app.licenses.routes: 16 Lizenzeinträge geladen
+2025-07-09 14:27:48,147 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 14:27:48] "GET /api/v1/licenses/status/show HTTP/1.1" 200 -
+2025-07-09 14:28:36,883 [INFO] app.licenses.routes: Starte Fetch und Push für alle Tenants (status/show-fetch)
+2025-07-09 14:28:36,889 [INFO] app.licenses.routes: Verarbeite Tenant: ISE School
+2025-07-09 14:28:38,604 [INFO] app.modules.mggraph: Lizenz 'Office 365 A1 für Lehrpersonal (STANDARDWOFFPACK_FACULTY)' für Tenant 'ISE School' wurde aktualisiert.
+2025-07-09 14:28:38,793 [INFO] app.modules.mggraph: Lizenz 'Microsoft Teams Telefon-Ressourcenkonto für Lehrpersonal (PHONESYSTEM_VIRTUALUSER_FACULTY)' für Tenant 'ISE School' wurde aktualisiert.
+2025-07-09 14:28:39,085 [INFO] app.modules.mggraph: Neue Lizenz 'Microsoft Teams Telefon Standard für Lehrpersonal (MCOEV_FACULTY)' für Tenant 'ISE School' erstellt.
+2025-07-09 14:28:39,327 [INFO] app.modules.mggraph: Neue Lizenz 'Office 365 A1 für Schüler und Studenten (STANDARDWOFFPACK_STUDENT)' für Tenant 'ISE School' erstellt.
+2025-07-09 14:28:39,528 [INFO] app.modules.mggraph: Neue Lizenz 'Microsoft Power Automate Free (FLOW_FREE)' für Tenant 'ISE School' erstellt.
+2025-07-09 14:28:39,534 [INFO] app.licenses.routes: Push an SharePoint abgeschlossen für Tenant: ISE School
+2025-07-09 14:28:39,544 [INFO] app.licenses.routes: Verarbeite Tenant: ISE School 2013
+2025-07-09 14:28:41,031 [INFO] app.modules.mggraph: Neue Lizenz 'Project Online Essentials für Lehrpersonal (PROJECTESSENTIALS_FACULTY)' für Tenant 'ISE School 2013' erstellt.
+2025-07-09 14:28:41,272 [INFO] app.modules.mggraph: Neue Lizenz 'Microsoft Stream (STREAM)' für Tenant 'ISE School 2013' erstellt.
+2025-07-09 14:28:41,563 [INFO] app.modules.mggraph: Neue Lizenz 'Microsoft Fabric (Free) für Lehrpersonal (POWER_BI_STANDARD_FACULTY)' für Tenant 'ISE School 2013' erstellt.
+2025-07-09 14:28:41,806 [INFO] app.modules.mggraph: Neue Lizenz 'Office 365 A1 Plus für Lehrpersonal (STANDARDWOFFPACK_IW_FACULTY)' für Tenant 'ISE School 2013' erstellt.
+2025-07-09 14:28:42,039 [INFO] app.modules.mggraph: Neue Lizenz 'Power Automate-Plan Pro Benutzer (FLOW_PER_USER)' für Tenant 'ISE School 2013' erstellt.
+2025-07-09 14:28:42,237 [INFO] app.modules.mggraph: Neue Lizenz ' (WINDOWS_STORE)' für Tenant 'ISE School 2013' erstellt.
+2025-07-09 14:28:42,450 [INFO] app.modules.mggraph: Neue Lizenz 'Office 365 A1 für Schüler und Studenten (STANDARDWOFFPACK_STUDENT)' für Tenant 'ISE School 2013' erstellt.
+2025-07-09 14:28:42,677 [INFO] app.modules.mggraph: Neue Lizenz 'Microsoft 365 A5 für Lehrpersonal (M365EDU_A5_FACULTY)' für Tenant 'ISE School 2013' erstellt.
+2025-07-09 14:28:42,908 [INFO] app.modules.mggraph: Neue Lizenz 'Microsoft 365 A5 für Schüler und Studenten – Vorteilsprogramm (M365EDU_A5_STUUSEBNFT)' für Tenant 'ISE School 2013' erstellt.
+2025-07-09 14:28:43,103 [INFO] app.modules.mggraph: Neue Lizenz 'Power Apps-Plan Pro Benutzer (POWERAPPS_PER_USER)' für Tenant 'ISE School 2013' erstellt.
+2025-07-09 14:28:43,337 [INFO] app.modules.mggraph: Neue Lizenz 'Office 365 A1 für Lehrpersonal (STANDARDWOFFPACK_FACULTY)' für Tenant 'ISE School 2013' erstellt.
+2025-07-09 14:28:43,342 [INFO] app.licenses.routes: Push an SharePoint abgeschlossen für Tenant: ISE School 2013
+2025-07-09 14:28:43,344 [INFO] app.licenses.routes: Fetch & Push für 16 Einträge abgeschlossen
+2025-07-09 14:28:43,345 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 14:28:43] "GET /api/v1/licenses/status/show-fetch HTTP/1.1" 200 -
+2025-07-09 14:29:25,552 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 14:29:25] "GET / HTTP/1.1" 200 -
+2025-07-09 14:29:25,577 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 14:29:25] "[36mGET /static/mainpage.css HTTP/1.1[0m" 304 -
+2025-07-09 14:29:25,586 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 14:29:25] "[36mGET /static/images/logo_license-tool_mainpage.png HTTP/1.1[0m" 304 -
+2025-07-09 14:29:27,989 [INFO] app.monitoring.routes: Monitoring-Übersichtsseite aufgerufen
+2025-07-09 14:29:28,004 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 14:29:28] "GET /api/v1/monitoring/ HTTP/1.1" 200 -
+2025-07-09 14:29:28,034 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 14:29:28] "[36mGET /static/monitoring.css HTTP/1.1[0m" 304 -
+2025-07-09 14:29:28,043 [INFO] app.monitoring.routes: Abfrage aller Tenants über SharePoint gestartet
+2025-07-09 14:29:28,489 [INFO] app.monitoring.routes: 2 Tenants empfangen
+2025-07-09 14:29:28,490 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 14:29:28] "GET /api/v1/monitoring/tenants HTTP/1.1" 200 -
+2025-07-09 14:29:47,873 [INFO] app.monitoring.routes: Tenant-Update für ID 2 gestartet
+2025-07-09 14:29:48,572 [INFO] app.modules.mggraph: Tenant '2' erfolgreich aktualisiert: {'enabled': True, 'monitoring': True}
+2025-07-09 14:29:48,575 [INFO] app.monitoring.routes: Tenant 2 erfolgreich aktualisiert: {'id': 2, 'updated': {'enabled': True, 'monitoring': True}}
+2025-07-09 14:29:48,576 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 14:29:48] "PATCH /api/v1/monitoring/tenants/2 HTTP/1.1" 200 -
+2025-07-09 14:29:48,587 [INFO] app.monitoring.routes: Abfrage aller Tenants über SharePoint gestartet
+2025-07-09 14:29:49,040 [INFO] app.monitoring.routes: 2 Tenants empfangen
+2025-07-09 14:29:49,041 [INFO] werkzeug: 172.18.0.1 - - [09/Jul/2025 14:29:49] "GET /api/v1/monitoring/tenants HTTP/1.1" 200 -
+2025-10-01 17:12:25,521 [INFO] app.modules.logging_config: Logging-System initialisiert
+2025-10-01 17:12:26,424 [INFO] werkzeug: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.2:5000
+2025-10-01 17:12:26,426 [INFO] werkzeug: [33mPress CTRL+C to quit[0m
+2025-10-01 17:12:26,429 [INFO] werkzeug:  * Restarting with stat
+2025-10-01 17:12:27,254 [INFO] app.modules.logging_config: Logging-System initialisiert
+2025-10-01 17:12:28,035 [WARNING] werkzeug:  * Debugger is active!
+2025-10-01 17:12:28,041 [INFO] werkzeug:  * Debugger PIN: 111-376-847
+2025-10-01 17:12:53,830 [INFO] werkzeug: 172.18.0.1 - - [01/Oct/2025 17:12:53] "GET / HTTP/1.1" 200 -
+2025-10-01 17:12:53,908 [INFO] werkzeug: 172.18.0.1 - - [01/Oct/2025 17:12:53] "GET /static/mainpage.css HTTP/1.1" 200 -
+2025-10-01 17:12:53,951 [INFO] werkzeug: 172.18.0.1 - - [01/Oct/2025 17:12:53] "GET /static/images/logo_license-tool_mainpage.png HTTP/1.1" 200 -
+2025-10-01 17:12:54,259 [INFO] werkzeug: 172.18.0.1 - - [01/Oct/2025 17:12:54] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-10-01 17:14:15,933 [INFO] werkzeug: 172.18.0.1 - - [01/Oct/2025 17:14:15] "GET / HTTP/1.1" 200 -
+2025-10-01 17:14:16,069 [INFO] werkzeug: 172.18.0.1 - - [01/Oct/2025 17:14:16] "[36mGET /static/mainpage.css HTTP/1.1[0m" 304 -
+2025-10-01 17:14:16,123 [INFO] werkzeug: 172.18.0.1 - - [01/Oct/2025 17:14:16] "[36mGET /static/images/logo_license-tool_mainpage.png HTTP/1.1[0m" 304 -
+2025-10-01 17:14:33,003 [INFO] werkzeug: 172.18.0.1 - - [01/Oct/2025 17:14:33] "GET / HTTP/1.1" 200 -
+2025-10-01 17:14:33,081 [INFO] werkzeug: 172.18.0.1 - - [01/Oct/2025 17:14:33] "GET /static/mainpage.css HTTP/1.1" 200 -
+2025-10-01 17:14:33,119 [INFO] werkzeug: 172.18.0.1 - - [01/Oct/2025 17:14:33] "GET /static/images/logo_license-tool_mainpage.png HTTP/1.1" 200 -
+2025-10-01 17:14:33,462 [INFO] werkzeug: 172.18.0.1 - - [01/Oct/2025 17:14:33] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-10-01 17:14:44,367 [INFO] app.auth.routes: Login-Route wurde aufgerufen
+2025-10-01 17:14:44,810 [INFO] werkzeug: 172.18.0.1 - - [01/Oct/2025 17:14:44] "[32mGET /api/v1/auth/login HTTP/1.1[0m" 302 -
+2025-10-01 17:14:54,462 [INFO] app.auth.routes: Auth-Callback erreicht
+2025-10-01 17:14:54,912 [INFO] app.auth.routes: Benutzer eingeloggt: miguel.schneider@iseschool2013.onmicrosoft.com
+2025-10-01 17:14:54,914 [INFO] werkzeug: 172.18.0.1 - - [01/Oct/2025 17:14:54] "[32mGET /api/v1/auth/callback?code=1.AR8AIjGhWpEZB0msVqfdOxxmbK8f_3kjeJVMg-ekCqByFPaFAEEfAA.AgABBAIAAABlMNzVhAPUTrARzfQjWPtKAwDs_wUA9P9ybdEhwTBiEmqiax9COxH4vSqTvRS4NhcRcy7E9QEg_Q57vqiXzBXFi4iFOTXm00XnmR-68yNQaFKbuqvOHBe49j_jCt_ghd9w_DTyni8Db9l-MkERRa-wsLDB-dzQdBeJn_pNB4vItpNo-5JN3gfN7nLvOM-bmtSshTZbwwZRQrE6FipCdIkxqhxgFuaXd5FDjg5O5oCdT8lsc23Y5fZeta7IZsh0kjY-K0dXviuSP_VACZyrRE62EO9jzXwP7fcrX0meqgzWdwH61O0FDIrp8q238nYDuMuhvM_N38o0En5auaUGzN5s3GBsDgfVGfJpvauouSh9n5Wce8soePk6mNV8oZ1Qbd1t_v6xN9Z_JB9HrdWeD9A1-QUOZ0GYyAqe6ZvF2qhWb_fivfYGmIYBvaBxLHL2YZYkY0105xttAT3bpb6Q_H-sUccIx0cjES6o-mjR0IW-ZIeIZ9wo5I5EJBZ06OLIZ5eCUDb3HKAICnZuPVo9lGA63D0zgM5OKV8SzHCSmz3PiSlLeV-b-rO7Do5twdZPEsxLsM74gk760SMhpm6Bfjrltrqe-1TR6h7x8_PqB94c5K-FZHgv7PqmDbh5tblNufiwwLZ7mr1YRxmtQNAt8rMgYtcSVhTMvWtTXhPZJ95LcI6Yrl-derjtdbxf3-fla41gEmAH11Wiezw8qNpyCASay9Udy-Td44I6RADSy_i-DQybqhfv0k_RyYOnSIL6Qdn8OZ6xGET5bp46JAGb5OR0qV-agogDxEwTAHEsxhwt&state=aae51b7d-e939-41ba-ad70-bc84f47c2ec7&session_state=0098c579-2c54-d54a-5009-a4735cbbb9bd HTTP/1.1[0m" 302 -
+2025-10-01 17:14:54,932 [INFO] werkzeug: 172.18.0.1 - - [01/Oct/2025 17:14:54] "GET / HTTP/1.1" 200 -
+2025-10-01 17:14:54,996 [INFO] werkzeug: 172.18.0.1 - - [01/Oct/2025 17:14:54] "[36mGET /static/mainpage.css HTTP/1.1[0m" 304 -
+2025-10-01 17:14:55,046 [INFO] werkzeug: 172.18.0.1 - - [01/Oct/2025 17:14:55] "[36mGET /static/images/logo_license-tool_mainpage.png HTTP/1.1[0m" 304 -
+2025-10-01 17:15:03,035 [INFO] app.licenses.routes: StatusAll-Seite angezeigt
+2025-10-01 17:15:03,081 [INFO] werkzeug: 172.18.0.1 - - [01/Oct/2025 17:15:03] "GET /api/v1/licenses/statusall HTTP/1.1" 200 -
+2025-10-01 17:15:03,167 [INFO] werkzeug: 172.18.0.1 - - [01/Oct/2025 17:15:03] "GET /static/statusall.css HTTP/1.1" 200 -
+2025-10-01 17:15:03,183 [INFO] app.licenses.routes: Alle Lizenzstatus werden geladen (status/show)
+2025-10-01 17:15:03,200 [INFO] app.licenses.routes: Lade Lizenzstatus für Tenant: ISE School
+2025-10-01 17:15:05,029 [INFO] app.licenses.routes: Lade Lizenzstatus für Tenant: ISE School 2013
+2025-10-01 17:15:05,915 [INFO] app.licenses.routes: 16 Lizenzeinträge geladen
+2025-10-01 17:15:05,916 [INFO] werkzeug: 172.18.0.1 - - [01/Oct/2025 17:15:05] "GET /api/v1/licenses/status/show HTTP/1.1" 200 -
+2025-10-01 17:15:33,579 [INFO] werkzeug: 172.18.0.1 - - [01/Oct/2025 17:15:33] "GET / HTTP/1.1" 200 -
+2025-10-01 17:15:33,651 [INFO] werkzeug: 172.18.0.1 - - [01/Oct/2025 17:15:33] "[36mGET /static/mainpage.css HTTP/1.1[0m" 304 -
+2025-10-01 17:15:33,661 [INFO] werkzeug: 172.18.0.1 - - [01/Oct/2025 17:15:33] "[36mGET /static/images/logo_license-tool_mainpage.png HTTP/1.1[0m" 304 -
+2025-10-01 17:15:35,707 [INFO] app.licenses.routes: Tenant-Status-Seite angezeigt
+2025-10-01 17:15:35,752 [INFO] werkzeug: 172.18.0.1 - - [01/Oct/2025 17:15:35] "GET /api/v1/licenses/status/tenant HTTP/1.1" 200 -
+2025-10-01 17:15:35,834 [INFO] werkzeug: 172.18.0.1 - - [01/Oct/2025 17:15:35] "GET /static/tenant.css HTTP/1.1" 200 -
+2025-10-01 17:15:41,239 [INFO] app.licenses.routes: Lade Lizenzstatus für Tenant 'iseschool'
+2025-10-01 17:15:42,069 [INFO] app.licenses.routes: 5 Einträge für Tenant 'iseschool' geladen
+2025-10-01 17:15:42,070 [INFO] werkzeug: 172.18.0.1 - - [01/Oct/2025 17:15:42] "GET /api/v1/licenses/status/show/iseschool HTTP/1.1" 200 -
+2025-10-01 17:15:48,317 [INFO] werkzeug: 172.18.0.1 - - [01/Oct/2025 17:15:48] "GET / HTTP/1.1" 200 -
+2025-10-01 17:15:48,402 [INFO] werkzeug: 172.18.0.1 - - [01/Oct/2025 17:15:48] "[36mGET /static/mainpage.css HTTP/1.1[0m" 304 -
+2025-10-01 17:15:48,420 [INFO] werkzeug: 172.18.0.1 - - [01/Oct/2025 17:15:48] "[36mGET /static/images/logo_license-tool_mainpage.png HTTP/1.1[0m" 304 -
+2025-10-01 17:15:50,436 [INFO] app.monitoring.routes: Monitoring-Übersichtsseite aufgerufen
+2025-10-01 17:15:50,487 [INFO] werkzeug: 172.18.0.1 - - [01/Oct/2025 17:15:50] "GET /api/v1/monitoring/ HTTP/1.1" 200 -
+2025-10-01 17:15:50,560 [INFO] werkzeug: 172.18.0.1 - - [01/Oct/2025 17:15:50] "GET /static/monitoring.css HTTP/1.1" 200 -
+2025-10-01 17:15:50,582 [INFO] app.monitoring.routes: Abfrage aller Tenants über SharePoint gestartet
+2025-10-01 17:15:51,635 [INFO] app.monitoring.routes: 2 Tenants empfangen
+2025-10-01 17:15:51,637 [INFO] werkzeug: 172.18.0.1 - - [01/Oct/2025 17:15:51] "GET /api/v1/monitoring/tenants HTTP/1.1" 200 -
+2025-10-01 17:16:00,957 [INFO] werkzeug: 172.18.0.1 - - [01/Oct/2025 17:16:00] "GET /api/v1/docs HTTP/1.1" 200 -
+2025-10-01 17:16:01,437 [INFO] werkzeug: 172.18.0.1 - - [01/Oct/2025 17:16:01] "GET /openapi.json HTTP/1.1" 200 -
+2025-10-29 13:55:31,127 [INFO] app.modules.logging_config: Logging-System initialisiert
+2025-10-29 13:55:31,520 [INFO] werkzeug: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://172.18.0.3:5000
+2025-10-29 13:55:31,521 [INFO] werkzeug: [33mPress CTRL+C to quit[0m
+2025-10-29 13:55:31,523 [INFO] werkzeug:  * Restarting with stat
+2025-10-29 13:55:31,808 [INFO] app.modules.logging_config: Logging-System initialisiert
+2025-10-29 13:55:32,177 [WARNING] werkzeug:  * Debugger is active!
+2025-10-29 13:55:32,180 [INFO] werkzeug:  * Debugger PIN: 872-981-334
+2025-10-29 13:55:39,647 [INFO] werkzeug: 172.18.0.1 - - [29/Oct/2025 13:55:39] "GET / HTTP/1.1" 200 -
+2025-10-29 13:55:39,702 [INFO] werkzeug: 172.18.0.1 - - [29/Oct/2025 13:55:39] "GET /static/mainpage.css HTTP/1.1" 200 -
+2025-10-29 13:55:39,727 [INFO] werkzeug: 172.18.0.1 - - [29/Oct/2025 13:55:39] "GET /static/images/logo_license-tool_mainpage.png HTTP/1.1" 200 -
+2025-10-29 13:55:39,835 [INFO] werkzeug: 172.18.0.1 - - [29/Oct/2025 13:55:39] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -

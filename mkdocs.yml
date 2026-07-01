@@ -1,0 +1,15 @@
+site_name: MSVC Lizenztool
+docs_dir: documentation
+
+nav:
+  - Einleitung:
+      - Projektübersicht: Einleitung/index.md
+  - Hauptteil:
+      - Umsetzung: Hauptteil/index.md
+  - Sprints:
+      - Sprintübersicht: Sprints/index.md
+  - Abschluss:
+      - Fazit: Abschluss/index.md
+
+plugins:
+  - techdocs-core
