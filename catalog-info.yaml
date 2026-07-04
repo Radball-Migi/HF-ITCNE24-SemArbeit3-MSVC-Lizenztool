@@ -17,6 +17,7 @@ metadata:
     github.com/project-slug: Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool
     backstage.io/source-location: url:https://github.com/Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool
     backstage.io/techdocs-ref: dir:.
+    backstage.io/kubernetes-id: hf-itcne24-semarbeit3-msvc-lizenztool
 
   links:
     - url: https://github.com/Radball-Migi/HF-ITCNE24-SemArbeit3-MSVC-Lizenztool
