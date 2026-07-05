@@ -33,3 +33,21 @@ spec:
   lifecycle: experimental
   owner: group:default/hf-itcne24
   system: semesterarbeiten
+
+  providesApis:
+    - hf-itcne24-semarbeit3-msvc-lizenztool-api
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: hf-itcne24-semarbeit3-msvc-lizenztool-api
+  title: MSVC Lizenztool API
+  description: REST API des MSVC Lizenztools
+spec:
+  type: openapi
+  lifecycle: experimental
+  owner: group:default/hf-itcne24
+  system: semesterarbeiten
+  definition:
+    $text: ./openapi.yaml

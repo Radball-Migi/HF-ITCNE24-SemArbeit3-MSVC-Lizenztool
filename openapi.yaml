@@ -1,0 +1,14 @@
+openapi: 3.0.3
+info:
+  title: MSVC Lizenztool API
+  version: 1.0.0
+  description: API des MSVC Lizenztools
+servers:
+  - url: http://localhost:5000
+paths:
+  /health:
+    get:
+      summary: Healthcheck
+      responses:
+        "200":
+          description: Anwendung ist erreichbar
